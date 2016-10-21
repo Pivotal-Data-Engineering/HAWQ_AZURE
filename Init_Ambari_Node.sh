@@ -1,3 +1,5 @@
+#!/bin/sh
+sed -i "s/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g" /etc/sudoers
 sudo su -c "echo 0 > /selinux/enforce"
 sudo su -c "sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux"
 sudo su -c "service iptables stop"
