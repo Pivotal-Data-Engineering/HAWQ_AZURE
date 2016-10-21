@@ -1,5 +1,4 @@
-{
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+chema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
   "contentVersion": "1.0.0.0",
   "parameters": {
 	"resourceAPIVersion": {
@@ -92,7 +91,8 @@
     "clientVMName": "[ concat(parameters('genericNamePrefix'), '-clientvm') ]",
 	"clientVMOSDiskName": "osDiskforDataLakeClient",
 	"clientVMDataDiskName": "dataDiskforDataLakeClient",
-	"segmentDataDiskSize": 1023
+	"segmentDataDiskSize": 1023,
+	"clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D"
   },
   "resources": [
     {
@@ -228,7 +228,27 @@
           ]
         }
       }
-    }
+    },
+	{
+		"type": "Microsoft.Compute/virtualMachines/extensions",
+		"name": "[concat(variables('clientVMName'),'/installambari')]",
+		"apiVersion": "[parameters('resourceAPIVersion')]",
+		"location": "[parameters('location')]",
+		"dependsOn": [
+			 "[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
+		],
+		 "properties": {
+		        "publisher": "Microsoft.OSTCExtensions",
+		         "type": "CustomScriptForLinux",
+		         "typeHandlerVersion": "1.2",
+		         "settings": {
+		            "fileUris": [
+		                "[variables('clientVMInstallScriptUri')]"
+		            ],
+		            "commandToExecute": "sh Init_Ambari_Node.sh"
+		         }
+		 }
+	}	 
   ],
   "outputs": {
     
