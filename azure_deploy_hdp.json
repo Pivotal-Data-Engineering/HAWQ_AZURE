@@ -93,18 +93,70 @@
 	      }
 	}	
   },
-  "variables": {},
+  "variables": {
+	  "repoUri": "https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/"
+  },
 
   "resources": [
     {
-       "apiVersion": "[parameters('resourceAPIVersion')]",
+        
+        "name": "storageAccountlinkedTemplate",
+        "type": "Microsoft.Resources/deployments",
+		"apiVersion": "[parameters('resourceAPIVersion')]",
+        "properties": {
+			"mode": "incremental",
+        	"templateLink": {
+ 				"uri": "[concat(variables('repoUri'), '/hdp_hawq_cluster_storage.json')]",
+            	"contentVersion": "1.0.0.0"
+        	},
+	    	"storageAccountPrefix": {
+		    	"value":"[ parameters('storageAccountPrefix')]"
+	    	},
+			"storageAccountType": {
+	        	"value":"[ parameters('storageAccountType')]"
+	    	}
+	    }
+    },   
+    {   
+        "name": "networklinkedTemplate",
+        "type": "Microsoft.Resources/deployments",
+		"apiVersion": "[parameters('resourceAPIVersion')]",
+  	    "dependsOn": [
+  	          "Microsoft.Resources/deployments/storageAccountlinkedTemplate"
+  	    ],
+        "properties": {
+			"mode": "incremental",
+        	"templateLink": {
+          		"uri": "[concat(variables('repoUri'), '/hdp_hawq_cluster_network.json')]",
+            	"contentVersion": "1.0.0.0"
+        	},
+			"dnsNamePrefix": {
+				"value":"[ parameters('dnsNamePrefix')]"
+			    },
+			"virtualNetworkNamePrefix": {
+				"value":"[ parameters('virtualNetworkNamePrefix')]"
+			},
+			"subnetNamePrefix": {
+				"value":"[ parameters('subnetNamePrefix')]"
+			},
+			"NetworkInterfaceNamePrefix": {
+				"value":"[ parameters('NetworkInterfaceNamePrefix')]"
+			}
+		}
+    },   	  
+    {
       "name": "clientVMlinkedTemplate",
       "type": "Microsoft.Resources/deployments",
-      "properties": {
+	  "apiVersion": "[parameters('resourceAPIVersion')]",
+	  "dependsOn": [
+	          "Microsoft.Resources/deployments/storageAccountlinkedTemplate",
+	          "Microsoft.Resources/deployments/networklinkedTemplate"
+	  ],
+	  "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/hdp_hawq_cluster_virtualmachine.json?token=AH2u3dvm1fPq374pjfsh4HK_RViHWQ1Yks5YE1J0wA%3D%3D",
-          "contentVersion": "1.0.0.0"
+			"uri": "[concat(variables('repoUri'), '/hdp_ambari_virtualmachine.json')]",
+           "contentVersion": "1.0.0.0"
         },
         "parameters": {
           "StorageAccountName": {

@@ -59,9 +59,7 @@
             }
           ]
         }
-     },  
-	  
-	  
+     },  	  
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[ variables('ambariVMName') ]",
@@ -147,6 +145,5 @@
 		         }
 		 }
 	}	 
-  ],
-  "output": {}
+  ]
 }

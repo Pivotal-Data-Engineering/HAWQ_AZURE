@@ -1,10 +1,13 @@
 {
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.1",
+  "contentVersion": "1.0.0.0",
   "parameters": {
-    "resourceAPIVersion": {
-      "value": "2015-06-15"
-    },
+      "resourceAPIVersion": {
+        "type": "string",
+        "metadata": {
+          "description": "version for resource"
+        }
+      },
     "dnsNamePrefix": {
       "type": "string",
       "metadata": {
@@ -70,6 +73,5 @@
         ]
       }
     }
-  ],
-  "outputs": {}
+  ]
 }
