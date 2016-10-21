@@ -93,7 +93,27 @@
           ]
         }
       }
-    }
+    },
+	{
+		"type": "Microsoft.Compute/virtualMachines/extensions",
+		"name": "[concat(variables('clientVMName'),'/installambari')]",
+		"apiVersion": "[parameters('resourceAPIVersion')]",
+		"location": "[parameters('location')]",
+		"dependsOn": [
+			 "[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
+		],
+		 "properties": {
+		        "publisher": "Microsoft.OSTCExtensions",
+		         "type": "CustomScriptForLinux",
+		         "typeHandlerVersion": "1.2",
+		         "settings": {
+		            "fileUris": [
+		                "[variables('clientVMInstallScriptUri')]"
+		            ],
+		            "commandToExecute": "sh Init_Ambari_Node.sh"
+		         }
+		 }
+	}	 
   ],
   "output": {}
 }

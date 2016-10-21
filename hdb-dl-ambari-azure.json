@@ -78,9 +78,35 @@ chema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTempla
       "metadata": {
         "description": "Hadoop NIC name (default is datalake-NIC)"
       }
-    }
+    },
+	"clusterFootprint": {
+	      "type": "string",
+	      "metadata": {
+	        "description": "Specify either small or medium or large"
+	      }
+	    }
   },
   "variables": {
+ 	"clusterSizes" : {
+		"small": {
+		    "masterNodesCount": 3
+			"dataNodesCount": 3
+		},
+		"medium": {
+		    "masterNodesCount": 4
+			"dataNodesCount": 6
+		}
+		"large": {
+		    "masterNodesCount": 5
+			"dataNodesCount": 10
+		}
+		
+    },  
+   "currentClusterSize": "[variables('clusterSizes')[parameters('clusterSize')]]",
+   "masterNodeCount": "[variables('currentClusterSize').masterNodesCount]",
+   "dataNodeCount": "[variables('currentClusterSize').dataNodesCount]",
+   "TotalHDPclusterNodes": add(variables('masterNodeCount'), variables('dataNodeCount')),
+   
     "clientStorageAccountName": "[concat('cli', parameters('storageAccountPrefix'))]",
     "vNetName": "[ concat(parameters('virtualNetworkNamePrefix'), '-1') ]",
     "subnetName": "[ concat(parameters('subnetNamePrefix'), '-1') ]",
@@ -93,6 +119,9 @@ chema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTempla
 	"clientVMDataDiskName": "dataDiskforDataLakeClient",
 	"segmentDataDiskSize": 1023,
 	"clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D"
+  
+  
+  
   },
   "resources": [
     {
