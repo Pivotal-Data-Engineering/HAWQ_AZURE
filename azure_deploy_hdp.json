@@ -7,18 +7,103 @@
       "metadata": {
         "description": "version for resource"
       }
-    }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Deployment region location"
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin user name for the VMs"
+      }
+    },
+    "adminPublicKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin publickey for the VMs"
+      }
+    },
+    "hdpVMSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop VM type"
+      }
+    },
+    "ambariVMSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Client VM type"
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique namespace for resource group to datalake provisioning"
+      }
+    },
+    "storageAccountPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique namespace for the Storage Account where the VM disks will be placed "
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "metadata": {
+        "description": "The type of the Storage Account"
+      }
+    },
+    "genericNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "DNS Label for the Public IP. Must be lowercase"
+      }
+    },
+    "dnsNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "DNS Label for the Public IP. Must be lowercase."
+      }
+    },
+    "virtualNetworkNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop VNet name "
+      }
+    },
+    "subnetNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop Subnet Name "
+      }
+    },
+    "NetworkInterfaceNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop NIC name (default is datalake-NIC)"
+      }
+    },
+	"clusterFootprint": {
+	      "type": "string",
+	      "metadata": {
+	        "description": "Specify either small or medium or large"
+	      }
+	}	
   },
   "variables": {},
+
   "resources": [
     {
-      "apiVersion": "2015-01-01",
-      "name": "linkedTemplate",
+       "apiVersion": "[parameters('resourceAPIVersion')]",
+      "name": "clientVMlinkedTemplate",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": "https://www.contoso.com/AzureTemplates/newStorageAccount.json",
+          "uri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/hdp_hawq_cluster_virtualmachine.json?token=AH2u3dvm1fPq374pjfsh4HK_RViHWQ1Yks5YE1J0wA%3D%3D",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {

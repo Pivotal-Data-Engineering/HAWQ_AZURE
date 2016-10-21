@@ -33,15 +33,13 @@
   "variables": {
     "vNetName": "[ concat(parameters('virtualNetworkNamePrefix'), '-1') ]",
     "subnetName": "[ concat(parameters('subnetNamePrefix'), '-1') ]",
-    "pubIPName": "[ concat(parameters('genericNamePrefix'), '-publicIP') ]",
-    "nicName": "[ concat(parameters('NetworkInterfaceNamePrefix'), '-1') ]",
     "vnetRef": "[resourceId('Microsoft.Network/virtualNetworks', variables('vNetName') ) ]",
     "subnetRef": "[concat(variables('vnetRef'),'/subnets/', variables('subnetName') ) ]"
   },
   "resources": [
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[ variables('pubIPName') ]",
+      "name": "[ variables('ambariPublicIPName') ]",
       "apiVersion": "[ parameters('resourceAPIVersion') ]",
       "location": "[ resourceGroup().location ]",
       "properties": {
@@ -67,32 +65,6 @@
             "name": "[ variables('subnetName') ]",
             "properties": {
               "addressPrefix": "10.0.0.0/24"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[ variables('nicName') ]",
-      "apiVersion": "[parameters('resourceAPIVersion')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('pubIPName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pubIPName')) ]"
-              },
-              "subnet": {
-                "id": "[variables('subnetRef')]"
-              }
             }
           }
         ]

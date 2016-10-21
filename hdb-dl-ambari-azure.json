@@ -25,10 +25,16 @@ chema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTempla
         "description": "Admin publickey for the VMs"
       }
     },
-    "vmSize": {
+    "hdpVmSize": {
       "type": "string",
       "metadata": {
         "description": "Hadoop VM type"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Client VM type"
       }
     },
     "resourceGroupName": {
