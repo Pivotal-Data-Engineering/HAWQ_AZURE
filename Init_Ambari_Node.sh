@@ -1,5 +1,3 @@
-#!/bin/sh
-sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
 sudo su -c "echo 0 > /selinux/enforce"
 sudo su -c "sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux"
 sudo su -c "service iptables stop"
@@ -9,3 +7,4 @@ sudo su -c "wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates
 sudo su -c "yum install ambari-server"
 sudo su -c "ambari-server setup -s"
 sudo su -c "ambari-server start"
+sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
