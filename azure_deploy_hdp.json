@@ -94,69 +94,58 @@
 	}	
   },
   "variables": {
-	  "repoUri": "https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/"
+	  "repoUri": "http://localhost:8000",
+	  "ambariPublicIPName": "[ concat(parameters('genericNamePrefix'), '-publicIP') ]",
+	  "vNetName": "[ concat(parameters('virtualNetworkNamePrefix'), '-1') ]",
+	  "subnetName": "[ concat(parameters('subnetNamePrefix'), '-1') ]"
   },
 
   "resources": [
+
     {
-        
-        "name": "storageAccountlinkedTemplate",
-        "type": "Microsoft.Resources/deployments",
-		"apiVersion": "[parameters('resourceAPIVersion')]",
-        "properties": {
-			"mode": "incremental",
-        	"templateLink": {
- 				"uri": "[concat(variables('repoUri'), '/hdp_hawq_cluster_storage.json')]",
-            	"contentVersion": "1.0.0.0"
-        	},
-	    	"storageAccountPrefix": {
-		    	"value":"[ parameters('storageAccountPrefix')]"
-	    	},
-			"storageAccountType": {
-	        	"value":"[ parameters('storageAccountType')]"
-	    	}
-	    }
-    },   
-    {   
-        "name": "networklinkedTemplate",
-        "type": "Microsoft.Resources/deployments",
-		"apiVersion": "[parameters('resourceAPIVersion')]",
-  	    "dependsOn": [
-  	          "Microsoft.Resources/deployments/storageAccountlinkedTemplate"
-  	    ],
-        "properties": {
-			"mode": "incremental",
-        	"templateLink": {
-          		"uri": "[concat(variables('repoUri'), '/hdp_hawq_cluster_network.json')]",
-            	"contentVersion": "1.0.0.0"
-        	},
-			"dnsNamePrefix": {
-				"value":"[ parameters('dnsNamePrefix')]"
-			    },
-			"virtualNetworkNamePrefix": {
-				"value":"[ parameters('virtualNetworkNamePrefix')]"
-			},
-			"subnetNamePrefix": {
-				"value":"[ parameters('subnetNamePrefix')]"
-			},
-			"NetworkInterfaceNamePrefix": {
-				"value":"[ parameters('NetworkInterfaceNamePrefix')]"
-			}
-		}
-    },   	  
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[ variables('ambariPublicIPName') ]",
+      "apiVersion": "[ parameters('resourceAPIVersion') ]",
+      "location": "[ resourceGroup().location ]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
+        }
+      }
+    },
     {
-      "name": "clientVMlinkedTemplate",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[ variables('vNetName') ]",
+      "apiVersion": "[parameters('resourceAPIVersion')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[ variables('subnetName') ]",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24"
+            }
+          }
+        ]
+      }
+    },  
+    {
+      "name": "ambariVMlinkedTemplate",
       "type": "Microsoft.Resources/deployments",
 	  "apiVersion": "[parameters('resourceAPIVersion')]",
 	  "dependsOn": [
-	          "Microsoft.Resources/deployments/storageAccountlinkedTemplate",
-	          "Microsoft.Resources/deployments/networklinkedTemplate"
 	  ],
 	  "properties": {
         "mode": "incremental",
         "templateLink": {
-			"uri": "[concat(variables('repoUri'), '/hdp_ambari_virtualmachine.json')]",
-           "contentVersion": "1.0.0.0"
+			"uri": "http://localhost:8000/hdp_ambari_virtualmachine.json",
+            "contentVersion": "1.0.0.0"
         },
         "parameters": {
           "StorageAccountName": {
@@ -165,6 +154,5 @@
         }
       }
     }
-  ],
-  "output": {}
+    ]
 }

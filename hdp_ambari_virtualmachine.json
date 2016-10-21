@@ -19,6 +19,30 @@
       "metadata": {
         "description": "DNS Label for the Public IP. Must be lowercase"
       }
+    },
+    "dnsNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "DNS Label for the Public IP. Must be lowercase."
+      }
+    },
+    "virtualNetworkNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop VNet name "
+      }
+    },
+    "subnetNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop Subnet Name "
+      }
+    },
+    "NetworkInterfaceNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop NIC name (default is datalake-NIC)"
+      }
     }
   },
   "variables": {
@@ -33,6 +57,15 @@
     "ambariVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D"
   },
   "resources": [
+      {
+          "type": "Microsoft.Storage/storageAccounts",
+          "name": "[ variables('clientStorageAccountName') ]",
+          "apiVersion": "[parameters('resourceAPIVersion')]",
+          "location": "[resourceGroup().location]",
+          "properties": {
+            "accountType": "[parameters('storageAccountType')]"
+          }
+      },  
       {
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[ variables('ambariNicName') ]",
