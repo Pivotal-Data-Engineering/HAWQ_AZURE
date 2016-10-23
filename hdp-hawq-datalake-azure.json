@@ -14,13 +14,13 @@
         "description": "Deployment region location"
       }
     },
-    "adminUserName": {
+    "clientAdminUserName": {
       "type": "string",
       "metadata": {
         "description": "Admin user name for the VMs"
       }
     },
-    "adminPublicKey": {
+    "clientAdminPublicKey": {
       "type": "securestring",
       "metadata": {
         "description": "Admin publickey for the VMs"

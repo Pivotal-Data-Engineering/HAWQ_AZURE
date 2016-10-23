@@ -1,10 +1,11 @@
 #!/bin/sh
 
-figlet -f digital Pivotal
+figlet -f digital Pivotal Software
 
 rgName=datalake01-rg
 
 cleanupTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/cleanup-all-resources.json
+
 deployTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure.json
 
 parameterFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure_parameters.json

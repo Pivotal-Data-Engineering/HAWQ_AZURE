@@ -18,35 +18,27 @@
       "value": "Standard_DS14"
   	},
     "resourceGroupName": {
-     
       "value": "datalake01-rg"
     },
-    "storageAccountPrefix": {
-     
+    "storageAccountPrefix": {     
       "value": "datalake01strgacct"
     },
-    "storageAccountType": {
-     
+    "storageAccountType": {     
       "value": "Premium_LRS"
     },
-    "genericNamePrefix": {
-     
+    "genericNamePrefix": {     
       "value": "datalake01"
     },
     "dnsNamePrefix": {
-     
       "value": "datalakepde"
     },
     "virtualNetworkNamePrefix": {
-     
       "value": "datalake01Vnet"
     },
-    "subnetNamePrefix": {
-     
+    "subnetNamePrefix": {     
       "value": "datalake01Subnet"
     },
     "NetworkInterfaceNamePrefix": {
-     
       "value": "datalake01Nic"
     },
 	"clusterFootprint": {
@@ -59,7 +51,6 @@
       "value": "Pivotal@2016"
     },	
     "hdpVmSize": {
-     
       "value": "Standard_DS14"
   	}
   }
