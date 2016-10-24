@@ -11,6 +11,7 @@ sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `
 
 #sudo su -c 'ssh-keygen -f /home/${userName}/.ssh/id_rsa1 -t rsa -N "'""'"'"
 
+sudo su -c "mkdir -p ~/.ssh"
 sudo su -c "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqbpFJ0thyqIwkZkredy+/quI3j3tkssW/gYGPB7JXlOyN9d02F6gOuGiL572CEKuBBghvigFz2zQ4EJR6mxpWdkIz+QLKegNr6osG/apGKa09YDimqsDwDsU++pbAbQ1XzH2xr/gjhsMA22bb4dK9+zPoo+nbJxBWz4HisLj72hYUBhJvYR/ivGi8m61zF3j/ilAJZKm7tjl09zC6qXFUTen8NRnfz7suDBl6+QjzSGdWDnd9PJCWRyQBlj8E/06O8vtHOl2FXYPUq+779y+vNYsGtKKGQ0ApTB/zO1uh6z3X+VP+sN6/VyHrdEf4jqaqutabyUMQSdUPYK1sfJxh' > ~/.ssh/id_rsa.pub"
 
 sudo su -c " echo '-----BEGIN RSA PRIVATE KEY-----
