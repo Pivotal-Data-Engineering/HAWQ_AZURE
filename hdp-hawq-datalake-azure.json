@@ -1107,7 +1107,15 @@
           "adminUsername": "[parameters('adminUserName')]",
           "adminPassword": "[parameters('adminPassword')]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": "false"
+            "disablePasswordAuthentication": "false",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[concat('/home/', parameters('adminUserName'), '/.ssh/authorized_keys')]",
+                  "keyData": "[parameters('adminPublicKey')]"
+                }
+              ]
+            }
           }
         },
         "storageProfile": {
@@ -1247,7 +1255,7 @@
 	          "fileUris": [
 	            "[variables('hdpVMInstallScriptUri')]"
 	          ],
-	          "commandToExecute": "[concat('sh Init_VM.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
+	          "commandToExecute": "[concat('sh Init_VM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
 			  }
 	      }
 	    },
@@ -1333,7 +1341,7 @@
 	          "fileUris": [
 	            "[variables('clientVMInstallScriptUri')]"
 	          ],
-			  "commandToExecute": "[concat('sh Init_Ambari_Node.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
+			  "commandToExecute": "[concat('sh Init_Ambari_Node.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
 	        }
 	      }
 	    }
