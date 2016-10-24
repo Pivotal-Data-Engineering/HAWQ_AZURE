@@ -103,7 +103,7 @@
     "clusterSizes": {
       "small": {
         "masterNodesCount": 1,
-        "dataNodesCount": 1
+        "dataNodesCount": 0
       },
       "medium": {
         "masterNodesCount": 4,
