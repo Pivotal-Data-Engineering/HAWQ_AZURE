@@ -133,8 +133,8 @@
     "clientVMDataDiskName": "dataDiskforDataLakeClient",
     "hdpVMName": "[ concat(parameters('genericNamePrefix'), 'vm') ]",
     "dataDiskSize": 1023,
-    "clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D",
-    "hdpVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3Y9zoubckHmSkRphiXchY4BLwOfkks5YFoR0wA%3D%3D"     
+    "clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3Qw5t89X1P0rQRHcvInbJ_oMqXJzks5YF7EmwA%3D%3D",
+    "hdpVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3cROIQSrxgw7LCRs1Bxqpj5ir6mXks5YF7FHwA%3D%3D"     
   },
   "resources": [
     {
@@ -1255,7 +1255,7 @@
 	          "fileUris": [
 	            "[variables('hdpVMInstallScriptUri')]"
 	          ],
-	          "commandToExecute": "[concat('sh Init_VM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
+	          "commandToExecute": "[concat('sh Init_HdpVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
 			  }
 	      }
 	    },
@@ -1341,7 +1341,7 @@
 	          "fileUris": [
 	            "[variables('clientVMInstallScriptUri')]"
 	          ],
-			  "commandToExecute": "[concat('sh Init_Ambari_Node.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
+			  "commandToExecute": "[concat('sh Init_AmbariVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
 	        }
 	      }
 	    }

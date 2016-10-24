@@ -6,7 +6,8 @@ sudo sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux
 sudo service iptables stop
 sudo chkconfig iptables off
 sudo chkconfig ip6tables off
-sudo { echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts
+
+#sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
 
 sudo mkdir -p /root/.ssh
 sudo cp /home/.ssh/authorized_keys /root/.ssh/authorized_keys
