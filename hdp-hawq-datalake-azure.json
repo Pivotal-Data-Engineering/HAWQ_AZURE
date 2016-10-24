@@ -133,8 +133,8 @@
     "clientVMDataDiskName": "dataDiskforDataLakeClient",
     "hdpVMName": "[ concat(parameters('genericNamePrefix'), 'vm') ]",
     "dataDiskSize": 1023,
-    "clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D",
-    "hdpVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_VM.sh?token=AH2u3Y9zoubckHmSkRphiXchY4BLwOfkks5YFoR0wA%3D%3D"     
+    "clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D",
+    "hdpVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3Y9zoubckHmSkRphiXchY4BLwOfkks5YFoR0wA%3D%3D"     
   },
   "resources": [
     {
