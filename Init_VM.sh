@@ -12,6 +12,7 @@ sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `
 sudo su -c 'echo "eviCore    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
 sudo su -c "mkdir -p ~/.ssh"
 sudo su -c 'ssh-keygen -f ~/.ssh/id_rsa1 -t rsa -N "'""'"'
+sudo su -c "cat  ~/.ssh/id_rsa.pub >>  ~/.ssh/authorized_keys"
 sudo su -c "chmod 700 ~/.ssh"
 sudo su -c "chmod 600 ~/.ssh/authorized_keys"
 

@@ -24,5 +24,3 @@ echo 'Running deployment in group $rgName using $hdp-hawq-datalake-azure and $pa
 
 azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
-scp -i ~/.ssh/pivotpde_azure.key yoda@datalakepde.eastus.cloudapp.azure.com:/home/.ssh/
-scp -i ~/.ssh/pivotpde_azure.key.pub yoda@datalakepde.eastus.cloudapp.azure.com:/home/.ssh/
