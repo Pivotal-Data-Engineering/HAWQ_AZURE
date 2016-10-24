@@ -6,7 +6,7 @@ rgName=datalake01-rg
 
 cleanupTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/cleanup-all-resources.json
 
-deployTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdb-dl-ambari-azure.json
+deployTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure.json
 
 #hdp-hawq-datalake-azure.json
 
@@ -24,3 +24,5 @@ echo 'Running deployment in group $rgName using $hdp-hawq-datalake-azure and $pa
 
 azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
+#scp -i ~/.ssh/pivotpde_azure.key yoda@datalakepde.eastus.cloudapp.azure.com:/home/.ssh/
+#scp -i ~/.ssh/pivotpde_azure.key.pub yoda@datalakepde.eastus.cloudapp.azure.com:/home/.ssh/
