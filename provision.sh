@@ -22,5 +22,5 @@ azure group deployment create -g $rgName -f $cleanupTemplateFile -m Complete
 
 echo 'Running deployment in group $rgName using $hdp-hawq-datalake-azure and $parameterFile ......'
 
-#azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
+azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
