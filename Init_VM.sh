@@ -12,7 +12,7 @@ sudo su -c "chkconfig iptables off"
 sudo su -c "chkconfig ip6tables off"
 sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
 
-sudo su -c 'echo "${userName}    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+#sudo su -c 'echo "yoda   ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
 
 #sudo su -c "ssh-keygen -f ~/.ssh/id_rsa1 -t rsa -N "'""'" "
 sudo su -c "mkdir -p ~/.ssh"
