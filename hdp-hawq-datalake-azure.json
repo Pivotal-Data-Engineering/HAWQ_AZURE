@@ -26,16 +26,10 @@
         "description": "Admin publickey for the VMs"
       }
     },
-    "adminUserName": {
+    "adminPassword": {
       "type": "string",
       "metadata": {
-        "description": "HAdoop Admin user name for the VMs"
-      }
-    },
-    "adminPublicKey": {
-      "type": "securestring",
-      "metadata": {
-        "description": "hadoop admin user password"
+        "description": "Admin user password for the VMs"
       }
     },
     "hdpVmSize": {
@@ -139,7 +133,8 @@
     "clientVMDataDiskName": "dataDiskforDataLakeClient",
     "hdpVMName": "[ concat(parameters('genericNamePrefix'), 'vm') ]",
     "dataDiskSize": 1023,
-    "clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D"
+    "clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D",
+    "hdpVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_VM.sh?token=AH2u3Y9zoubckHmSkRphiXchY4BLwOfkks5YFoR0wA%3D%3D"     
   },
   "resources": [
     {
@@ -209,92 +204,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[ variables('clientVMName') ]",
-      "apiVersion": "[parameters('resourceAPIVersion')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[ concat( 'Microsoft.Network/networkInterfaces/', variables('clientNicName') ) ]",
-        "[ concat( 'Microsoft.Storage/storageAccounts/', variables('clientStorageAccountName') ) ]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[parameters('clientVmSize') ]"
-        },
-        "osProfile": {
-          "computerName": "[variables('clientVMName')]",
-          "adminUsername": "[parameters('adminUserName')]",
-		  "adminPassword": "[parameters('adminPassword')]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": "false",
-            "ssh": {
-              "publicKeys": [
-                {
-                  "path": "[concat('/home/', parameters('adminUserName'), '/.ssh/authorized_keys')]",
-                  "keyData": "[parameters('adminPublicKey')]"
-                }
-              ]
-            }
-          }
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "OpenLogic",
-            "offer": "CentOS",
-            "sku": "6.7",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "[concat(variables('clientVMName'), 'osdisk')]",
-            "vhd": {
-              "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMOSDiskName'),'.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          },
-          "dataDisks": [
-            {
-              "name": "datadisk0",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 0,
-              "vhd": {
-                "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMDataDiskName'),'.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
-            }
-          ]
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('clientNicName') ) ]"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('clientVMName'),'/installambari')]",
-      "apiVersion": "[parameters('resourceAPIVersion')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.2",
-        "settings": {
-          "fileUris": [
-            "[variables('clientVMInstallScriptUri')]"
-          ],
-		  "commandToExecute": "[concat('sh initialize-node.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
-        }
       }
     },
     {
@@ -1325,23 +1234,107 @@
 	      "location": "[resourceGroup().location]",
 	      "copy": {
 	        "name": "nameNodeNicLoop",
-	        "count": "[parameters('TotalHDPclusterNodes')]"
+	        "count": "[variables('TotalHDPclusterNodes')]"
 	      },
 	      "dependsOn": [
 	        "[concat('Microsoft.Compute/virtualMachines/', variables('hdpVMName'), copyIndex())]"
 	      ],
 	      "properties": {
-	        "publisher": "Microsoft.Azure.Extensions",
-	        "type": "CustomScript",
-	        "typeHandlerVersion": "2.0",
-	        "autoUpgradeMinorVersion": true,
+  	        "publisher": "Microsoft.OSTCExtensions",
+  	        "type": "CustomScriptForLinux",
+  	        "typeHandlerVersion": "1.2",
 	        "settings": {
 	          "fileUris": [
-	            "[concat(parameters('scriptsUri'), '/scripts/prepare-masternode-disks.sh')]",
-	            "[concat(parameters('scriptsUri'), '/scripts/initialize-node.sh')]"
+	            "[variables('hdpVMInstallScriptUri')]"
 	          ],
-	          "commandToExecute": "[concat('sh Init)VM.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
+	          "commandToExecute": "[concat('sh Init_VM.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
 			  }
+	      }
+	    },
+	    {
+	      "type": "Microsoft.Compute/virtualMachines",
+	      "name": "[ variables('clientVMName') ]",
+	      "apiVersion": "[parameters('resourceAPIVersion')]",
+	      "location": "[resourceGroup().location]",
+	      "dependsOn": [
+	        "[ concat( 'Microsoft.Network/networkInterfaces/', variables('clientNicName') ) ]",
+	        "[ concat( 'Microsoft.Storage/storageAccounts/', variables('clientStorageAccountName') ) ]"
+	      ],
+	      "properties": {
+	        "hardwareProfile": {
+	          "vmSize": "[parameters('clientVmSize') ]"
+	        },
+	        "osProfile": {
+	          "computerName": "[variables('clientVMName')]",
+	          "adminUsername": "[parameters('adminUserName')]",
+			  "adminPassword": "[parameters('adminPassword')]",
+	          "linuxConfiguration": {
+	            "disablePasswordAuthentication": "false",
+	            "ssh": {
+	              "publicKeys": [
+	                {
+	                  "path": "[concat('/home/', parameters('adminUserName'), '/.ssh/authorized_keys')]",
+	                  "keyData": "[parameters('adminPublicKey')]"
+	                }
+	              ]
+	            }
+	          }
+	        },
+	        "storageProfile": {
+	          "imageReference": {
+	            "publisher": "OpenLogic",
+	            "offer": "CentOS",
+	            "sku": "6.7",
+	            "version": "latest"
+	          },
+	          "osDisk": {
+	            "name": "[concat(variables('clientVMName'), 'osdisk')]",
+	            "vhd": {
+	              "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMOSDiskName'),'.vhd')]"
+	            },
+	            "caching": "ReadWrite",
+	            "createOption": "FromImage"
+	          },
+	          "dataDisks": [
+	            {
+	              "name": "datadisk0",
+	              "diskSizeGB": "[variables('dataDiskSize')]",
+	              "lun": 0,
+	              "vhd": {
+	                "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMDataDiskName'),'.vhd')]"
+	              },
+	              "caching": "None",
+	              "createOption": "Empty"
+	            }
+	          ]
+	        },
+	        "networkProfile": {
+	          "networkInterfaces": [
+	            {
+	              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('clientNicName') ) ]"
+	            }
+	          ]
+	        }
+	      }
+	    },
+	    {
+	      "type": "Microsoft.Compute/virtualMachines/extensions",
+	      "name": "[concat(variables('clientVMName'),'/installambari')]",
+	      "apiVersion": "[parameters('resourceAPIVersion')]",
+	      "location": "[resourceGroup().location]",
+	      "dependsOn": [
+	        "[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
+	      ],
+	      "properties": {
+	        "publisher": "Microsoft.OSTCExtensions",
+	        "type": "CustomScriptForLinux",
+	        "typeHandlerVersion": "1.2",
+	        "settings": {
+	          "fileUris": [
+	            "[variables('clientVMInstallScriptUri')]"
+	          ],
+			  "commandToExecute": "[concat('sh Init_Ambari_Node.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
+	        }
 	      }
 	    }
 	
