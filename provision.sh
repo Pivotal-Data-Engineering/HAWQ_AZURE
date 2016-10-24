@@ -24,3 +24,19 @@ echo 'Running deployment in group $rgName using $hdp-hawq-datalake-azure and $pa
 
 azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
+
+scp -i ~/.ssh/pivotpde_azure.key  eviCore@datalakepde.eastus.cloudapp.azure.com:/home/eviCore/.ssh/id_rsa
+scp -i ~/.ssh/pivotpde_azure.key.pub eviCore@datalakepde.eastus.cloudapp.azure.com:/home/eviCore/.ssh/id_rsa.pub
+ssh -i ~/.ssh/pivotpde_azure.key -c  "chmod 600 /home/eviCore/.ssh/authorized_keys"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "chmod 600 /home/eviCore/.ssh/id_rsa"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "chmod 600 /home/eviCore/.ssh/id_rsa.pub"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "chmod 700 /home/eviCore/.ssh"
+
+
+ssh -i ~/.ssh/pivotpde_azure.key -c  "mkdir -p /root/.ssh"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "sudo su -c 'cp /home/eviCore/.ssh/id_rsa*' /root/.ssh' "
+ssh -i ~/.ssh/pivotpde_azure.key -c  "sudo su -c 'cp /home/eviCore/.ssh/authorized_keys' /root/.ssh' "
+ssh -i ~/.ssh/pivotpde_azure.key -c  "sudo su -c 'chmod 600 /root/.ssh/id_rsa'"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "sudo su -c 'chmod 600 /root/.ssh/id_rsa.pub'"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "sudo su -c 'chmod 600 /root/.ssh/authorized_keys'"
+ssh -i ~/.ssh/pivotpde_azure.key -c  "sudo su -c 'chmod 700 /root/.ssh'"
