@@ -277,7 +277,7 @@
 		"type": "Microsoft.Compute/virtualMachines/extensions",
 		"name": "[concat(variables('clientVMName'),'/installambari')]",
 		"apiVersion": "[parameters('resourceAPIVersion')]",
-		"location": "[parameters('location')]",
+		"location": "[resourceGroup().location]",
 		"dependsOn": [
 			 "[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
 		],
@@ -289,7 +289,7 @@
 		            "fileUris": [
 		                "[variables('clientVMInstallScriptUri')]"
 		            ],
-					"commandToExecute": "[concat('sh initialize-node.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
+					"commandToExecute": "[concat('sh Init_Ambari_Node.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
 		         }
 		 }
 	}	 
