@@ -1,12 +1,13 @@
 #!/bin/sh
-
 sed -i 's/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g' /etc/sudoers
-sudo su -c 'echo "eviCore    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
-sudo su -c "echo 0 > /selinux/enforce"
-sudo su -c "sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux"
-sudo su -c "service iptables stop"
-sudo su -c "chkconfig iptables off"
-sudo su -c "chkconfig ip6tables off"
-sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
-
-
+sudo echo "eviCore    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+sudo echo 0 > /selinux/enforce
+sudo sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux
+sudo service iptables stop
+sudo chkconfig iptables off
+sudo chkconfig ip6tables off
+sudo { echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts
+sudo mkdir -p /root/.ssh
+sudo cp /home/.ssh/authorized_keys /root/.ssh/authorized_keys
+sudo 600 /root/.ssh/authorized_keys
+sudo 700 /root/.ssh
