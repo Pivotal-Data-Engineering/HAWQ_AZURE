@@ -6,11 +6,11 @@ figlet -f digital Pivotal Software
 
 rgName=hawqdatalakeRG
 
-deployTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure.json
+deployTemplateFile=hdp-hawq-datalake-azure.json
 
 #hdp-hawq-datalake-azure.json
 
-parameterFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure_parameters.json
+parameterFile=hdp-hawq-datalake-azure_parameters.json
 
 #echo "Creating Azure resource group $rgName in region eastus...."
 
