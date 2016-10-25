@@ -11,7 +11,7 @@ chkconfig ip6tables off
 #sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"{
 
 mkdir -p /root/.ssh
-cp /home/$username/.ssh/authorized_keys /root/.ssh/authorized_keys
+cp /home/$ADMINUSER/.ssh/authorized_keys /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
 chmod 700 /root/.ssh
 
