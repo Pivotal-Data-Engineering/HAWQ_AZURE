@@ -9,40 +9,40 @@
         "value": "eastus"
       },
       "adminUserName": {
-        "value": "eviCore"
+        "value": "pivotalpde"
       },
       "adminPublicKey": {
- 		"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqbpFJ0thyqIwkZkredy+/quI3j3tkssW/gYGPB7JXlOyN9d02F6gOuGiL572CEKuBBghvigFz2zQ4EJR6mxpWdkIz+QLKegNr6osG/apGKa09YDimqsDwDsU++pbAbQ1XzH2xr/gjhsMA22bb4dK9+zPoo+nbJxBWz4HisLj72hYUBhJvYR/ivGi8m61zF3j/ilAJZKm7tjl09zC6qXFUTen8NRnfz7suDBl6+QjzSGdWDnd9PJCWRyQBlj8E/06O8vtHOl2FXYPUq+779y+vNYsGtKKGQ0ApTB/zO1uh6z3X+VP+sN6/VyHrdEf4jqaqutabyUMQSdUPYK1sfJxh pivotpde01@azure-datalake"
+ 		"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqbpFJ0thyqIwkZkredy+/quI3j3tkssW/gYGPB7JXlOyN9d02F6gOuGiL572CEKuBBghvigFz2zQ4EJR6mxpWdkIz+QLKegNr6osG/apGKa09YDimqsDwDsU++pbAbQ1XzH2xr/gjhsMA22bb4dK9+zPoo+nbJxBWz4HisLj72hYUBhJvYR/ivGi8m61zF3j/ilAJZKm7tjl09zC6qXFUTen8NRnfz7suDBl6+QjzSGdWDnd9PJCWRyQBlj8E/06O8vtHOl2FXYPUq+779y+vNYsGtKKGQ0ApTB/zO1uh6z3X+VP+sN6/VyHrdEf4jqaqutabyUMQSdUPYK1sfJxh pivotpde@azure-datalake"
      },
      "adminPassword": {
-       "value": "Evicore!2016"
+       "value": "CloudNative!16"
      },
     "clientVmSize": {
       "value": "Standard_DS14"
   	},
     "resourceGroupName": {
-      "value": "datalakepde-rg"
+      "value": "hawqdatalake-rg"
     },
     "storageAccountPrefix": {     
-      "value": "datalakepdestrgacct"
+      "value": "hawqdatalakestrgacct"
     },
     "storageAccountType": {     
       "value": "Premium_LRS"
     },
     "genericNamePrefix": {     
-      "value": "datalakepde"
+      "value": "hawqdatalake"
     },
     "dnsNamePrefix": {
-      "value": "datalakepde"
+      "value": "hawqdatalake"
     },
     "virtualNetworkNamePrefix": {
-      "value": "datalakepdeVnet"
+      "value": "hawqdatalakeVnet"
     },
     "subnetNamePrefix": {     
-      "value": "datalakepdeSubnet"
+      "value": "hawqdatalakeSubnet"
     },
     "NetworkInterfaceNamePrefix": {
-      "value": "datalakepdeNic"
+      "value": "hawqdatalakeNic"
     },
 	"clusterFootprint": {
 		"value": "small"
