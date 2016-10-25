@@ -137,6 +137,28 @@
     "hdpVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3cROIQSrxgw7LCRs1Bxqpj5ir6mXks5YF7FHwA%3D%3D"     
   },
   "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[ variables('clientStorageAccountName') ]",
+        "apiVersion": "[parameters('resourceAPIVersion')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "accountType": "[parameters('storageAccountType')]"
+        }
+      },
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[concat(variables('hdpStorageAccountName'), copyIndex())]",
+        "apiVersion": "[parameters('resourceAPIVersion')]",
+        "location": "[resourceGroup().location]",
+        "copy": {
+          "name": "storageAccountLoop",
+          "count": "[variables('TotalHDPclusterNodes')]"
+        },
+        "properties": {
+          "accountType": "[parameters('storageAccountType')]"
+        }
+      },
     {
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[ variables('vNetName') ]",
@@ -170,15 +192,7 @@
         }
       }
     },
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[ variables('clientStorageAccountName') ]",
-      "apiVersion": "[parameters('resourceAPIVersion')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "[parameters('storageAccountType')]"
-      }
-    },
+    
     {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[ variables('clientNicName') ]",
@@ -206,19 +220,7 @@
         ]
       }
     },
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(variables('hdpStorageAccountName'), copyIndex())]",
-      "apiVersion": "[parameters('resourceAPIVersion')]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "storageAccountLoop",
-        "count": "[variables('TotalHDPclusterNodes')]"
-      },
-      "properties": {
-        "accountType": "[parameters('storageAccountType')]"
-      }
-    },
+
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('hdpSecurityGroupName')]",
@@ -1087,12 +1089,79 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
+      "name": "[ variables('clientVMName') ]",
+      "apiVersion": "[parameters('resourceAPIVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[ concat( 'Microsoft.Network/networkInterfaces/', variables('clientNicName') ) ]",
+        "[ concat( 'Microsoft.Storage/storageAccounts/', variables('clientStorageAccountName') ) ]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('clientVmSize') ]"
+        },
+        "osProfile": {
+          "computerName": "[variables('clientVMName')]",
+          "adminUsername": "[parameters('adminUserName')]",
+		  "adminPassword": "[parameters('adminPassword')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "false",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[concat('/home/', parameters('adminUserName'), '/.ssh/authorized_keys')]",
+                  "keyData": "[parameters('adminPublicKey')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "OpenLogic",
+            "offer": "CentOS",
+            "sku": "6.7",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[concat(variables('clientVMName'), 'osdisk')]",
+            "vhd": {
+              "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMOSDiskName'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk0",
+              "diskSizeGB": "[variables('dataDiskSize')]",
+              "lun": 0,
+              "vhd": {
+                "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMDataDiskName'),'.vhd')]"
+              },
+              "caching": "None",
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('clientNicName') ) ]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('hdpVMName'), copyIndex())]",
       "apiVersion": "[parameters('resourceAPIVersion')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('hdpNicName'), copyIndex())]",
-        "[concat('Microsoft.Storage/storageAccounts/', variables('hdpStorageAccountName'), copyIndex())]"
+        "[concat('Microsoft.Storage/storageAccounts/', variables('hdpStorageAccountName'), copyIndex())]",
+		"[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
       ],
       "copy": {
         "name": "hdpNodeNicLoop",
@@ -1235,96 +1304,8 @@
         }
       }
     },
-	{
-	      "type": "Microsoft.Compute/virtualMachines/extensions",
-	      "name": "[concat(variables('hdpVMName'), copyIndex(), '/initVMs')]",
-	      "apiVersion": "[parameters('resourceAPIVersion')]",
-	      "location": "[resourceGroup().location]",
-	      "copy": {
-	        "name": "nameNodeNicLoop",
-	        "count": "[variables('TotalHDPclusterNodes')]"
-	      },
-	      "dependsOn": [
-	        "[concat('Microsoft.Compute/virtualMachines/', variables('hdpVMName'), copyIndex())]"
-	      ],
-	      "properties": {
-  	        "publisher": "Microsoft.OSTCExtensions",
-  	        "type": "CustomScriptForLinux",
-  	        "typeHandlerVersion": "1.2",
-	        "settings": {
-	          "fileUris": [
-	            "[variables('hdpVMInstallScriptUri')]"
-	          ],
-	          "commandToExecute": "[concat('sh Init_HdpVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
-			  }
-	      }
-	    },
-	    {
-	      "type": "Microsoft.Compute/virtualMachines",
-	      "name": "[ variables('clientVMName') ]",
-	      "apiVersion": "[parameters('resourceAPIVersion')]",
-	      "location": "[resourceGroup().location]",
-	      "dependsOn": [
-	        "[ concat( 'Microsoft.Network/networkInterfaces/', variables('clientNicName') ) ]",
-	        "[ concat( 'Microsoft.Storage/storageAccounts/', variables('clientStorageAccountName') ) ]"
-	      ],
-	      "properties": {
-	        "hardwareProfile": {
-	          "vmSize": "[parameters('clientVmSize') ]"
-	        },
-	        "osProfile": {
-	          "computerName": "[variables('clientVMName')]",
-	          "adminUsername": "[parameters('adminUserName')]",
-			  "adminPassword": "[parameters('adminPassword')]",
-	          "linuxConfiguration": {
-	            "disablePasswordAuthentication": "false",
-	            "ssh": {
-	              "publicKeys": [
-	                {
-	                  "path": "[concat('/home/', parameters('adminUserName'), '/.ssh/authorized_keys')]",
-	                  "keyData": "[parameters('adminPublicKey')]"
-	                }
-	              ]
-	            }
-	          }
-	        },
-	        "storageProfile": {
-	          "imageReference": {
-	            "publisher": "OpenLogic",
-	            "offer": "CentOS",
-	            "sku": "6.7",
-	            "version": "latest"
-	          },
-	          "osDisk": {
-	            "name": "[concat(variables('clientVMName'), 'osdisk')]",
-	            "vhd": {
-	              "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMOSDiskName'),'.vhd')]"
-	            },
-	            "caching": "ReadWrite",
-	            "createOption": "FromImage"
-	          },
-	          "dataDisks": [
-	            {
-	              "name": "datadisk0",
-	              "diskSizeGB": "[variables('dataDiskSize')]",
-	              "lun": 0,
-	              "vhd": {
-	                "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMDataDiskName'),'.vhd')]"
-	              },
-	              "caching": "None",
-	              "createOption": "Empty"
-	            }
-	          ]
-	        },
-	        "networkProfile": {
-	          "networkInterfaces": [
-	            {
-	              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('clientNicName') ) ]"
-	            }
-	          ]
-	        }
-	      }
-	    },
+
+	    
 	    {
 	      "type": "Microsoft.Compute/virtualMachines/extensions",
 	      "name": "[concat(variables('clientVMName'),'/installambari')]",
@@ -1344,7 +1325,31 @@
 			  "commandToExecute": "[concat('sh Init_AmbariVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
 	        }
 	      }
-	    }
+	    },
+		{
+		      "type": "Microsoft.Compute/virtualMachines/extensions",
+		      "name": "[concat(variables('hdpVMName'), copyIndex(), '/initVMs')]",
+		      "apiVersion": "[parameters('resourceAPIVersion')]",
+		      "location": "[resourceGroup().location]",
+		      "copy": {
+		        "name": "nameNodeNicLoop",
+		        "count": "[variables('TotalHDPclusterNodes')]"
+		      },
+		      "dependsOn": [
+		        "[concat('Microsoft.Compute/virtualMachines/', variables('hdpVMName'), copyIndex())]"
+		      ],
+		      "properties": {
+	  	        "publisher": "Microsoft.OSTCExtensions",
+	  	        "type": "CustomScriptForLinux",
+	  	        "typeHandlerVersion": "1.2",
+		        "settings": {
+		          "fileUris": [
+		            "[variables('hdpVMInstallScriptUri')]"
+		          ],
+		          "commandToExecute": "[concat('sh Init_HdpVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
+				  }
+		      }
+		    }
 	
   ],
   "outputs": {}

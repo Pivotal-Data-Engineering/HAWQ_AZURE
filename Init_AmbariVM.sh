@@ -1,7 +1,7 @@
 #!/bin/sh
 userName=$1
 sed -i 's/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g' /etc/sudoers
-sudo echo "eviCore    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+sudo echo "$username    ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 sudo echo 0 > /selinux/enforce
 sudo sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux
 sudo service iptables stop

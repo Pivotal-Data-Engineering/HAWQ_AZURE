@@ -4,8 +4,6 @@ figlet -f digital Pivotal Software
 
 rgName=datalake01-rg
 
-cleanupTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/cleanup-all-resources.json
-
 deployTemplateFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure.json
 
 #hdp-hawq-datalake-azure.json
@@ -16,38 +14,8 @@ parameterFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure_par
 
 #azure group create -n $rgName -l eastus
 
-echo 'Cleaning all previous resources from $rgName ...................'
-
-azure group deployment create -g $rgName -f $cleanupTemplateFile -m Complete  
-
-echo 'Running deployment in group $rgName using $hdp-hawq-datalake-azure and $parameterFile ......'
+echo "Running deployment in group $rgName using $deployTemplateFile and $parameterFile ......"
 
 azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
-
-scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com:/home/eviCore/.ssh/id_rsa
-
-scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key ~/.ssh/pivotpde_azure.key.pub eviCore@datalakepde.eastus.cloudapp.azure.com:/home/eviCore/.ssh/id_rsa.pub
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com chmod 600 /home/eviCore/.ssh/authorized_keys
- 
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com   chmod 600 /home/eviCore/.ssh/id_rsa
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com chmod 600 /home/eviCore/.ssh/id_rsa.pub
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com chmod 700 /home/eviCore/.ssh
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo mkdir -p /root/.ssh
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo cp /home/eviCore/.ssh/id_rsa* /root/.ssh
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo cp /home/eviCore/.ssh/authorized_keys /root/.ssh 
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo chmod 600 /root/.ssh/id_rsa
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo chmod 600 /root/.ssh/id_rsa.pub
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo chmod 600 /root/.ssh/authorized_keys
-
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/pivotpde_azure.key eviCore@datalakepde.eastus.cloudapp.azure.com sudo chmod 700 /root/.ssh
 
