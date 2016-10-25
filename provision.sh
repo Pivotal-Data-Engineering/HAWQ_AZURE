@@ -18,7 +18,7 @@ parameterFile=/Users/spaladugu/DEV/github/HAWQ_AZURE/hdp-hawq-datalake-azure_par
 
 echo "Running deployment in group $rgName using $deployTemplateFile and $parameterFile ......"
 
-#azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
+azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
 ./post-provision.sh $numberOfNodes
 
