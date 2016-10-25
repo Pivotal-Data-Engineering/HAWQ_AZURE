@@ -21,7 +21,7 @@
       "value": "Standard_DS14"
   	},
     "resourceGroupName": {
-      "value": "hawqdatalake-rg"
+	    "value": "hawqdatalakeRG"
     },
     "storageAccountPrefix": {     
       "value": "hawqdatalakestrgacct"

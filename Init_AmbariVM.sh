@@ -1,5 +1,6 @@
 #!/bin/sh
 ADMINUSER=$1
+
 sed -i 's/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g' /etc/sudoers
 echo "$ADMINUSER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo 0 > /selinux/enforce
@@ -18,8 +19,6 @@ wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/amb
 yum install -y ambari-server
 ambari-server setup -s
 ambari-server start
-
-
 
 
 

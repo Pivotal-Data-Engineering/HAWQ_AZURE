@@ -2,7 +2,7 @@
 
 figlet -f digital Pivotal Software
 
-rgName=datalake01-rg
+rgName=hawqdatalakeRG
 
 cleanupTemplateFile=cleanup-all-resources.json
 
