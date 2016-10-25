@@ -12,6 +12,7 @@ sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `
 
 yum install -y ntp
 chkconfig ntpd on
+service ntpd start
 
 echo 'umask 0022' >> /etc/profile
 
