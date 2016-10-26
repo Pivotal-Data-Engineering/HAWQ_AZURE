@@ -16,6 +16,10 @@ service ntpd start
 
 echo 'umask 0022' >> /etc/profile
 
+echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
+service sshd restart
+
 wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
 yum install -y ambari-server
 ambari-server setup -s

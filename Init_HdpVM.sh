@@ -24,6 +24,10 @@ service ntpd start
 # setup umask for HDP and Ambari
 echo 'umask 0022' >> /etc/profile
 
+echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
+service sshd restart
+
 mkdir -p /root/.ssh
 cp /home/$ADMINUSER/.ssh/authorized_keys /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
