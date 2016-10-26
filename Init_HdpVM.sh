@@ -24,10 +24,10 @@ service ntpd start
 # setup umask for HDP and Ambari
 echo 'umask 0022' >> /etc/profile
 
-#mkdir -p /root/.ssh
-#cp /home/$ADMINUSER/.ssh/authorized_keys /root/.ssh/authorized_keys
-#chmod 600 /root/.ssh/authorized_keys
-#chmod 700 /root/.ssh
+mkdir -p /root/.ssh
+cp /home/$ADMINUSER/.ssh/authorized_keys /root/.ssh/authorized_keys
+chmod 600 /root/.ssh/authorized_keys
+chmod 700 /root/.ssh
 
 
 

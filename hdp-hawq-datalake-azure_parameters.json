@@ -9,13 +9,13 @@
         "value": "eastus"
       },
       "adminUserName": {
-        "value": "root"
+        "value": "pivotpde"
       },
       "adminPublicKey": {
- 		"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqbpFJ0thyqIwkZkredy+/quI3j3tkssW/gYGPB7JXlOyN9d02F6gOuGiL572CEKuBBghvigFz2zQ4EJR6mxpWdkIz+QLKegNr6osG/apGKa09YDimqsDwDsU++pbAbQ1XzH2xr/gjhsMA22bb4dK9+zPoo+nbJxBWz4HisLj72hYUBhJvYR/ivGi8m61zF3j/ilAJZKm7tjl09zC6qXFUTen8NRnfz7suDBl6+QjzSGdWDnd9PJCWRyQBlj8E/06O8vtHOl2FXYPUq+779y+vNYsGtKKGQ0ApTB/zO1uh6z3X+VP+sN6/VyHrdEf4jqaqutabyUMQSdUPYK1sfJxh"
+ 		"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAR2jJKidyJxQsKXy3f4d6LO74BcKg6fzUUM05PnxCCe2/dnNNkHNgzugMcb4m7uYPSJVJZnbmVFORWAqt5p1ecdmYJhoqKdwIikXJBPQg+oAvs6anK96pWuvOT115nvjX4+o6FSTRuBD7h6zTcHwx4moTB13kDt2oDF0RtAZquYqrPlQq32jTbM+rNxTG0ZuMbuSbSF2R4j+ty3tCLfj09Yy+/nFvpciB7bs7jZ1dCCUMLJujjkzBBpzqkTM4onK1mbHUeWwYjuFM+gwHg5QaOnya5bFF7eNkY1jfPezAUC6nIyG2Q3wyZAzxDMWq1E50LRqYWdLrPyp7C2/vmzmR pivotpde@pivotal.io"
      },
      "adminPassword": {
-       "value": "Pivotal#23"
+       "value": "Hawq@123"
      },
     "clientVmSize": {
       "value": "Standard_DS14"

@@ -3,12 +3,12 @@
 startIp=5
 numOfHosts=$1
 
-rm -f /home/pivotalpde/hdphosts.txt
+rm -f /home/pivotpde/hdphosts.txt
 
 for (( c=1; c<=$numOfHosts; c++ ))
 do
-   echo "" >> /home/pivotalpde/hdphosts.txt	
-   ssh root@10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotalpde/hdphosts.txt
+   echo "" >> /home/pivotpde/hdphosts.txt	
+   ssh root@10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
 

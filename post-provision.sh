@@ -34,9 +34,11 @@ ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/pi
 #echo "Finished setting up ssh configurations."
 
 echo "copying the file copyHostNames.sh to ambari node...."
-scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/pivotpde_azure.key copyHostNames.sh pivotalpde@hawqdatalake.eastus.cloudapp.azure.com:/home/pivotalpde/
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa.key copyHostNames.sh pivotalpde@hawqdatalake.eastus.cloudapp.azure.com:/home/pivotalpde/
+
 echo "making file /home/pivotalpde/copyHostNames.sh executable on ambari host...."
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/pivotpde_azure.key pivotalpde@hawqdatalake.eastus.cloudapp.azure.com chmod ug+rwx /home/pivotalpde/copyHostNames.sh
+
 echo "running /home/pivotalpde/copyHostNames.sh $numberOfNodes ...."
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/pivotpde_azure.key pivotalpde@hawqdatalake.eastus.cloudapp.azure.com sh copyHostNames.sh $numberOfNodes
 
