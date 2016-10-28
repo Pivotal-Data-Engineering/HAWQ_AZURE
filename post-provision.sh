@@ -46,3 +46,9 @@ echo "running /home/pivotpde/copyHostNames.sh $numberOfNodes ...."
 ssh $sshOptions  pivotpde@hawqdatalake.eastus.cloudapp.azure.com sh copyHostNames.sh $numberOfNodes
 
 echo "Finished setting up host configurations."
+
+
+
+#ssh $sshOptions  pivotpde@hawqdatalake.eastus.cloudapp.azure.com "sudo su - sudo yum install -y microsoft-hyper-v"
+#sudo rpm -e hypervkvpd  ## (may return error if not installed, that's OK)
+#sudo yum install -y microsoft-hyper-v

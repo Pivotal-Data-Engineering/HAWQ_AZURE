@@ -2,7 +2,7 @@
 ADMINUSER=$1
 
 sed -i 's/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g' /etc/sudoers
-#echo "$ADMINUSER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "$ADMINUSER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 #disable selinux
 echo 0 > /selinux/enforce
@@ -33,6 +33,6 @@ cp /home/$ADMINUSER/.ssh/authorized_keys /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
 chmod 700 /root/.ssh
 
-
+./vm-disk-utils-centos.sh -s
 
 

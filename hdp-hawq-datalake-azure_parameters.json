@@ -18,7 +18,7 @@
        "value": "Hawq@123"
      },
     "clientVmSize": {
-      "value": "Standard_DS14"
+      "value": "Standard_D15_v2"
   	},
     "resourceGroupName": {
 	    "value": "hawqdatalakeRG"
