@@ -18,7 +18,7 @@
        "value": "Hawq@123"
      },
     "clientVmSize": {
-      "value": "Standard_D15_v2"
+      "value": "Standard_DS14"
   	},
     "resourceGroupName": {
 	    "value": "hawqdatalakeRG"
@@ -54,7 +54,7 @@
 		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/vm-disk-utils-centos.sh?token=AH2u3emyUVDjaABu5dV-4r56MUrf3uSRks5YHH99wA%3D%3D"
 	},
 	"initHdpVMScript" : {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3cROIQSrxgw7LCRs1Bxqpj5ir6mXks5YF7FHwA%3D%3D"
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3bDPi4bH_Lew0cU41FG1AthuH_Aiks5YHSUuwA%3D%3D"
 	},
 	"initAmbariVMScript": {
 		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3Qw5t89X1P0rQRHcvInbJ_oMqXJzks5YF7EmwA%3D%3D"
