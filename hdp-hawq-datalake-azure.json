@@ -1506,7 +1506,7 @@
           "commandToExecute": "[concat('sh Init_HdpVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
         }
       }
-    },
+    }
   ],
   "outputs": {}
 }
