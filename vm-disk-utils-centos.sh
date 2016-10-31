@@ -238,6 +238,7 @@ scan_partition_format()
             echo "${DISK} is not partitioned, partitioning"
             do_partition ${DISK}
         fi
+		sleep 30
         PARTITION=$(fdisk -l ${DISK}|grep -A 1 Device|tail -n 1|awk '{print $1}')
 		echo "PARTITION -> $PARTITION"
         has_filesystem ${PARTITION}
@@ -253,7 +254,9 @@ scan_partition_format()
         [ -d "${MOUNTPOINT}" ] || mkdir -p "${MOUNTPOINT}"
 		sleep 10
 		echo "reading the UUID ....."
-		read UUID FS_TYPE << ( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"" )
+		#read UUID FS_TYPE << ( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"" )
+	    UUID=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3}' | sed 's/"//g' )
+	    FS_TYPE=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $5}' |sed 's/"//g' )
 		echo "Adding ${UUID} TO ${MOUNTPOINT} ..........."
         add_to_fstab "${UUID}" "${MOUNTPOINT}"
         echo "Mounting disk ${PARTITION} on ${MOUNTPOINT}"
@@ -306,7 +309,9 @@ create_striped_volume()
  
     #read UUID FS_TYPE < <(blkid -u filesystem ${MDDEVICE}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
 	echo "reading the UUID ....."
-	read UUID FS_TYPE << ( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"" "\"" )
+	#read UUID FS_TYPE << ( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"" "\"" )
+    UUID=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3}' | sed 's/"//g' )
+    FS_TYPE=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $5}' |sed 's/"//g' )
     echo "Adding ${UUID} TO ${MOUNTPOINT} ..........."
     add_to_fstab "${UUID}" "${MOUNTPOINT}"
     echo "Mounting ${MOUNTPOINT} ........"
