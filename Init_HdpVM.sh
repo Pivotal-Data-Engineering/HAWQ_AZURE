@@ -34,8 +34,8 @@ chmod 600 /root/.ssh/authorized_keys
 chmod 700 /root/.ssh
 
 echo "Peparing Disks.... "
-#chmod ugo+rx vm-disk-utils-centos.sh
+chmod ugo+rx vm-disk-utils-centos.sh
 
-#sh vm-disk-utils-centos.sh -s
+sh vm-disk-utils-centos.sh -s
 
 

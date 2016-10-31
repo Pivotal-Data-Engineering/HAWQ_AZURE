@@ -282,11 +282,12 @@ create_striped_volume()
         fi
  
         PARTITION=$(fdisk -l ${DISK}|grep -A 2 Device|tail -n 1|awk '{print $1}')
+		echo "PARTITION -> ${PARTITION}"
         PARTITIONS+=("${PARTITION}")
     done
  
     MDDEVICE=$(get_next_md_device)    
-     
+    echo "MDDEVICE -> MDDEVICE"
     mdadm --create ${MDDEVICE} --level 0 --raid-devices ${#PARTITIONS[@]} ${PARTITIONS[*]}
  
     MOUNTPOINT=$(get_next_mountpoint)
@@ -294,14 +295,17 @@ create_striped_volume()
     [ -d "${MOUNTPOINT}" ] || mkdir -p "${MOUNTPOINT}"
  
     #Make a file system on the new device
+	echo "Make a file system on the new device .........."
     mkfs -t ext4 "${MDDEVICE}"
  
     #read UUID FS_TYPE < <(blkid -u filesystem ${MDDEVICE}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
+	echo "reading the UUID ....."
 	read UUID FS_TYPE < < (blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
- 
+    echo "Adding ${UUID} TO ${MOUNTPOINT} ..........."
     add_to_fstab "${UUID}" "${MOUNTPOINT}"
- 
+    echo "Mounting ${MOUNTPOINT} ........"
     mount "${MOUNTPOINT}"
+	echo "Done ........."
 }
  
 check_mdadm() {
