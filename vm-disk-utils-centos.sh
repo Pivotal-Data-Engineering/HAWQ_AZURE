@@ -296,7 +296,8 @@ create_striped_volume()
     #Make a file system on the new device
     mkfs -t ext4 "${MDDEVICE}"
  
-    read UUID FS_TYPE < <(blkid -u filesystem ${MDDEVICE}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
+    #read UUID FS_TYPE < <(blkid -u filesystem ${MDDEVICE}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
+	read UUID FS_TYPE < < (blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"")
  
     add_to_fstab "${UUID}" "${MOUNTPOINT}"
  
