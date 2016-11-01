@@ -15,11 +15,17 @@ chkconfig ip6tables off
 
 #Disable  Transparent Huge Pages 
 echo "if test -f /sys/kernel/mm/transparent_hugepage/enabled; then echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled fi if test -f /sys/kernel/mm/transparent_hugepage/defrag; then echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag fi" >> /etc/rc.local
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
 
 #installl and enable ntp
 yum install -y ntp
 chkconfig ntpd on
 service ntpd start
+
+chkconfig sshd on
 
 # setup umask for HDP and Ambari
 echo 'umask 0022' >> /etc/profile
