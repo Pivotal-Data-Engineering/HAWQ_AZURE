@@ -120,8 +120,8 @@
   "variables": {
     "clusterSizes": {
       "small": {
-        "masterNodesCount": 1,
-        "dataNodesCount": 1
+        "masterNodesCount": 3,
+        "dataNodesCount": 3
       },
       "medium": {
         "masterNodesCount": 4,

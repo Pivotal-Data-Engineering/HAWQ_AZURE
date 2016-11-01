@@ -7,8 +7,8 @@ cluster_size="${cluster_size:-small}"
 echo "cluster_size - >$cluster_size"
 
 if [ "$cluster_size" == "small" ]; then
-	MASTERNODES=1
-	DATANODES=1
+	MASTERNODES=3
+	DATANODES=3
 	BLUEPRINT_FILENAME=smallcluster_blueprint.json
 	BLUEPRINT_TEMPLATE=smallcluster_template.json
 	BLUEPRINT_NAME=smallcluster_blueprint
