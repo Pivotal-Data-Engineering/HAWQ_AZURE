@@ -46,5 +46,5 @@ echo "setup the ambari server name in /etc/ambari-agent/conf/ambari-agent.ini"
 sed -i 's/hostname=localhost/hostname=hawqdatalake-clientvm/g' /etc/ambari-agent/conf/ambari-agent.ini
 
 echo "installing microsoft hyper-v ......"
-sudo rpm -e hypervkvpd
-yum install -y microsoft-hyper-v
+#rpm -e hypervkvpd
+#yum install -y microsoft-hyper-v
