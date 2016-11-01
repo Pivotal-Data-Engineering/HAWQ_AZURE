@@ -25,8 +25,7 @@ yum install -y ambari-server
 ambari-server setup -s
 ambari-server start
 
-
-sudo su -c "cat hdphosts.txt >> /etc/hosts"
+#sudo su -c "cat hdphosts.txt >> /etc/hosts"
 
 
 
