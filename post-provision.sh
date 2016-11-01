@@ -3,7 +3,9 @@
 MASTERNODES=$1
 DATANODES=$2
 
-figlet -f digital Pivotal Software
+$BLUEPRINT_FILENAME=$3
+$BLUEPRINT_TEMPLATE=$4
+$BLUEPRINT_NAME=$5
 
 sshOptions="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa"
 
@@ -35,8 +37,12 @@ echo "running /home/pivotpde/copyHostNames.sh $numberOfNodes ...."
 ssh $sshOptions  pivotpde@hawqdatalake.eastus.cloudapp.azure.com sh copyHostNames.sh $MASTERNODES $DATANODES
 echo "Finished setting up host configurations."
 
+echo "copying the ambari blue prints for $cluster_size cluster to ambari node...."
+scp $sshOptions smallcluster*json pivotpde@hawqdatalake.eastus.cloudapp.azure.com:/home/pivotpde/
 
+#echo "registering the ambari blueprint......"
+#curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @./${BLUEPRINT_FILENAME} http://hawqdatalake.eastus.cloudapp.azure.com:8080//api/v1/blueprints/${BLUEPRINT_NAME}
 
 #ssh $sshOptions  pivotpde@hawqdatalake.eastus.cloudapp.azure.com "sudo su - sudo yum install -y microsoft-hyper-v"
-#sudo rpm -e hypervkvpd  ## (may return error if not installed, that's OK)
+sudo rpm -e hypervkvpd  ## (may return error if not installed, that's OK)
 #sudo yum install -y microsoft-hyper-v

@@ -62,4 +62,5 @@ do
     echo "start ambari agent on host 10.0.0.$startIp ......"
     ssh root@10.0.0.$startIp ambari-agent start
     echo " finished executing script on host 10.0.0.$startIp."
+	((startIp = startIp + 1))
 done

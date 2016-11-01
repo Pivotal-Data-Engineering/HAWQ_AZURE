@@ -1,7 +1,32 @@
 #!/bin/sh
 
-MASTERNODES=$1
-DATANODES=$2
+cluster_size=$1
+
+cluster_size="${cluster_size:-small}"
+
+echo "cluster_size - >$cluster_size"
+
+if [ "$cluster_size" == "small" ]; then
+	MASTERNODES=3
+	DATANODES=3
+	BLUEPRINT_FILENAME=smallcluster_blueprint.json
+	BLUEPRINT_TEMPLATE=smallcluster_template.json
+	BLUEPRINT_NAME=smallcluster_blueprint
+elif [ "$cluster_size" == "medium" ]; then
+	MASTERNODES=4
+	DATANODES=6
+	BLUEPRINT_FILENAME=mediumcluster_blueprint.json
+	BLUEPRINT_TEMPLATE=mediumcluster_template.json
+	BLUEPRINT_NAME=mediumcluster_blueprint
+elif [ "$cluster_size" == "large" ]; then
+	MASTERNODES=5
+	DATANODES=12
+	BLUEPRINT_FILENAME=largecluster_blueprint.json
+	BLUEPRINT_TEMPLATE=largecluster_template.json
+	BLUEPRINT_NAME=largecluster_blueprint
+fi
+
+echo "MASTERNODES=$MASTERNODES,		DATANODES=$DATANODES"
 
 
 figlet -f digital Pivotal Software
@@ -22,7 +47,7 @@ echo "Running deployment in group $rgName using $deployTemplateFile and $paramet
 
 azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
-./post-provision.sh $MASTERNODES $DATANODES
+./post-provision.sh $MASTERNODES $DATANODES $BLUEPRINT_FILENAME $BLUEPRINT_TEMPLATE $BLUEPRINT_NAME
 
 
 
