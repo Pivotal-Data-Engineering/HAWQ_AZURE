@@ -38,4 +38,9 @@ chmod ugo+rx vm-disk-utils-centos.sh
 
 sh vm-disk-utils-centos.sh -s
 
-
+echo "setting ambari repo......"
+wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
+echo "install ambari agent....."
+yum install -y ambari-agent
+echo "setup the ambari server name in /etc/ambari-agent/conf/ambari-agent.ini"
+sed -i 's/hostname=localhost/hostname=hawqdatalake-clientvm/g' /etc/ambari-agent/conf/ambari-agent.ini

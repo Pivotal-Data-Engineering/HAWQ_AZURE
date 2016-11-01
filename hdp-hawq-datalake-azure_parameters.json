@@ -57,7 +57,8 @@
 		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3bDPi4bH_Lew0cU41FG1AthuH_Aiks5YHSUuwA%3D%3D"
 	},
 	"initAmbariVMScript": {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3Qw5t89X1P0rQRHcvInbJ_oMqXJzks5YF7EmwA%3D%3D"
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3fAN-pSLsIblwF8kvHbcLB0l8rFbks5YIRTqwA%3D%3D"
+		          
 	}
   }
 }

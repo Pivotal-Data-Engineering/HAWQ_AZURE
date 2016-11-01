@@ -26,6 +26,9 @@ ambari-server setup -s
 ambari-server start
 
 
+sudo su -c "cat hdphosts.txt >> /etc/hosts"
+
+
 
 
 

@@ -1,6 +1,8 @@
 #!/bin/sh
 
-numberOfNodes=$1
+MASTERNODES=$1
+DATANODES=$2
+
 
 figlet -f digital Pivotal Software
 
@@ -20,7 +22,7 @@ echo "Running deployment in group $rgName using $deployTemplateFile and $paramet
 
 azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
 
-./post-provision.sh $numberOfNodes
+./post-provision.sh $MASTERNODES $DATANODES
 
 
 
