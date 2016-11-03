@@ -4,9 +4,9 @@ ADMINUSER=$1
 sed -i 's/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g' /etc/sudoers
 echo "$ADMINUSER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-#disable selinux
-echo 0 > /selinux/enforce
-sed -i -e 's/SELINUX=permissive/SELINUX=disabled/g' /etc/sysconfig/selinux
+echo "disable selinux"
+set enforce 0
+sed -i -e 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 
 #disable iptables
 service iptables stop

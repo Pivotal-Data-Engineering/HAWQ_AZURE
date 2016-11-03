@@ -213,7 +213,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
+          "domainNameLabel": "[ concat(parameters('dnsNamePrefix'), 'client') ]"
         }
       }
     },
@@ -1082,7 +1082,7 @@
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[ variables('hdpMasterVMPubIPName'), copyIndex())) ]",
+      "name": "[ concat( variables('hdpMasterVMPubIPName'), copyIndex() ) ]",
       "apiVersion": "[ parameters('resourceAPIVersion') ]",
       "location": "[ resourceGroup().location ]",
       "copy": {
@@ -1092,7 +1092,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
+          "domainNameLabel": "[ concat(parameters('dnsNamePrefix'),'mn', copyIndex() )]"
         }
       }
     },
@@ -1117,8 +1117,8 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[ concat('10.0.0.', add(copyIndex(), 5) ) ]",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('hdpMasterVMPubIPName'), copyIndex()) ]"
-              }
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('hdpMasterVMPubIPName'), copyIndex() ) )]"
+              },
               "subnet": {
                 "id": "[variables('subnetRef')]"
               }
@@ -1132,7 +1132,7 @@
     },
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[ variables('hdpDatanodePubIPName'), copyIndex())) ]",
+      "name": "[ concat(variables('hdpDatanodePubIPName'), copyIndex() ) ]",
       "apiVersion": "[ parameters('resourceAPIVersion') ]",
       "location": "[ resourceGroup().location ]",
       "copy": {
@@ -1142,7 +1142,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
+          "domainNameLabel": "[ concat(parameters('dnsNamePrefix'), 'dn', copyIndex()) ]"
         }
       }
     },
@@ -1167,8 +1167,8 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[ concat('10.0.0.', add(copyIndex(), 11) ) ]",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('hdpDatanodePubIPName'), copyIndex()) ]"
-              }
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('hdpDatanodePubIPName'), copyIndex()) )]"
+              },
               "subnet": {
                 "id": "[variables('subnetRef')]"
               }
