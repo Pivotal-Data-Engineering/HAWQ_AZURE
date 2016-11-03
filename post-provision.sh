@@ -43,6 +43,14 @@ scp $sshOptions smallcluster*json pivotpde@hawqdatalake.eastus.cloudapp.azure.co
 #echo "registering the ambari blueprint......"
 #curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @./${BLUEPRINT_FILENAME} http://hawqdatalake.eastus.cloudapp.azure.com:8080//api/v1/blueprints/${BLUEPRINT_NAME}
 
-#ssh $sshOptions  pivotpde@hawqdatalake.eastus.cloudapp.azure.com "sudo su - sudo yum install -y microsoft-hyper-v"
-sudo rpm -e hypervkvpd  ## (may return error if not installed, that's OK)
-#sudo yum install -y microsoft-hyper-v
+#scp hawq tar files
+#mkdir /staging, extract tars in staging and run setup repo, stop ambari-server, yum install -y hawq-ambari-plugin, start amnbari-server
+
+# pivotal API y7BWf35sarZ6g46GpeLM
+
+
+
+
+
+
+

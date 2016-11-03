@@ -120,8 +120,8 @@
   "variables": {
     "clusterSizes": {
       "small": {
-        "masterNodesCount": 3,
-        "dataNodesCount": 3
+        "masterNodesCount": 1,
+        "dataNodesCount": 1
       },
       "medium": {
         "masterNodesCount": 4,
@@ -141,6 +141,8 @@
     "vNetName": "[ concat(parameters('virtualNetworkNamePrefix'), '-1') ]",
     "subnetName": "[ concat(parameters('subnetNamePrefix'), '-1') ]",
     "clientVMPubIPName": "[ concat(parameters('genericNamePrefix'), '-publicIP') ]",
+	"hdpMasterVMPubIPName": "[ concat(parameters('genericNamePrefix'), '-mnPubIP') ]",
+	"hdpDatanodePubIPName": "[ concat(parameters('genericNamePrefix'), '-dnPubIP') ]",
     "clientNicName": "[ concat(parameters('NetworkInterfaceNamePrefix'), '-client') ]",
 	"hdpMasternodeNicName": "[ concat(parameters('NetworkInterfaceNamePrefix'), '-mn') ]",
 	"hdpDatanodeNicName": "[ concat(parameters('NetworkInterfaceNamePrefix'), '-dn') ]",
@@ -1078,6 +1080,22 @@
         ]
       }
     },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[ variables('hdpMasterVMPubIPName'), copyIndex())) ]",
+      "apiVersion": "[ parameters('resourceAPIVersion') ]",
+      "location": "[ resourceGroup().location ]",
+      "copy": {
+        "name": "mnPubIpLoop",
+        "count": "[variables('masterNodeCount')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
+        }
+      }
+    },
     {      
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('hdpMasternodeNicName'), copyIndex())]",
@@ -1088,8 +1106,8 @@
         "[concat('Microsoft.Network/networkSecurityGroups/', variables('hdpSecurityGroupName'))]"
       ],
       "copy": {
-        "name": "hdpNodeNicLoop",
-        "count": "[variables('TotalHDPclusterNodes')]"
+        "name": "hdpNodeMasterNicLoop",
+        "count": "[variables('masterNodeCount')]"
       },
       "properties": {
         "ipConfigurations": [
@@ -1098,6 +1116,9 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[ concat('10.0.0.', add(copyIndex(), 5) ) ]",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('hdpMasterVMPubIPName'), copyIndex()) ]"
+              }
               "subnet": {
                 "id": "[variables('subnetRef')]"
               }
@@ -1106,6 +1127,22 @@
         ],
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('hdpSecurityGroupName'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[ variables('hdpDatanodePubIPName'), copyIndex())) ]",
+      "apiVersion": "[ parameters('resourceAPIVersion') ]",
+      "location": "[ resourceGroup().location ]",
+      "copy": {
+        "name": "dnPubIpLoop",
+        "count": "[variables('dataNodeCount')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
         }
       }
     },
@@ -1120,7 +1157,7 @@
       ],
       "copy": {
         "name": "hdpNodeNicLoop",
-        "count": "[variables('TotalHDPclusterNodes')]"
+        "count": "[variables('dataNodeCount')]"
       },
       "properties": {
         "ipConfigurations": [
@@ -1129,6 +1166,9 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[ concat('10.0.0.', add(copyIndex(), 11) ) ]",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('hdpDatanodePubIPName'), copyIndex()) ]"
+              }
               "subnet": {
                 "id": "[variables('subnetRef')]"
               }
