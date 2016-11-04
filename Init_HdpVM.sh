@@ -12,7 +12,7 @@ echo "$ADMINUSER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "disable selinux"
 
 sed -i -e 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-set enforce 0
+setenforce 0
 
 #disable iptables
 service iptables stop

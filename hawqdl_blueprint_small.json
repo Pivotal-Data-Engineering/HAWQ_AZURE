@@ -2418,6 +2418,7 @@
     }
   ],
   "Blueprints" : {
+	 "blueprint_name" : "smallcluster_blueprint",  
     "stack_name" : "HDP",
     "stack_version" : "2.4"
   }
