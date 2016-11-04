@@ -9,8 +9,8 @@ echo "cluster_size - >$cluster_size"
 if [ "$cluster_size" == "small" ]; then
 	MASTERNODES=1
 	DATANODES=1
-	BLUEPRINT_FILENAME=smallcluster_blueprint.json
-	BLUEPRINT_TEMPLATE=smallcluster_template.json
+	BLUEPRINT_FILENAME=./blueprints/hawqdl_blueprint_small.json
+	BLUEPRINT_TEMPLATE=s./blueprints/hawqdl_template_small.json
 	BLUEPRINT_NAME=smallcluster_blueprint
 elif [ "$cluster_size" == "medium" ]; then
 	MASTERNODES=4

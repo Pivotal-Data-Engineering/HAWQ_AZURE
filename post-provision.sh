@@ -14,18 +14,18 @@ echo $sshOptions
 echo "............"
 scp $sshOptions  ./ssh_keys/id_rsa pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/.ssh/id_rsa
 scp $sshOptions  ./ssh_keys/id_rsa.pub pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/.ssh/id_rsa.pub
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com chmod 600 /home/pivotpde/.ssh/authorized_keys
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com chmod 640 /home/pivotpde/.ssh/authorized_keys
 ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com   chmod 600 /home/pivotpde/.ssh/id_rsa
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com chmod 600 /home/pivotpde/.ssh/id_rsa.pub
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com chmod 640 /home/pivotpde/.ssh/id_rsa.pub
 ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com chmod 700 /home/pivotpde/.ssh
 
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo mkdir -p /root/.ssh
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo cp /home/pivotpde/.ssh/* /root/.ssh
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo cp /home/pivotpde/.ssh/authorized_keys /root/.ssh 
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo chmod 600 /root/.ssh/id_rsa
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo chmod 600 /root/.ssh/id_rsa.pub
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo chmod 600 /root/.ssh/authorized_keys
-ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sudo chmod 700 /root/.ssh
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "mkdir -p /root/.ssh"'
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "cp /home/pivotpde/.ssh/* /root/.ssh"'
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "cp /home/pivotpde/.ssh/authorized_keys /root/.ssh" '
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "chmod 600 /root/.ssh/id_rsa"'
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "chmod 640 /root/.ssh/id_rsa.pub"'
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "chmod 640 /root/.ssh/authorized_keys"'
+ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com 'sudo su -c "chmod 700 /root/.ssh"'
 echo "Finished setting up ssh configurations."
 
 
@@ -38,7 +38,9 @@ ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sh copyHo
 echo "Finished setting up host configurations."
 
 echo "copying the ambari blue prints for $cluster_size cluster to ambari node...."
-scp $sshOptions smallcluster*json pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+scp $sshOptions $BLUEPRINT_FILENAME pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+scp $sshOptions $BLUEPRINT_TEMPLATE pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+
 
 #echo "registering the ambari blueprint......"
 #curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @./${BLUEPRINT_FILENAME} http://hawqdatalake.eastus.cloudapp.azure.com:8080//api/v1/blueprints/${BLUEPRINT_NAME}
@@ -47,10 +49,3 @@ scp $sshOptions smallcluster*json pivotpde@hawqdatalakeclient.eastus.cloudapp.az
 #mkdir /staging, extract tars in staging and run setup repo, stop ambari-server, yum install -y hawq-ambari-plugin, start amnbari-server
 
 # pivotal API y7BWf35sarZ6g46GpeLM
-
-
-
-
-
-
-

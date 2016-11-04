@@ -19,9 +19,12 @@ service ntpd start
 
 echo 'umask 0022' >> /etc/profile
 
-echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
-echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
-service sshd restart
+#Disable  Transparent Huge Pages 
+echo "if test -f /sys/kernel/mm/transparent_hugepage/enabled; then echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled fi if test -f /sys/kernel/mm/transparent_hugepage/defrag; then echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag fi" >> /etc/rc.local
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
 
 echo " Installing Ambari....."
 wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
@@ -49,7 +52,13 @@ echo "downloading hawq software ...."
 echo "starting Ambari ...."
 ambari-server start
 
+
+echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
+service sshd restart
+
 echo "Finished executing the initAmbariVM."
+
 
 
 
