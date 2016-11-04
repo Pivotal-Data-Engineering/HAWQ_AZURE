@@ -10,7 +10,7 @@ startIp=5
 for (( c=1; c<=$MASTERNODES; c++ ))
 do
    echo "" >> /home/pivotpde/hdphosts.txt	
-   ssh root@10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
+   ssh 10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
 
@@ -21,7 +21,7 @@ startIp=11
 for (( d=1; d<=$DATANODES; d++ ))
 do
    echo "" >> /home/pivotpde/hdphosts.txt	
-   ssh root@10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
+   ssh 10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
 
