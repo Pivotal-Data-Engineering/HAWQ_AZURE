@@ -26,30 +26,16 @@ echo never > /sys/kernel/mm/transparent_hugepage/enabled
 echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
 echo never > /sys/kernel/mm/transparent_hugepage/defrag
 
-echo " Installing Ambari....."
+echo "Downloading Ambari repo....."
 wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
+echo "installing ambari server ...."
 yum install -y ambari-server
+echo "running ambari setup with defaults....."
 ambari-server setup -s
-
-echo "downloading hawq software ...."
-mkdir /staging
-chmod a+rx /staging
-
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token y7BWf35sarZ6g46GpeLM" -X GET https://network.pivotal.io/api/v2/authentication
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token y7BWf35sarZ6g46GpeLM" -X GET https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/2397/eula_acceptance
-wget -O "Pivotal_HDB.tar.gz" -P "/staging" --post-data="" --header="Authorization: Token y7BWf35sarZ6g46GpeLM" https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/2397/product_files/7634/download
-echo "extracting hawq download ...."
-tar -zxvf Pivotal_HDB.tar.gz -C /staging
-echo "install httpd ........."
-yum -y install httpd
-service httpd start
-echo "adding repo ...."
-/staging/hdb-*/setup_repo.sh
-service httpd stop
-
 echo "starting Ambari ...."
 ambari-server start
 
+echo "setting nohost check for ssh ..."
 echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
 service sshd restart

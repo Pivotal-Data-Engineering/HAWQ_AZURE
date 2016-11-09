@@ -38,21 +38,17 @@ ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sh copyHo
 echo "Finished setting up host configurations."
 
 echo "getting the domain name. .."
-
 dldsndomainname=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com dnsdomainname)
 
 echo "replace DOMAIN_NAME with $dldsndomainname in $BLUEPRINT_TEMPLATE ...."
-sed -i -e "s/.DOMAIN_NAME/.$dldsndomainname/g" $BLUEPRINT_TEMPLATE
-
-#echo "copying the $BLUEPRINT_FILENAME ambari node...."
-#scp $sshOptions $BLUEPRINT_FILENAME pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
-#echo "copying the $BLUEPRINT_TEMPLATE ambari node...."
-#scp $sshOptions $BLUEPRINT_TEMPLATE pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+sed -i "s/.DOMAIN_NAME/.$dldsndomainname/g" $BLUEPRINT_TEMPLATE
 
 echo "registering the ambari blueprint......"
-curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://hawqdatalake.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
+curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://hawqdatalakeclient.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
 
-curl -X POST -H 'X-Requested-By: ambari' http://hawqdatalake.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
+echo "submitting the HDP cluster install ..."
+curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://hawqdatalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
+echo "request submitted. check status on the ambari console....."
 
 echo "replace $dldsndomainname with DOMAIN_NAME in $BLUEPRINT_TEMPLATE ...."
-sed -i -e "s/.$dldsndomainname/.DOMAIN_NAME/g" $BLUEPRINT_TEMPLATE
+sed -i "s/.$dldsndomainname/.DOMAIN_NAME/g" $BLUEPRINT_TEMPLATE
