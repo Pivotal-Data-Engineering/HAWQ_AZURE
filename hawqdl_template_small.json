@@ -6,7 +6,7 @@
 	   		"name" : "master_group_1",
 	    	"hosts" : [
 	        {
-	            "fqdn" : "hawqdatalake-masternode0.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+	            "fqdn" : "hawqdatalake-masternode0.DOMAIN_NAME"
 	        }
 	        ]
 	    },
@@ -14,7 +14,7 @@
  	   		"name" : "master_group_2",
  	    	"hosts" : [
  	        {
- 	            "fqdn" : "hawqdatalake-masternode1.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+ 	            "fqdn" : "hawqdatalake-masternode1.DOMAIN_NAME"
  	        }
  	        ]
  	    },
@@ -22,7 +22,7 @@
  	   		"name" : "master_group_3",
  	    	"hosts" : [
  	        {
- 	            "fqdn" : "hawqdatalake-masternode2.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+ 	            "fqdn" : "hawqdatalake-masternode2.DOMAIN_NAME"
  	        }
  	        ]
  	    },
@@ -30,13 +30,13 @@
  	   		"name" : "worker_group",
  	    	"hosts" : [
 				{
-				    "fqdn" : "hawqdatalake-datanode0.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+				    "fqdn" : "hawqdatalake-datanode0.DOMAIN_NAME"
 				},
 				{
-				    "fqdn" : "hawqdatalake-datanode1.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+				    "fqdn" : "hawqdatalake-datanode1.DOMAIN_NAME"
 				},
 				{
-				    "fqdn" : "hawqdatalake-datanode2.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+				    "fqdn" : "hawqdatalake-datanode2.DOMAIN_NAME"
 				}
  	        ]
  	    },
@@ -44,7 +44,7 @@
   	   		"name" : "ambari_client_group",
   	    	"hosts" : [
   	        {
-  	            "fqdn" : "hawqdatalake-clientvm.340pryjvhy0uzkdbp5flzoioje.bx.internal.cloudapp.net"
+  	            "fqdn" : "hawqdatalake-clientvm.DOMAIN_NAME"
   	        }
   	        ]
   	    }
