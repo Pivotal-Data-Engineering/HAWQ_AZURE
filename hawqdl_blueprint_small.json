@@ -79,7 +79,7 @@
         "properties" : {
           "knox_user" : "knox",
           "knox_group" : "knox",
-          "knox_master_secret" : "SECRET:knox-env:1:knox_master_secret",
+          "knox_master_secret" : "Passw0rd",
           "knox_pid_dir" : "/var/run/knox"
         }
       }
@@ -636,7 +636,7 @@
         }
       }
     },
-    {
+   {
       "accumulo-env" : {
         "properties_attributes" : { },
         "properties" : {
@@ -648,7 +648,7 @@
           "accumulo_user" : "accumulo",
           "content" : "\n#! /usr/bin/env bash\nexport HADOOP_PREFIX={{hadoop_prefix}}\nexport HADOOP_CONF_DIR={{hadoop_conf_dir}}\nexport JAVA_HOME={{java64_home}}\nexport ZOOKEEPER_HOME={{zookeeper_home}}\nexport ACCUMULO_LOG_DIR={{log_dir}}\nexport ACCUMULO_CONF_DIR={{conf_dir}}\nexport ACCUMULO_TSERVER_OPTS=\"-Xmx{{accumulo_tserver_heapsize}}m -Xms{{accumulo_tserver_heapsize}}m\"\nexport ACCUMULO_MASTER_OPTS=\"-Xmx{{accumulo_master_heapsize}}m -Xms{{accumulo_master_heapsize}}m\"\nexport ACCUMULO_MONITOR_OPTS=\"-Xmx{{accumulo_monitor_heapsize}}m -Xms{{accumulo_monitor_heapsize}}m\"\nexport ACCUMULO_GC_OPTS=\"-Xmx{{accumulo_gc_heapsize}}m -Xms{{accumulo_gc_heapsize}}m\"\nexport ACCUMULO_GENERAL_OPTS=\"-XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=75 -Djava.net.preferIPv4Stack=true ${ACCUMULO_GENERAL_OPTS}\"\nexport ACCUMULO_OTHER_OPTS=\"-Xmx{{accumulo_other_heapsize}}m -Xms{{accumulo_other_heapsize}}m ${ACCUMULO_OTHER_OPTS}\"\n# what do when the JVM runs out of heap memory\nexport ACCUMULO_KILL_CMD='kill -9 %p'",
           "server_content" : "\n#! /usr/bin/env bash\nexport HADOOP_PREFIX={{hadoop_prefix}}\nexport HADOOP_CONF_DIR={{hadoop_conf_dir}}\nexport JAVA_HOME={{java64_home}}\nexport ZOOKEEPER_HOME={{zookeeper_home}}\nexport ACCUMULO_PID_DIR={{pid_dir}}\nexport ACCUMULO_LOG_DIR={{log_dir}}\nexport ACCUMULO_CONF_DIR={{server_conf_dir}}\nexport ACCUMULO_TSERVER_OPTS=\"-Xmx{{accumulo_tserver_heapsize}}m -Xms{{accumulo_tserver_heapsize}}m\"\nexport ACCUMULO_MASTER_OPTS=\"-Xmx{{accumulo_master_heapsize}}m -Xms{{accumulo_master_heapsize}}m\"\nexport ACCUMULO_MONITOR_OPTS=\"-Xmx{{accumulo_monitor_heapsize}}m -Xms{{accumulo_monitor_heapsize}}m\"\nexport ACCUMULO_GC_OPTS=\"-Xmx{{accumulo_gc_heapsize}}m -Xms{{accumulo_gc_heapsize}}m\"\nexport ACCUMULO_GENERAL_OPTS=\"-XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=75 -Djava.net.preferIPv4Stack=true ${ACCUMULO_GENERAL_OPTS}\"\nexport ACCUMULO_OTHER_OPTS=\"-Xmx{{accumulo_other_heapsize}}m -Xms{{accumulo_other_heapsize}}m ${ACCUMULO_OTHER_OPTS}\"\nexport ACCUMULO_MONITOR_BIND_ALL={{monitor_bind_str}}\n# what do when the JVM runs out of heap memory\nexport ACCUMULO_KILL_CMD='kill -9 %p'",
-          "instance_secret" : "SECRET:accumulo-env:1:instance_secret",
+          "instance_secret" : "Passw0rd",
           "accumulo_master_heapsize" : "1024",
           "accumulo_tserver_heapsize" : "1536",
           "accumulo_other_heapsize" : "1024",
@@ -1214,7 +1214,7 @@
           "dfs.client.retry.policy.enabled" : "false",
           "dfs.namenode.startup.delay.block.deletion.sec" : "3600",
           "dfs.block.access.token.enable" : "false",
-          "dfs.datanode.data.dir" : "/hadoop/hdfs/data",
+          "dfs.datanode.data.dir" : "/hdfsdata/disk1,/hdfsdata/disk2,/hdfsdata/disk3,/hdfsdata/disk4,/hdfsdata/disk5,/hdfsdata/disk6,/hdfsdata/disk7,/hdfsdata/disk8,/hdfsdata/disk9,/hdfsdata/disk10",
           "dfs.permissions.superusergroup" : "hdfs",
           "dfs.blocksize" : "134217728",
           "dfs.namenode.checkpoint.edits.dir" : "${dfs.namenode.checkpoint.dir}",
@@ -2111,48 +2111,268 @@
     }
   ],
   "host_groups" : [
-    {
+      {
+        "components" : [
+          {
+            "name" : "METRICS_MONITOR"
+          },
+          {
+            "name" : "ACCUMULO_GC"
+          },
+          {
+            "name" : "TEZ_CLIENT"
+          },
+          {
+            "name" : "ZOOKEEPER_CLIENT"
+          },
+          {
+            "name" : "HCAT"
+          },
+          {
+            "name" : "KAFKA_BROKER"
+          },
+          {
+            "name" : "HST_AGENT"
+          },
+          {
+            "name" : "SLIDER"
+          },
+          {
+            "name" : "ACCUMULO_CLIENT"
+          },
+          {
+            "name" : "ZOOKEEPER_SERVER"
+          },
+          {
+            "name" : "OOZIE_CLIENT"
+          },
+          {
+            "name" : "MAHOUT"
+          },
+          {
+            "name" : "ACCUMULO_MONITOR"
+          },
+          {
+            "name" : "SPARK_CLIENT"
+          },
+          {
+            "name" : "YARN_CLIENT"
+          },
+          {
+            "name" : "HDFS_CLIENT"
+          },
+          {
+            "name" : "FALCON_CLIENT"
+          },
+          {
+            "name" : "SQOOP"
+          },
+          {
+            "name" : "ACCUMULO_TRACER"
+          },
+          {
+            "name" : "NAMENODE"
+          },
+          {
+            "name" : "PIG"
+          },
+          {
+            "name" : "ACCUMULO_MASTER"
+          },
+          {
+            "name" : "MAPREDUCE2_CLIENT"
+          },
+          {
+            "name" : "HBASE_CLIENT"
+          },
+          {
+            "name" : "HIVE_CLIENT"
+          }
+        ],
+        "configurations" : [ ],
+        "name" : "master_group_1",
+        "cardinality" : "1"
+      },
+      {
+        "components" : [
+          {
+            "name" : "SECONDARY_NAMENODE"
+          },
+          {
+            "name" : "HST_AGENT"
+          },
+          {
+            "name" : "HDFS_CLIENT"
+          },
+          {
+            "name" : "ZOOKEEPER_SERVER"
+          },
+          {
+            "name" : "STORM_UI_SERVER"
+          },
+          {
+            "name" : "HISTORYSERVER"
+          },
+          {
+            "name" : "METRICS_MONITOR"
+          },
+          {
+            "name" : "TEZ_CLIENT"
+          },
+          {
+            "name" : "NIMBUS"
+          },
+          {
+            "name" : "APP_TIMELINE_SERVER"
+          },
+          {
+            "name" : "DRPC_SERVER"
+          },
+          {
+            "name" : "RESOURCEMANAGER"
+          },
+          {
+            "name" : "MAHOUT"
+          },
+          {
+            "name" : "SQOOP"
+          }
+        ],
+        "configurations" : [ ],
+        "name" : "master_group_2",
+        "cardinality" : "1"
+      },
+      {
+        "components" : [
+          {
+            "name" : "YARN_CLIENT"
+          },
+          {
+            "name" : "HDFS_CLIENT"
+          },
+          {
+            "name" : "HIVE_SERVER"
+          },
+          {
+            "name" : "HST_SERVER"
+          },
+          {
+            "name" : "MYSQL_SERVER"
+          },
+          {
+            "name" : "METRICS_MONITOR"
+          },
+          {
+            "name" : "HBASE_MASTER"
+          },
+          {
+            "name" : "HIVE_METASTORE"
+          },
+          {
+            "name" : "TEZ_CLIENT"
+          },
+          {
+            "name" : "ATLAS_SERVER"
+          },
+          {
+            "name" : "ZOOKEEPER_CLIENT"
+          },
+          {
+            "name" : "KNOX_GATEWAY"
+          },
+          {
+            "name" : "PIG"
+          },
+          {
+            "name" : "WEBHCAT_SERVER"
+          },
+          {
+            "name" : "HST_AGENT"
+          },
+          {
+            "name" : "MAPREDUCE2_CLIENT"
+          },
+          {
+            "name" : "ZOOKEEPER_SERVER"
+          },
+          {
+            "name" : "OOZIE_CLIENT"
+          },
+          {
+            "name" : "FALCON_SERVER"
+          },
+          {
+            "name" : "SPARK_JOBHISTORYSERVER"
+          },
+          {
+            "name" : "OOZIE_SERVER"
+          },
+          {
+            "name" : "HIVE_CLIENT"
+          },
+          {
+            "name" : "METRICS_COLLECTOR"
+          },
+          {
+            "name" : "METRICS_GRAFANA"
+          },
+          {
+            "name" : "HCAT"
+          },
+          {
+            "name" : "PIG"
+          },
+          {
+            "name" : "HST_AGENT"
+          },
+          {
+            "name" : "SLIDER"
+          }
+        ],
+        "configurations" : [ ],
+        "name" : "master_group_3",
+        "cardinality" : "1"
+      },
+      {
+        "components" : [
+          {
+            "name" : "NODEMANAGER"
+          },
+          {
+            "name" : "HST_AGENT"
+          },
+          {
+            "name" : "HBASE_REGIONSERVER"
+          },
+          {
+            "name" : "DATANODE"
+          },
+          {
+            "name" : "METRICS_MONITOR"
+          },
+          {
+            "name" : "SUPERVISOR"
+          },
+          {
+            "name" : "ACCUMULO_TSERVER"
+          },
+          {
+            "name" : "SPARK_THRIFTSERVER"
+          },
+          {
+            "name" : "FLUME_HANDLER"
+          },
+          {
+            "name" : "PHOENIX_QUERY_SERVER"
+          }
+        ],
+        "configurations" : [ ],
+        "name" : "worker_group",
+        "cardinality" : "3"
+      },  
+	  {
       "components" : [
-        {
-          "name" : "NODEMANAGER"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "HBASE_REGIONSERVER"
-        },
-        {
-          "name" : "DATANODE"
-        },
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "SUPERVISOR"
-        },
-        {
-          "name" : "ACCUMULO_TSERVER"
-        },
-        {
-          "name" : "SPARK_THRIFTSERVER"
-        },
-        {
-          "name" : "FLUME_HANDLER"
-        },
-        {
-          "name" : "PHOENIX_QUERY_SERVER"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "host_group_2",
-      "cardinality" : "3"
-    },
-    {
-      "components" : [
-        {
-          "name" : "MAHOUT"
-        },
+
         {
           "name" : "SPARK_CLIENT"
         },
@@ -2165,9 +2385,7 @@
         {
           "name" : "FALCON_CLIENT"
         },
-        {
-          "name" : "SQOOP"
-        },
+
         {
           "name" : "METRICS_MONITOR"
         },
@@ -2178,19 +2396,7 @@
           "name" : "ZOOKEEPER_CLIENT"
         },
         {
-          "name" : "HCAT"
-        },
-        {
-          "name" : "PIG"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
           "name" : "MAPREDUCE2_CLIENT"
-        },
-        {
-          "name" : "SLIDER"
         },
         {
           "name" : "ACCUMULO_CLIENT"
@@ -2209,211 +2415,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_1",
-      "cardinality" : "1"
-    },
-    {
-      "components" : [
-        {
-          "name" : "SECONDARY_NAMENODE"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "HDFS_CLIENT"
-        },
-        {
-          "name" : "ZOOKEEPER_SERVER"
-        },
-        {
-          "name" : "STORM_UI_SERVER"
-        },
-        {
-          "name" : "HISTORYSERVER"
-        },
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "TEZ_CLIENT"
-        },
-        {
-          "name" : "NIMBUS"
-        },
-        {
-          "name" : "APP_TIMELINE_SERVER"
-        },
-        {
-          "name" : "DRPC_SERVER"
-        },
-        {
-          "name" : "RESOURCEMANAGER"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "host_group_4",
-      "cardinality" : "1"
-    },
-    {
-      "components" : [
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "ACCUMULO_GC"
-        },
-        {
-          "name" : "TEZ_CLIENT"
-        },
-        {
-          "name" : "ZOOKEEPER_CLIENT"
-        },
-        {
-          "name" : "HCAT"
-        },
-        {
-          "name" : "KAFKA_BROKER"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "SLIDER"
-        },
-        {
-          "name" : "ACCUMULO_CLIENT"
-        },
-        {
-          "name" : "ZOOKEEPER_SERVER"
-        },
-        {
-          "name" : "OOZIE_CLIENT"
-        },
-        {
-          "name" : "MAHOUT"
-        },
-        {
-          "name" : "ACCUMULO_MONITOR"
-        },
-        {
-          "name" : "SPARK_CLIENT"
-        },
-        {
-          "name" : "YARN_CLIENT"
-        },
-        {
-          "name" : "HDFS_CLIENT"
-        },
-        {
-          "name" : "FALCON_CLIENT"
-        },
-        {
-          "name" : "SQOOP"
-        },
-        {
-          "name" : "ACCUMULO_TRACER"
-        },
-        {
-          "name" : "NAMENODE"
-        },
-        {
-          "name" : "PIG"
-        },
-        {
-          "name" : "ACCUMULO_MASTER"
-        },
-        {
-          "name" : "MAPREDUCE2_CLIENT"
-        },
-        {
-          "name" : "HBASE_CLIENT"
-        },
-        {
-          "name" : "HIVE_CLIENT"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "host_group_3",
-      "cardinality" : "1"
-    },
-    {
-      "components" : [
-        {
-          "name" : "YARN_CLIENT"
-        },
-        {
-          "name" : "HDFS_CLIENT"
-        },
-        {
-          "name" : "HIVE_SERVER"
-        },
-        {
-          "name" : "HST_SERVER"
-        },
-        {
-          "name" : "MYSQL_SERVER"
-        },
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "HBASE_MASTER"
-        },
-        {
-          "name" : "HIVE_METASTORE"
-        },
-        {
-          "name" : "TEZ_CLIENT"
-        },
-        {
-          "name" : "ATLAS_SERVER"
-        },
-        {
-          "name" : "ZOOKEEPER_CLIENT"
-        },
-        {
-          "name" : "KNOX_GATEWAY"
-        },
-        {
-          "name" : "PIG"
-        },
-        {
-          "name" : "WEBHCAT_SERVER"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "MAPREDUCE2_CLIENT"
-        },
-        {
-          "name" : "ZOOKEEPER_SERVER"
-        },
-        {
-          "name" : "OOZIE_CLIENT"
-        },
-        {
-          "name" : "FALCON_SERVER"
-        },
-        {
-          "name" : "SPARK_JOBHISTORYSERVER"
-        },
-        {
-          "name" : "OOZIE_SERVER"
-        },
-        {
-          "name" : "HIVE_CLIENT"
-        },
-        {
-          "name" : "METRICS_COLLECTOR"
-        },
-        {
-          "name" : "METRICS_GRAFANA"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "host_group_5",
+      "name" : "ambari_client_group",
       "cardinality" : "1"
     }
   ],

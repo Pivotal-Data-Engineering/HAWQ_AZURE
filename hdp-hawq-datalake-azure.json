@@ -1429,42 +1429,6 @@
                 "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk5.vhd')]"
               },
               "createOption": "Empty"
-            },
-            {
-              "name": "datadisk6",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 6,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk6.vhd')]"
-              },
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk7",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 7,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk7.vhd')]"
-              },
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk8",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 8,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk8.vhd')]"
-              },
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk9",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 9,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk9.vhd')]"
-              },
-              "createOption": "Empty"
             }
           ]
         },

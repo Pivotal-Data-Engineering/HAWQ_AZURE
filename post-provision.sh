@@ -37,15 +37,22 @@ echo "running /home/pivotpde/copyHostNames.sh $numberOfNodes ...."
 ssh $sshOptions  pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com sh copyHostNames.sh $MASTERNODES $DATANODES
 echo "Finished setting up host configurations."
 
-echo "copying the ambari blue prints for $cluster_size cluster to ambari node...."
-scp $sshOptions $BLUEPRINT_FILENAME pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
-scp $sshOptions $BLUEPRINT_TEMPLATE pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+echo "getting the domain name. .."
 
+dldsndomainname=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com dnsdomainname)
 
-#echo "registering the ambari blueprint......"
-#curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://hawqdatalake.eastus.cloudapp.azure.com:8080//api/v1/blueprints/${BLUEPRINT_NAME}
+echo "replace DOMAIN_NAME with $dldsndomainname in $BLUEPRINT_TEMPLATE ...."
+sed -i -e "s/.DOMAIN_NAME/.$dldsndomainname/g" $BLUEPRINT_TEMPLATE
 
-#scp hawq tar files
-#mkdir /staging, extract tars in staging and run setup repo, stop ambari-server, yum install -y hawq-ambari-plugin, start amnbari-server
+#echo "copying the $BLUEPRINT_FILENAME ambari node...."
+#scp $sshOptions $BLUEPRINT_FILENAME pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+#echo "copying the $BLUEPRINT_TEMPLATE ambari node...."
+#scp $sshOptions $BLUEPRINT_TEMPLATE pivotpde@hawqdatalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
 
-# pivotal API y7BWf35sarZ6g46GpeLM
+echo "registering the ambari blueprint......"
+curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://hawqdatalake.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
+
+curl -X POST -H 'X-Requested-By: ambari' http://hawqdatalake.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
+
+echo "replace $dldsndomainname with DOMAIN_NAME in $BLUEPRINT_TEMPLATE ...."
+sed -i -e "s/.$dldsndomainname/.DOMAIN_NAME/g" $BLUEPRINT_TEMPLATE

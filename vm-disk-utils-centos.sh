@@ -259,10 +259,10 @@ scan_partition_format()
 	    UUID=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3}' | sed 's/"//g' )
 	    FS_TYPE=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $5}' |sed 's/"//g' )
 		echo "Adding ${UUID} TO ${MOUNTPOINT} ..........."
-        add_to_fstab "${UUID}" "${MOUNTPOINT}"
+        add_to_fstab ${UUID} ${MOUNTPOINT}
         echo "Mounting disk ${PARTITION} on ${MOUNTPOINT}"
-		 echo "Mounting ${MOUNTPOINT} ........"
-        mount "${MOUNTPOINT}"
+		 echo "Mounting ${PARTITION} on ${MOUNTPOINT} ........"
+        mount ${PARTITION} ${MOUNTPOINT}
 		echo "Done ........."
     done
 }
@@ -314,9 +314,9 @@ create_striped_volume()
     UUID=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3}' | sed 's/"//g' )
     FS_TYPE=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $5}' |sed 's/"//g' )
     echo "Adding ${UUID} TO ${MOUNTPOINT} ..........."
-    add_to_fstab "${UUID}" "${MOUNTPOINT}"
-    echo "Mounting ${MOUNTPOINT} ........"
-    mount "${MOUNTPOINT}"
+    add_to_fstab ${UUID} ${MOUNTPOINT}
+ 	echo "Mounting ${PARTITION} on ${MOUNTPOINT} ........"
+    mount ${PARTITION} ${MOUNTPOINT}
 	echo "Done ........."
 }
  

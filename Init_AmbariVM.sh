@@ -1,6 +1,6 @@
 #!/bin/sh
 ADMINUSER=$1
-
+HDB_VERSION=$2
 sed -i 's/Defaults\s\{1,\}requiretty/Defaults \!requiretty/g' /etc/sudoers
 echo "$ADMINUSER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -31,8 +31,6 @@ wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/amb
 yum install -y ambari-server
 ambari-server setup -s
 
-
-
 echo "downloading hawq software ...."
 mkdir /staging
 chmod a+rx /staging
@@ -46,12 +44,11 @@ echo "install httpd ........."
 yum -y install httpd
 service httpd start
 echo "adding repo ...."
-sh /staging/Pivotal_HDB/setup_repo.sh
+/staging/hdb-*/setup_repo.sh
 service httpd stop
 
 echo "starting Ambari ...."
 ambari-server start
-
 
 echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
