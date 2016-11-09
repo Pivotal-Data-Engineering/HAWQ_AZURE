@@ -50,10 +50,10 @@ echo "replace DOMAIN_NAME with $dldsndomainname in $BLUEPRINT_TEMPLATE ...."
 sed -i -e "s/.DOMAIN_NAME/.$dldsndomainname/g" $BLUEPRINT_TEMPLATE
 
 echo "registering the ambari blueprint......"
-curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://hawqdatalakeclient.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
+curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://hawqdatalakeclient.eastus.cloudapp.azure.com:8090/api/v1/blueprints/${BLUEPRINT_NAME}
 
 echo "submitting the HDP cluster install ..."
-curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://hawqdatalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
+curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://hawqdatalakeclient.eastus.cloudapp.azure.com:8090/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
 echo ">>>>>>>>>>  cluster install request submitted. check status on the ambari console. <<<<<<<<<<<<<"
 #echo "Once the cluster is installed and all components are running properly you can install hawq by ssh into ambari node and run below commands:"
 #echo " 1. sudo su -"
