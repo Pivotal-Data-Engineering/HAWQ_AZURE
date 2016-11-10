@@ -42,7 +42,7 @@ chmod 700 /root/.ssh
 echo "Peparing Disks.... "
 chmod ugo+rx vm-disk-utils-centos.sh
 
-sh vm-disk-utils-centos.sh -s
+sh vm-disk-utils-centos.sh
 
 echo "setting ambari repo......"
 wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
