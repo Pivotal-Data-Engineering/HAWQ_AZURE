@@ -35,9 +35,9 @@ ambari-server setup -s
 echo "starting Ambari ...."
 ambari-server start
 
-echo"changing ambari server port to 8090..."
-echo "client.api.port=8090" >> /etc/ambari-server/conf/ambari.properties
-ambari-server restart
+#echo"changing ambari server port to 8090..."
+#echo "client.api.port=8090" >> /etc/ambari-server/conf/ambari.properties
+#ambari-server restart
 
 echo "setting nohost check for ssh ..."
 echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
@@ -60,6 +60,16 @@ tar -zxvf Pivotal_HDB.tar.gz -C /staging
 echo "setting local hawq repo ...."
 /staging/hdb-*/setup_repo.sh
 echo "restart ambari server...."
+ambari-server restart
+
+echo "Installing hawq-ambari-plugin ...."
+yum install -y hawq-ambari-plugin
+/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.4
+ambari-server restart
+
+echo "install hawq plugin..."
+yum install -y hawq-ambari-plugin
+/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.4
 ambari-server restart
 
 echo "Finished executing the initAmbariVM."

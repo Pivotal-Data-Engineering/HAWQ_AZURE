@@ -1,6 +1,14 @@
 {
   "configurations" : [
     {
+      "pxf-profiles" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "content" : "\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<!--\nLicensed to the Apache Software Foundation (ASF) under one\nor more contributor license agreements.  See the NOTICE file\ndistributed with this work for additional information\nregarding copyright ownership.  The ASF licenses this file\nto you under the Apache License, Version 2.0 (the\n\"License\"); you may not use this file except in compliance\nwith the License.  You may obtain a copy of the License at\n\n  http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing,\nsoftware distributed under the License is distributed on an\n\"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\nKIND, either express or implied.  See the License for the\nspecific language governing permissions and limitations\nunder the License.\n-->\n\n<!--\n    PXF profiles definition file.\n    New profiles can be added in the form:\n        <profile>\n            <name>...</name>\n            <description>...</description>\n            <plugins>\n                <plugin_A>...</plugin_A>\n                <plugin_B>...</plugin_B>\n                ...\n            </plugins>\n         </profile>\n-->\n<profiles>\n    <profile>\n        <name>HBase</name>\n        <description>This profile is suitable for using when connecting to an HBase data store engine</description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hbase.HBaseDataFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hbase.HBaseAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hbase.HBaseResolver</resolver>\n        </plugins>\n    </profile>\n    <profile>\n        <name>Hive</name>\n        <description>This profile is suitable for using when connecting to Hive</description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hive.HiveDataFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hive.HiveAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hive.HiveResolver</resolver>\n            <metadata>org.apache.hawq.pxf.plugins.hive.HiveMetadataFetcher</metadata>\n        </plugins>\n    </profile>\n    <profile>\n        <name>HiveRC</name>\n        <description>This profile is suitable only for Hive tables stored in RC files\n            and serialized with either the ColumnarSerDe or the LazyBinaryColumnarSerDe.\n            It is much faster than the general purpose Hive profile.\n            DELIMITER parameter is mandatory.\n        </description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hive.HiveInputFormatFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hive.HiveRCFileAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hive.HiveColumnarSerdeResolver</resolver>\n            <metadata>org.apache.hawq.pxf.plugins.hive.HiveMetadataFetcher</metadata>\n        </plugins>\n    </profile>\n    <profile>\n        <name>HiveText</name>\n        <description>This profile is suitable only for Hive tables stored as Text files.\n            It is much faster than the general purpose Hive profile.\n            DELIMITER parameter is mandatory.\n        </description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hive.HiveInputFormatFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hive.HiveLineBreakAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hive.HiveStringPassResolver</resolver>\n            <metadata>org.apache.hawq.pxf.plugins.hive.HiveMetadataFetcher</metadata>\n        </plugins>\n    </profile>\n    <profile>\n        <name>HdfsTextSimple</name>\n        <description>This profile is suitable for using when reading delimited single line records from plain text files\n            on HDFS\n        </description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hdfs.HdfsDataFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hdfs.LineBreakAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hdfs.StringPassResolver</resolver>\n        </plugins>\n    </profile>\n    <profile>\n        <name>HdfsTextMulti</name>\n        <description>This profile is suitable for using when reading delimited single or multi line records (with quoted\n            linefeeds) from plain text files on HDFS. It is not splittable (non parallel) and slower than HdfsTextSimple.\n        </description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hdfs.HdfsDataFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hdfs.QuotedLineBreakAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hdfs.StringPassResolver</resolver>\n        </plugins>\n    </profile>\n    <profile>\n        <name>Avro</name>\n        <description>This profile is suitable for using when reading Avro files (i.e fileName.avro)</description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hdfs.HdfsDataFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hdfs.AvroFileAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hdfs.AvroResolver</resolver>\n        </plugins>\n    </profile>\n    <profile>\n        <name>SequenceWritable</name>\n        <description>\n            Profile for accessing Sequence files serialized with a custom Writable class\n        </description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.hdfs.HdfsDataFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.hdfs.SequenceFileAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.hdfs.WritableResolver</resolver>\n        </plugins>\n    </profile>\n    <profile>\n        <name>GemFireXD</name>\n        <description>This profile is suitable for using when connecting to GemFireXD</description>\n        <plugins>\n            <fragmenter>org.apache.hawq.pxf.plugins.gemfirexd.GemFireXDFragmenter</fragmenter>\n            <accessor>org.apache.hawq.pxf.plugins.gemfirexd.GemFireXDAccessor</accessor>\n            <resolver>org.apache.hawq.pxf.plugins.gemfirexd.GemFireXDResolver</resolver>\n        </plugins>\n    </profile>\n</profiles>"
+        }
+      }
+    },
+    {
       "falcon-startup.properties" : {
         "properties_attributes" : { },
         "properties" : {
@@ -170,7 +178,11 @@
     },
     {
       "core-site" : {
-        "properties_attributes" : { },
+        "properties_attributes" : {
+          "final" : {
+            "fs.defaultFS" : "true"
+          }
+        },
         "properties" : {
           "fs.defaultFS" : "hdfs://%HOSTGROUP::master_group_1%:8020",
           "ipc.server.tcpnodelay" : "true",
@@ -186,6 +198,8 @@
           "ipc.server.listen.queue.size" : "3300",
           "ipc.client.connection.maxidletime" : "3600000",
           "hadoop.proxyuser.hcat.groups" : "*",
+          "hadoop.proxyuser.hbase.groups" : "*",
+          "hadoop.proxyuser.hbase.hosts" : "*",
           "hadoop.proxyuser.hive.hosts" : "%HOSTGROUP::master_group_3%",
           "ipc.client.connect.timeout" : "300000",
           "ha.failover-controller.active-standby-elector.zk.op.retries" : "120",
@@ -222,7 +236,11 @@
     },
     {
       "kafka-broker" : {
-        "properties_attributes" : { },
+        "properties_attributes" : {
+          "property" : {
+            "controller.socket.timeout.ms" : "The socket timeout for commands from the partition management controller to the replicas."
+          }
+        },
         "properties" : {
           "replica.high.watermark.checkpoint.interval.ms" : "5000",
           "offsets.topic.num.partitions" : "50",
@@ -336,6 +354,14 @@
       }
     },
     {
+      "hawq-check-env" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "content" : "\n[global]\nconfigfile_version = 4\n\n[linux.mount]\nmount.points = /\n\n[linux.sysctl]\nsysctl.kernel.shmmax = 1000000000\nsysctl.kernel.shmmni = 4096\nsysctl.kernel.shmall = 4000000000\nsysctl.kernel.sem = 250 512000 100 2048\nsysctl.kernel.sysrq = 1\nsysctl.kernel.core_uses_pid = 1\nsysctl.kernel.msgmnb = 65536\nsysctl.kernel.msgmax = 65536\nsysctl.kernel.msgmni = 2048\nsysctl.net.ipv4.tcp_syncookies = 0\nsysctl.net.ipv4.ip_forward = 0\nsysctl.net.ipv4.conf.default.accept_source_route = 0\nsysctl.net.ipv4.tcp_tw_recycle = 1\nsysctl.net.ipv4.tcp_max_syn_backlog = 200000\nsysctl.net.ipv4.conf.all.arp_filter = 1\nsysctl.net.ipv4.ip_local_port_range = 1025 65535\nsysctl.net.core.netdev_max_backlog = 200000\nsysctl.vm.overcommit_memory = 2\nsysctl.fs.nr_open = 3000000\nsysctl.kernel.threads-max = 798720\nsysctl.kernel.pid_max = 798720\n# increase network\nsysctl.net.core.rmem_max = 2097152\nsysctl.net.core.wmem_max = 2097152\n\n[linux.limits]\nsoft.nofile = 2900000\nhard.nofile = 2900000\nsoft.nproc  = 131072\nhard.nproc  = 131072\n\n[linux.diskusage]\ndiskusage.monitor.mounts = /\ndiskusage.monitor.usagemax = 90%\n\n[hdfs]\ndfs.mem.namenode.heap = 40960\ndfs.mem.datanode.heap = 6144\n# in hdfs-site.xml\ndfs.support.append = true\ndfs.client.enable.read.from.local = true\ndfs.block.local-path-access.user = gpadmin\ndfs.datanode.max.transfer.threads = 40960\ndfs.client.socket-timeout = 300000000\ndfs.datanode.socket.write.timeout = 7200000\ndfs.namenode.handler.count = 60\nipc.server.handler.queue.size = 3300\ndfs.datanode.handler.count = 60\nipc.client.connection.maxidletime = 3600000\ndfs.namenode.accesstime.precision = -1"
+        }
+      }
+    },
+    {
       "storm-env" : {
         "properties_attributes" : { },
         "properties" : {
@@ -378,7 +404,12 @@
     {
       "ranger-storm-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "REPOSITORY_CONFIG_USERNAME" : "stormtestuser@EXAMPLE.COM",
+          "common.name.for.certificate" : "",
+          "policy_user" : "storm",
+          "ranger-storm-plugin-enabled" : "No"
+        }
       }
     },
     {
@@ -432,7 +463,12 @@
     {
       "ranger-storm-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/storm-client/conf/ranger-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/storm-client/conf/ranger-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
+        }
       }
     },
     {
@@ -450,13 +486,36 @@
     {
       "ranger-knox-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/knox/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/knox/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "false",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/knox/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
       }
     },
     {
       "ranger-storm-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "ranger.plugin.storm.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
+          "ranger.plugin.storm.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
+          "ranger.plugin.storm.service.name" : "{{repo_name}}",
+          "ranger.plugin.storm.policy.rest.url" : "{{policymgr_mgr_url}}",
+          "ranger.plugin.storm.policy.rest.ssl.config.file" : "/usr/hdp/current/storm-client/conf/ranger-policymgr-ssl.xml",
+          "ranger.plugin.storm.policy.pollIntervalMs" : "30000"
+        }
       }
     },
     {
@@ -486,7 +545,13 @@
     {
       "ranger-knox-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "KNOX_HOME" : "/usr/hdp/current/knox-server",
+          "REPOSITORY_CONFIG_USERNAME" : "admin",
+          "common.name.for.certificate" : "",
+          "ranger-knox-plugin-enabled" : "No",
+          "policy_user" : "ambari-qa"
+        }
       }
     },
     {
@@ -546,14 +611,14 @@
           "hbase_regionserver_xmn_max" : "512",
           "hbase_user" : "hbase",
           "hbase_max_direct_memory_size" : "4096",
-          "hbase_master_heapsize" : "1024",
+          "hbase_master_heapsize" : "1024m",
           "hbase_regionserver_xmn_ratio" : "0.2",
           "content" : "\n# Set environment variables here.\n\n# The java implementation to use. Java 1.6 required.\nexport JAVA_HOME={{java64_home}}\n\n# HBase Configuration directory\nexport HBASE_CONF_DIR=${HBASE_CONF_DIR:-{{hbase_conf_dir}}}\n\n# Extra Java CLASSPATH elements. Optional.\nexport HBASE_CLASSPATH=${HBASE_CLASSPATH}\n\n\n# The maximum amount of heap to use, in MB. Default is 1000.\n# export HBASE_HEAPSIZE=1000\n\n# Extra Java runtime options.\n# Below are what we set by default. May only work with SUN JVM.\n# For more on why as well as other possible settings,\n# see http://wiki.apache.org/hadoop/PerformanceTuning\nexport SERVER_GC_OPTS=\"-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:{{log_dir}}/gc.log-`date +'%Y%m%d%H%M'`\"\n# Uncomment below to enable java garbage collection logging.\n# export HBASE_OPTS=\"$HBASE_OPTS -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:$HBASE_HOME/logs/gc-hbase.log\"\n\n# Uncomment and adjust to enable JMX exporting\n# See jmxremote.password and jmxremote.access in $JRE_HOME/lib/management to configure remote password access.\n# More details at: http://java.sun.com/javase/6/docs/technotes/guides/management/agent.html\n#\n# export HBASE_JMX_BASE=\"-Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false\"\n# If you want to configure BucketCache, specify '-XX: MaxDirectMemorySize=' with proper direct memory size\n# export HBASE_THRIFT_OPTS=\"$HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10103\"\n# export HBASE_ZOOKEEPER_OPTS=\"$HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10104\"\n\n# File naming hosts on which HRegionServers will run. $HBASE_HOME/conf/regionservers by default.\nexport HBASE_REGIONSERVERS=${HBASE_CONF_DIR}/regionservers\n\n# Extra ssh options. Empty by default.\n# export HBASE_SSH_OPTS=\"-o ConnectTimeout=1 -o SendEnv=HBASE_CONF_DIR\"\n\n# Where log files are stored. $HBASE_HOME/logs by default.\nexport HBASE_LOG_DIR={{log_dir}}\n\n# A string representing this instance of hbase. $USER by default.\n# export HBASE_IDENT_STRING=$USER\n\n# The scheduling priority for daemon processes. See 'man nice'.\n# export HBASE_NICENESS=10\n\n# The directory where pid files are stored. /tmp by default.\nexport HBASE_PID_DIR={{pid_dir}}\n\n# Seconds to sleep between slave commands. Unset by default. This\n# can be useful in large clusters, where, e.g., slave rsyncs can\n# otherwise arrive faster than the master can service them.\n# export HBASE_SLAVE_SLEEP=0.1\n\n# Tell HBase whether it should manage it's own instance of Zookeeper or not.\nexport HBASE_MANAGES_ZK=false\n\n{% if java_version < 8 %}\nJDK_DEPENDED_OPTS=\"-XX:PermSize=128m -XX:MaxPermSize=128m\"\n{% endif %}\n      \n{% if security_enabled %}\nexport HBASE_OPTS=\"$HBASE_OPTS -XX:+UseConcMarkSweepGC -XX:ErrorFile={{log_dir}}/hs_err_pid%p.log -Djava.security.auth.login.config={{client_jaas_config_file}} -Djava.io.tmpdir={{java_io_tmpdir}}\"\nexport HBASE_MASTER_OPTS=\"$HBASE_MASTER_OPTS -Xmx{{master_heapsize}} -Djava.security.auth.login.config={{master_jaas_config_file}} $JDK_DEPENDED_OPTS\"\nexport HBASE_REGIONSERVER_OPTS=\"$HBASE_REGIONSERVER_OPTS -Xmn{{regionserver_xmn_size}} -XX:CMSInitiatingOccupancyFraction=70  -Xms{{regionserver_heapsize}} -Xmx{{regionserver_heapsize}} -Djava.security.auth.login.config={{regionserver_jaas_config_file}} $JDK_DEPENDED_OPTS\"\nexport PHOENIX_QUERYSERVER_OPTS=\"$PHOENIX_QUERYSERVER_OPTS -Djava.security.auth.login.config={{queryserver_jaas_config_file}}\"\n{% else %}\nexport HBASE_OPTS=\"$HBASE_OPTS -XX:+UseConcMarkSweepGC -XX:ErrorFile={{log_dir}}/hs_err_pid%p.log -Djava.io.tmpdir={{java_io_tmpdir}}\"\nexport HBASE_MASTER_OPTS=\"$HBASE_MASTER_OPTS -Xmx{{master_heapsize}} $JDK_DEPENDED_OPTS\"\nexport HBASE_REGIONSERVER_OPTS=\"$HBASE_REGIONSERVER_OPTS -Xmn{{regionserver_xmn_size}} -XX:CMSInitiatingOccupancyFraction=70  -Xms{{regionserver_heapsize}} -Xmx{{regionserver_heapsize}} $JDK_DEPENDED_OPTS\"\n{% endif %}\n\n# HBase off-heap MaxDirectMemorySize\nexport HBASE_REGIONSERVER_OPTS=\"$HBASE_REGIONSERVER_OPTS {% if hbase_max_direct_memory_size %} -XX:MaxDirectMemorySize={{hbase_max_direct_memory_size}}m {% endif %}\"",
           "hbase_java_io_tmpdir" : "/tmp",
           "hbase_user_nproc_limit" : "16000",
           "hbase_pid_dir" : "/var/run/hbase",
           "hbase_log_dir" : "/var/log/hbase",
-          "hbase_regionserver_heapsize" : "20480",
+          "hbase_regionserver_heapsize" : "20480m",
           "hbase_user_nofile_limit" : "32000",
           "phoenix_sql_enabled" : "false"
         }
@@ -562,7 +627,14 @@
     {
       "ranger-knox-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "ranger.plugin.knox.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminJersey2RESTClient",
+          "ranger.plugin.knox.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
+          "ranger.plugin.knox.policy.rest.url" : "{{policymgr_mgr_url}}",
+          "ranger.plugin.knox.policy.rest.ssl.config.file" : "/usr/hdp/current/knox-server/conf/ranger-policymgr-ssl.xml",
+          "ranger.plugin.knox.policy.pollIntervalMs" : "30000",
+          "ranger.plugin.knox.service.name" : "{{repo_name}}"
+        }
       }
     },
     {
@@ -613,19 +685,45 @@
     {
       "ranger-kafka-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/kafka-broker/config/ranger-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/kafka-broker/config/ranger-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file/{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file/{{credential_file}}"
+        }
       }
     },
     {
       "ranger-storm-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/storm/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/storm/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "false",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/storm/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
       }
     },
     {
       "ranger-hbase-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hbase-client/conf/ranger-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hbase-client/conf/ranger-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
+        }
       }
     },
     {
@@ -633,6 +731,25 @@
         "properties_attributes" : { },
         "properties" : {
           "content" : "\n#\n# Licensed to the Apache Software Foundation (ASF) under one\n# or more contributor license agreements.  See the NOTICE file\n# distributed with this work for additional information\n# regarding copyright ownership.  The ASF licenses this file\n# to you under the Apache License, Version 2.0 (the\n# \"License\"); you may not use this file except in compliance\n# with the License.  You may obtain a copy of the License at\n#\n#  http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing,\n# software distributed under the License is distributed on an\n# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n# KIND, either express or implied.  See the License for the\n# specific language governing permissions and limitations\n# under the License.\n#\n\n\n# Define some default values that can be overridden by system properties\n# To change daemon root logger use hadoop_root_logger in hadoop-env\nhadoop.root.logger=INFO,console\nhadoop.log.dir=.\nhadoop.log.file=hadoop.log\n\n\n# Define the root logger to the system property \"hadoop.root.logger\".\nlog4j.rootLogger=${hadoop.root.logger}, EventCounter\n\n# Logging Threshold\nlog4j.threshhold=ALL\n\n#\n# Daily Rolling File Appender\n#\n\nlog4j.appender.DRFA=org.apache.log4j.DailyRollingFileAppender\nlog4j.appender.DRFA.File=${hadoop.log.dir}/${hadoop.log.file}\n\n# Rollver at midnight\nlog4j.appender.DRFA.DatePattern=.yyyy-MM-dd\n\n# 30-day backup\n#log4j.appender.DRFA.MaxBackupIndex=30\nlog4j.appender.DRFA.layout=org.apache.log4j.PatternLayout\n\n# Pattern format: Date LogLevel LoggerName LogMessage\nlog4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n\n# Debugging Pattern format\n#log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %-5p %c{2} (%F:%M(%L)) - %m%n\n\n\n#\n# console\n# Add \"console\" to rootlogger above if you want to use this\n#\n\nlog4j.appender.console=org.apache.log4j.ConsoleAppender\nlog4j.appender.console.target=System.err\nlog4j.appender.console.layout=org.apache.log4j.PatternLayout\nlog4j.appender.console.layout.ConversionPattern=%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n\n\n#\n# TaskLog Appender\n#\n\n#Default values\nhadoop.tasklog.taskid=null\nhadoop.tasklog.iscleanup=false\nhadoop.tasklog.noKeepSplits=4\nhadoop.tasklog.totalLogFileSize=100\nhadoop.tasklog.purgeLogSplits=true\nhadoop.tasklog.logsRetainHours=12\n\nlog4j.appender.TLA=org.apache.hadoop.mapred.TaskLogAppender\nlog4j.appender.TLA.taskId=${hadoop.tasklog.taskid}\nlog4j.appender.TLA.isCleanup=${hadoop.tasklog.iscleanup}\nlog4j.appender.TLA.totalLogFileSize=${hadoop.tasklog.totalLogFileSize}\n\nlog4j.appender.TLA.layout=org.apache.log4j.PatternLayout\nlog4j.appender.TLA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n\n\n#\n#Security audit appender\n#\nhadoop.security.logger=INFO,console\nhadoop.security.log.maxfilesize=256MB\nhadoop.security.log.maxbackupindex=20\nlog4j.category.SecurityLogger=${hadoop.security.logger}\nhadoop.security.log.file=SecurityAuth.audit\nlog4j.appender.DRFAS=org.apache.log4j.DailyRollingFileAppender\nlog4j.appender.DRFAS.File=${hadoop.log.dir}/${hadoop.security.log.file}\nlog4j.appender.DRFAS.layout=org.apache.log4j.PatternLayout\nlog4j.appender.DRFAS.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n\nlog4j.appender.DRFAS.DatePattern=.yyyy-MM-dd\n\nlog4j.appender.RFAS=org.apache.log4j.RollingFileAppender\nlog4j.appender.RFAS.File=${hadoop.log.dir}/${hadoop.security.log.file}\nlog4j.appender.RFAS.layout=org.apache.log4j.PatternLayout\nlog4j.appender.RFAS.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n\nlog4j.appender.RFAS.MaxFileSize=${hadoop.security.log.maxfilesize}\nlog4j.appender.RFAS.MaxBackupIndex=${hadoop.security.log.maxbackupindex}\n\n#\n# hdfs audit logging\n#\nhdfs.audit.logger=INFO,console\nlog4j.logger.org.apache.hadoop.hdfs.server.namenode.FSNamesystem.audit=${hdfs.audit.logger}\nlog4j.additivity.org.apache.hadoop.hdfs.server.namenode.FSNamesystem.audit=false\nlog4j.appender.DRFAAUDIT=org.apache.log4j.DailyRollingFileAppender\nlog4j.appender.DRFAAUDIT.File=${hadoop.log.dir}/hdfs-audit.log\nlog4j.appender.DRFAAUDIT.layout=org.apache.log4j.PatternLayout\nlog4j.appender.DRFAAUDIT.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n\nlog4j.appender.DRFAAUDIT.DatePattern=.yyyy-MM-dd\n\n#\n# NameNode metrics logging.\n# The default is to retain two namenode-metrics.log files up to 64MB each.\n#\nnamenode.metrics.logger=INFO,NullAppender\nlog4j.logger.NameNodeMetricsLog=${namenode.metrics.logger}\nlog4j.additivity.NameNodeMetricsLog=false\nlog4j.appender.NNMETRICSRFA=org.apache.log4j.RollingFileAppender\nlog4j.appender.NNMETRICSRFA.File=${hadoop.log.dir}/namenode-metrics.log\nlog4j.appender.NNMETRICSRFA.layout=org.apache.log4j.PatternLayout\nlog4j.appender.NNMETRICSRFA.layout.ConversionPattern=%d{ISO8601} %m%n\nlog4j.appender.NNMETRICSRFA.MaxBackupIndex=1\nlog4j.appender.NNMETRICSRFA.MaxFileSize=64MB\n\n#\n# mapred audit logging\n#\nmapred.audit.logger=INFO,console\nlog4j.logger.org.apache.hadoop.mapred.AuditLogger=${mapred.audit.logger}\nlog4j.additivity.org.apache.hadoop.mapred.AuditLogger=false\nlog4j.appender.MRAUDIT=org.apache.log4j.DailyRollingFileAppender\nlog4j.appender.MRAUDIT.File=${hadoop.log.dir}/mapred-audit.log\nlog4j.appender.MRAUDIT.layout=org.apache.log4j.PatternLayout\nlog4j.appender.MRAUDIT.layout.ConversionPattern=%d{ISO8601} %p %c{2}: %m%n\nlog4j.appender.MRAUDIT.DatePattern=.yyyy-MM-dd\n\n#\n# Rolling File Appender\n#\n\nlog4j.appender.RFA=org.apache.log4j.RollingFileAppender\nlog4j.appender.RFA.File=${hadoop.log.dir}/${hadoop.log.file}\n\n# Logfile size and and 30-day backups\nlog4j.appender.RFA.MaxFileSize=256MB\nlog4j.appender.RFA.MaxBackupIndex=10\n\nlog4j.appender.RFA.layout=org.apache.log4j.PatternLayout\nlog4j.appender.RFA.layout.ConversionPattern=%d{ISO8601} %-5p %c{2} - %m%n\nlog4j.appender.RFA.layout.ConversionPattern=%d{ISO8601} %-5p %c{2} (%F:%M(%L)) - %m%n\n\n\n# Custom Logging levels\n\nhadoop.metrics.log.level=INFO\n#log4j.logger.org.apache.hadoop.mapred.JobTracker=DEBUG\n#log4j.logger.org.apache.hadoop.mapred.TaskTracker=DEBUG\n#log4j.logger.org.apache.hadoop.fs.FSNamesystem=DEBUG\nlog4j.logger.org.apache.hadoop.metrics2=${hadoop.metrics.log.level}\n\n# Jets3t library\nlog4j.logger.org.jets3t.service.impl.rest.httpclient.RestS3Service=ERROR\n\n#\n# Null Appender\n# Trap security logger on the hadoop client side\n#\nlog4j.appender.NullAppender=org.apache.log4j.varia.NullAppender\n\n#\n# Event Counter Appender\n# Sends counts of logging messages at different severity levels to Hadoop Metrics.\n#\nlog4j.appender.EventCounter=org.apache.hadoop.log.metrics.EventCounter\n\n# Removes \"deprecated\" messages\nlog4j.logger.org.apache.hadoop.conf.Configuration.deprecation=WARN\n\n#\n# HDFS block state change log from block manager\n#\n# Uncomment the following to suppress normal block state change\n# messages from BlockManager in NameNode.\n#log4j.logger.BlockStateChange=WARN"
+        }
+      }
+    },
+    {
+      "pxf-public-classpath" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "content" : "\n#\n# Licensed to the Apache Software Foundation (ASF) under one\n# or more contributor license agreements.  See the NOTICE file\n# distributed with this work for additional information\n# regarding copyright ownership.  The ASF licenses this file\n# to you under the Apache License, Version 2.0 (the\n# \"License\"); you may not use this file except in compliance\n# with the License.  You may obtain a copy of the License at\n#\n#  http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing,\n# software distributed under the License is distributed on an\n# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n# KIND, either express or implied.  See the License for the\n# specific language governing permissions and limitations\n# under the License.\n#\n\n##############################################################\n# This is the classpath file for the PXF service.\n# Add connectors here, one resource per line, e.g.:\n#      /usr/lib/myconnector/myconnector.jar\n# Wildcard characters (*,[],?) are supported for file names, e.g.:\n#      /usr/lib/myconnector/*.jar\n#      /usr/lib/myconnector/myconnector*[0-9].jar\n##############################################################"
+        }
+      }
+    },
+    {
+      "hawq-limits-env" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "hard_nproc" : "131072",
+          "soft_nofile" : "2900000",
+          "soft_nproc" : "131072",
+          "hard_nofile" : "2900000"
         }
       }
     },
@@ -697,7 +814,13 @@
     },
     {
       "spark-thrift-sparkconf" : {
-        "properties_attributes" : { },
+        "properties_attributes" : {
+          "final" : {
+            "spark.eventLog.enabled" : "true",
+            "spark.eventLog.dir" : "true",
+            "spark.history.fs.logDirectory" : "true"
+          }
+        },
         "properties" : {
           "spark.executor.memory" : "1g",
           "spark.yarn.am.memory" : "512m",
@@ -876,12 +999,15 @@
           "user_group" : "hadoop",
           "override_uid" : "true",
           "security_enabled" : "false",
-          "smokeuser" : "ambari-qa",
-          "smokeuser_keytab" : "/etc/security/keytabs/smokeuser.headless.keytab",
-          "repo_ubuntu_template" : "{{package_type}} {{base_url}} {{components}}",
-          "fetch_nonlocal_groups" : "true",
           "managed_hdfs_resource_property_names" : "",
           "repo_suse_rhel_template" : "[{{repo_id}}]\nname={{repo_id}}\n{% if mirror_list %}mirrorlist={{mirror_list}}{% else %}baseurl={{base_url}}{% endif %}\n\npath=/\nenabled=1\ngpgcheck=0",
+          "command_retry_enabled" : "true",
+          "smokeuser" : "ambari-qa",
+          "smokeuser_keytab" : "/etc/security/keytabs/smokeuser.headless.keytab",
+          "commands_to_retry" : "INSTALL,START",
+          "repo_ubuntu_template" : "{{package_type}} {{base_url}} {{components}}",
+          "fetch_nonlocal_groups" : "true",
+          "command_retry_max_time_in_sec" : "600",
           "kerberos_domain" : "EXAMPLE.COM",
           "ignore_groupsusers_create" : "false"
         }
@@ -900,15 +1026,74 @@
       }
     },
     {
+      "hawq-sysctl-env" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "kernel.sysrq" : "1",
+          "net.ipv4.ip_local_port_range" : "1025 65535",
+          "kernel.core_uses_pid" : "1",
+          "kernel.shmmni" : "4096",
+          "vm.overcommit_memory" : "1",
+          "net.ipv4.ip_forward" : "0",
+          "net.core.netdev_max_backlog" : "200000",
+          "kernel.sem" : "250 512000 100 2048",
+          "kernel.threads-max" : "798720",
+          "net.ipv4.conf.all.arp_filter" : "1",
+          "kernel.msgmnb" : "65536",
+          "net.ipv4.tcp_tw_recycle" : "1",
+          "net.core.rmem_max" : "2097152",
+          "kernel.msgmax" : "65536",
+          "kernel.pid_max" : "798720",
+          "net.core.wmem_max" : "2097152",
+          "net.ipv4.conf.default.accept_source_route" : "0",
+          "kernel.msgmni" : "2048",
+          "kernel.shmmax" : "1000000000",
+          "kernel.shmall" : "4000000000",
+          "net.ipv4.tcp_syncookies" : "0",
+          "net.ipv4.tcp_max_syn_backlog" : "200000",
+          "fs.nr_open" : "3000000"
+        }
+      }
+    },
+    {
+      "pxf-site" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "pxf.service.kerberos.keytab" : "/etc/security/keytabs/pxf.service.keytab"
+        }
+      }
+    },
+    {
       "ranger-hive-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hive/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hive/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "false",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hive/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
       }
     },
     {
       "ranger-knox-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/knox-server/conf/ranger-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/knox-server/conf/ranger-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
+        }
       }
     },
     {
@@ -944,7 +1129,11 @@
     },
     {
       "ams-hbase-site" : {
-        "properties_attributes" : { },
+        "properties_attributes" : {
+          "final" : {
+            "hbase.zookeeper.quorum" : "true"
+          }
+        },
         "properties" : {
           "hfile.block.cache.size" : "0.3",
           "phoenix.query.spoolThresholdBytes" : "20971520",
@@ -1018,13 +1207,26 @@
     {
       "ranger-hdfs-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hadoop-client/conf/ranger-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hadoop-client/conf/ranger-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
+        }
       }
     },
     {
       "ranger-hbase-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "ranger.plugin.hbase.policy.rest.ssl.config.file" : "/etc/hbase/conf/ranger-policymgr-ssl.xml",
+          "ranger.plugin.hbase.service.name" : "{{repo_name}}",
+          "xasecure.hbase.update.xapolicies.on.grant.revoke" : "true",
+          "ranger.plugin.hbase.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
+          "ranger.plugin.hbase.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
+          "ranger.plugin.hbase.policy.rest.url" : "{{policymgr_mgr_url}}",
+          "ranger.plugin.hbase.policy.pollIntervalMs" : "30000"
+        }
       }
     },
     {
@@ -1037,6 +1239,8 @@
           "hbase.hstore.blockingStoreFiles" : "10",
           "hbase.zookeeper.useMulti" : "true",
           "dfs.domain.socket.path" : "/var/lib/hadoop-hdfs/dn_socket",
+          "hbase.region.server.rpc.scheduler.factory.class" : "",
+          "phoenix.functions.allowUserDefinedFunctions" : " ",
           "zookeeper.session.timeout" : "90000",
           "hbase.master.info.bindAddress" : "0.0.0.0",
           "hbase.bucketcache.size" : "2048",
@@ -1045,6 +1249,7 @@
           "hbase.hregion.majorcompaction.jitter" : "0.50",
           "hbase.hregion.memstore.flush.size" : "134217728",
           "hbase.regionserver.wal.codec" : "org.apache.hadoop.hbase.regionserver.wal.WALCellCodec",
+          "hbase.rpc.controllerfactory.class" : "",
           "hbase.client.retries.number" : "35",
           "hbase.hregion.max.filesize" : "10737418240",
           "hbase.hstore.compaction.max" : "10",
@@ -1067,6 +1272,7 @@
           "hbase.coprocessor.region.classes" : "org.apache.hadoop.hbase.security.access.SecureBulkLoadEndpoint",
           "hbase.security.authentication" : "simple",
           "hbase.regionserver.handler.count" : "30",
+          "hbase.bucketcache.percentage.in.combinedcache" : "",
           "hbase.bulkload.staging.dir" : "/apps/hbase/staging",
           "hbase.regionserver.port" : "16020",
           "hbase.security.authorization" : "false",
@@ -1080,13 +1286,23 @@
     {
       "ranger-yarn-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hadoop-client/conf/ranger-yarn-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hadoop-client/conf/ranger-yarn-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
+        }
       }
     },
     {
       "ranger-hive-policymgr-ssl" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hive-server2/conf/ranger-plugin-truststore.jks",
+          "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hive-server2/conf/ranger-plugin-keystore.jks",
+          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
+          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
+        }
       }
     },
     {
@@ -1108,19 +1324,47 @@
     {
       "ranger-hive-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "REPOSITORY_CONFIG_USERNAME" : "hive",
+          "jdbc.driverClassName" : "org.apache.hive.jdbc.HiveDriver",
+          "common.name.for.certificate" : "",
+          "policy_user" : "ambari-qa"
+        }
       }
     },
     {
       "ranger-yarn-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "ranger.plugin.yarn.policy.rest.ssl.config.file" : "/etc/hadoop/conf/ranger-policymgr-ssl-yarn.xml",
+          "ranger.plugin.yarn.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
+          "ranger.plugin.yarn.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
+          "ranger.plugin.yarn.policy.pollIntervalMs" : "30000",
+          "ranger.plugin.yarn.policy.rest.url" : "{{policymgr_mgr_url}}",
+          "ranger.plugin.yarn.service.name" : "{{repo_name}}"
+        }
       }
     },
     {
       "ranger-yarn-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hadoop/yarn/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hadoop/yarn/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "false",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hadoop/yarn/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
       }
     },
     {
@@ -1169,7 +1413,16 @@
     },
     {
       "hdfs-site" : {
-        "properties_attributes" : { },
+        "properties_attributes" : {
+          "final" : {
+            "dfs.webhdfs.enabled" : "true",
+            "dfs.namenode.http-address" : "true",
+            "dfs.support.append" : "true",
+            "dfs.namenode.name.dir" : "true",
+            "dfs.datanode.failed.volumes.tolerated" : "true",
+            "dfs.datanode.data.dir" : "true"
+          }
+        },
         "properties" : {
           "dfs.block.local-path-access.user" : "gpadmin",
           "dfs.replication" : "3",
@@ -1214,7 +1467,7 @@
           "dfs.client.retry.policy.enabled" : "false",
           "dfs.namenode.startup.delay.block.deletion.sec" : "3600",
           "dfs.block.access.token.enable" : "false",
-          "dfs.datanode.data.dir" : "/hadoop/hdfs/data",
+          "dfs.datanode.data.dir" : "/datadisks/disk1/hadoop/hdfs/data,/datadisks/disk2/hadoop/hdfs/data,/datadisks/disk3/hadoop/hdfs/data,/datadisks/disk4/hadoop/hdfs/data,/datadisks/disk5/hadoop/hdfs/data,/datadisks/disk6/hadoop/hdfs/data",
           "dfs.permissions.superusergroup" : "hdfs",
           "dfs.blocksize" : "134217728",
           "dfs.namenode.checkpoint.edits.dir" : "${dfs.namenode.checkpoint.dir}",
@@ -1373,10 +1626,21 @@
       }
     },
     {
+      "hawq-env" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "hawq_ssh_exkeys" : "true"
+        }
+      }
+    },
+    {
       "hiveserver2-site" : {
         "properties_attributes" : { },
         "properties" : {
-          "hive.security.authorization.enabled" : "false"
+          "hive.security.authorization.manager" : "org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory",
+          "hive.security.authenticator.manager" : "org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator",
+          "hive.security.authorization.enabled" : "false",
+          "hive.conf.restricted.list" : "hive.security.authenticator.manager,hive.security.authorization.manager,hive.users.in.admin.role"
         }
       }
     },
@@ -1423,7 +1687,13 @@
     {
       "ranger-yarn-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "ranger-yarn-plugin-enabled" : "No",
+          "REPOSITORY_CONFIG_USERNAME" : "yarn",
+          "common.name.for.certificate" : "",
+          "hadoop.rpc.protection" : "",
+          "policy_user" : "ambari-qa"
+        }
       }
     },
     {
@@ -1491,13 +1761,35 @@
     {
       "ranger-hdfs-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hadoop/hdfs/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hadoop/hdfs/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "false",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hadoop/hdfs/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
       }
     },
     {
       "ranger-hdfs-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "REPOSITORY_CONFIG_USERNAME" : "hadoop",
+          "ranger-hdfs-plugin-enabled" : "No",
+          "common.name.for.certificate" : "",
+          "hadoop.rpc.protection" : "",
+          "policy_user" : "ambari-qa"
+        }
       }
     },
     {
@@ -1505,6 +1797,45 @@
         "properties_attributes" : { },
         "properties" : {
           "mahout_user" : "mahout"
+        }
+      }
+    },
+    {
+      "hdfs-client" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "output.write.timeout" : "3600000",
+          "rpc.client.connect.tcpnodelay" : "true",
+          "rpc.client.write.timeout" : "3600000",
+          "input.localread.default.buffersize" : "2097152",
+          "dfs.domain.socket.path" : "/var/lib/hadoop-hdfs/dn_socket",
+          "dfs.client.use.legacy.blockreader.local" : "false",
+          "dfs.client.log.severity" : "INFO",
+          "rpc.client.timeout" : "3600000",
+          "rpc.client.socket.linger.timeout" : "-1",
+          "dfs.client.read.shortcircuit" : "true",
+          "rpc.client.max.idle" : "10000",
+          "input.localread.blockinfo.cachesize" : "1000",
+          "rpc.client.connect.retry" : "10",
+          "output.packetpool.size" : "1024",
+          "rpc.client.read.timeout" : "3600000",
+          "input.connect.timeout" : "600000",
+          "output.read.timeout" : "3600000",
+          "output.default.packetsize" : "65536",
+          "dfs.default.blocksize" : "134217728",
+          "output.replace-datanode-on-failure" : "false",
+          "input.read.timeout" : "3600000",
+          "output.default.write.retry" : "10",
+          "dfs.default.replica" : "3",
+          "output.close.timeout" : "900000",
+          "output.default.chunksize" : "512",
+          "rpc.client.ping.interval" : "10000",
+          "rpc.client.connect.timeout" : "600000",
+          "dfs.client.failover.max.attempts" : "15",
+          "input.read.getblockinfo.retry" : "3",
+          "input.write.timeout" : "3600000",
+          "output.connect.timeout" : "600000",
+          "dfs.prefetchsize" : "10"
         }
       }
     },
@@ -1519,7 +1850,40 @@
     {
       "ranger-kafka-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/kafka/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/kafka/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "true",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/kafka/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
+      }
+    },
+    {
+      "yarn-client" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "rpc.client.timeout" : "3600000",
+          "rpc.client.socket.linger.timeout" : "-1",
+          "rpc.client.connect.tcpnodelay" : "true",
+          "rpc.client.connect.timeout" : "600000",
+          "rpc.client.write.timeout" : "3600000",
+          "rpc.client.max.idle" : "10000",
+          "rpc.client.connect.retry" : "10",
+          "rpc.client.read.timeout" : "3600000",
+          "yarn.client.failover.max.attempts" : "15",
+          "rpc.client.ping.interval" : "10000"
+        }
       }
     },
     {
@@ -1973,6 +2337,35 @@
       }
     },
     {
+      "hawq-site" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "hawq_segment_temp_directory" : "/tmp/hawq/segment",
+          "hawq_segment_directory" : "/data/hawq/segment",
+          "hawq_rm_yarn_app_name" : "hawq",
+          "hawq_master_temp_directory" : "/tmp/hawq/master",
+          "hawq_rm_nvcore_limit_perseg" : "16",
+          "hawq_re_cgroup_hierarchy_name" : "hawq",
+          "hawq_rm_yarn_queue_name" : "default",
+          "hawq_master_address_port" : "5432",
+          "hawq_re_cgroup_mount_point" : "/sys/fs/cgroup",
+          "hawq_dfs_url" : "%HOSTGROUP::master_group_1%:8020/hawq_default",
+          "hawq_re_cpu_enable" : "false",
+          "hawq_rm_yarn_address" : "hawqdatalake-masternode1.fmg0gota4eyuva0dbafvtxvlah.bx.internal.cloudapp.net:8050",
+          "hawq_rm_yarn_scheduler_address" : "hawqdatalake-masternode1.fmg0gota4eyuva0dbafvtxvlah.bx.internal.cloudapp.net:8030",
+          "hawq_standby_address_host" : "%HOSTGROUP::master_group_1%",
+          "hawq_rm_nvseg_perquery_perseg_limit" : "6",
+          "hawq_rm_memory_limit_perseg" : "64GB",
+          "hawq_rm_nvseg_perquery_limit" : "512",
+          "hawq_master_address_host" : "%HOSTGROUP::master_group_2%",
+          "hawq_segment_address_port" : "40000",
+          "default_hash_table_bucket_number" : "18",
+          "hawq_master_directory" : "/data/hawq/master",
+          "hawq_global_rm_type" : "none"
+        }
+      }
+    },
+    {
       "ssl-client" : {
         "properties_attributes" : { },
         "properties" : {
@@ -1987,13 +2380,36 @@
     {
       "ranger-hbase-audit" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
+          "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hbase/audit/hdfs/spool",
+          "xasecure.audit.is.enabled" : "true",
+          "xasecure.audit.destination.hdfs" : "true",
+          "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hbase/audit/solr/spool",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://NAMENODE_HOSTNAME:8020/ranger/audit",
+          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
+          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
+          "xasecure.audit.destination.db" : "false",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
+          "xasecure.audit.destination.solr.zookeepers" : "NONE",
+          "xasecure.audit.provider.summary.enabled" : "true",
+          "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hbase/audit/db/spool",
+          "xasecure.audit.destination.solr.urls" : ""
+        }
       }
     },
     {
       "ranger-kafka-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "hadoop.rpc.protection" : "",
+          "zookeeper.connect" : "localhost:2181",
+          "ranger-kafka-plugin-enabled" : "No",
+          "REPOSITORY_CONFIG_USERNAME" : "kafka",
+          "common.name.for.certificate" : "",
+          "policy_user" : "ambari-qa"
+        }
       }
     },
     {
@@ -2009,13 +2425,26 @@
     {
       "ranger-hbase-plugin-properties" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "REPOSITORY_CONFIG_USERNAME" : "hbase",
+          "ranger-hbase-plugin-enabled" : "No",
+          "common.name.for.certificate" : "",
+          "policy_user" : "ambari-qa"
+        }
       }
     },
     {
       "ranger-hdfs-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.add-hadoop-authorization" : "true",
+          "ranger.plugin.hdfs.policy.rest.ssl.config.file" : "/etc/hadoop/conf/ranger-policymgr-ssl.xml",
+          "ranger.plugin.hdfs.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
+          "ranger.plugin.hdfs.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
+          "ranger.plugin.hdfs.policy.pollIntervalMs" : "30000",
+          "ranger.plugin.hdfs.service.name" : "{{repo_name}}",
+          "ranger.plugin.hdfs.policy.rest.url" : "{{policymgr_mgr_url}}"
+        }
       }
     },
     {
@@ -2051,7 +2480,14 @@
     {
       "ranger-kafka-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "ranger.plugin.kafka.policy.rest.url" : "{{policymgr_mgr_url}}",
+          "ranger.plugin.kafka.policy.rest.ssl.config.file" : "/etc/kafka/conf/ranger-policymgr-ssl.xml",
+          "ranger.plugin.kafka.service.name" : "{{repo_name}}",
+          "ranger.plugin.kafka.policy.pollIntervalMs" : "30000",
+          "ranger.plugin.kafka.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
+          "ranger.plugin.kafka.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache"
+        }
       }
     },
     {
@@ -2106,161 +2542,19 @@
     {
       "ranger-hive-security" : {
         "properties_attributes" : { },
-        "properties" : { }
+        "properties" : {
+          "xasecure.hive.update.xapolicies.on.grant.revoke" : "true",
+          "ranger.plugin.hive.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
+          "ranger.plugin.hive.policy.pollIntervalMs" : "30000",
+          "ranger.plugin.hive.policy.rest.ssl.config.file" : "/usr/hdp/current/hive-server2/conf/conf.server/ranger-policymgr-ssl.xml",
+          "ranger.plugin.hive.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
+          "ranger.plugin.hive.service.name" : "{{repo_name}}",
+          "ranger.plugin.hive.policy.rest.url" : "{{policymgr_mgr_url}}"
+        }
       }
     }
   ],
   "host_groups" : [
-    {
-      "components" : [
-        {
-          "name" : "NODEMANAGER"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "HBASE_REGIONSERVER"
-        },
-        {
-          "name" : "DATANODE"
-        },
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "SUPERVISOR"
-        },
-        {
-          "name" : "ACCUMULO_TSERVER"
-        },
-        {
-          "name" : "SPARK_THRIFTSERVER"
-        },
-        {
-          "name" : "FLUME_HANDLER"
-        },
-        {
-          "name" : "PHOENIX_QUERY_SERVER"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "worker_group",
-      "cardinality" : "3"
-    },
-    {
-      "components" : [
-        {
-          "name" : "MAHOUT"
-        },
-        {
-          "name" : "SPARK_CLIENT"
-        },
-        {
-          "name" : "YARN_CLIENT"
-        },
-        {
-          "name" : "HDFS_CLIENT"
-        },
-        {
-          "name" : "FALCON_CLIENT"
-        },
-        {
-          "name" : "SQOOP"
-        },
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "TEZ_CLIENT"
-        },
-        {
-          "name" : "ZOOKEEPER_CLIENT"
-        },
-        {
-          "name" : "HCAT"
-        },
-        {
-          "name" : "PIG"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "MAPREDUCE2_CLIENT"
-        },
-        {
-          "name" : "SLIDER"
-        },
-        {
-          "name" : "ACCUMULO_CLIENT"
-        },
-        {
-          "name" : "OOZIE_CLIENT"
-        },
-        {
-          "name" : "AMBARI_SERVER"
-        },
-        {
-          "name" : "HBASE_CLIENT"
-        },
-        {
-          "name" : "HIVE_CLIENT"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "ambari_client_group",
-      "cardinality" : "1"
-    },
-    {
-      "components" : [
-        {
-          "name" : "HDFS_CLIENT"
-        },
-        {
-          "name" : "STORM_UI_SERVER"
-        },
-        {
-          "name" : "HISTORYSERVER"
-        },
-        {
-          "name" : "METRICS_MONITOR"
-        },
-        {
-          "name" : "NFS_GATEWAY"
-        },
-        {
-          "name" : "TEZ_CLIENT"
-        },
-        {
-          "name" : "NIMBUS"
-        },
-        {
-          "name" : "SECONDARY_NAMENODE"
-        },
-        {
-          "name" : "HST_AGENT"
-        },
-        {
-          "name" : "ZOOKEEPER_SERVER"
-        },
-        {
-          "name" : "APP_TIMELINE_SERVER"
-        },
-        {
-          "name" : "DRPC_SERVER"
-        },
-        {
-          "name" : "METRICS_COLLECTOR"
-        },
-        {
-          "name" : "RESOURCEMANAGER"
-        }
-      ],
-      "configurations" : [ ],
-      "name" : "master_group_2",
-      "cardinality" : "1"
-    },
     {
       "components" : [
         {
@@ -2348,6 +2642,9 @@
           "name" : "MAPREDUCE2_CLIENT"
         },
         {
+          "name" : "HAWQSTANDBY"
+        },
+        {
           "name" : "HBASE_CLIENT"
         },
         {
@@ -2355,11 +2652,66 @@
         },
         {
           "name" : "HIVE_CLIENT"
+        },
+        {
+          "name" : "PXF"
         }
       ],
       "configurations" : [ ],
       "name" : "master_group_1",
       "cardinality" : "1"
+    },
+    {
+      "components" : [
+        {
+          "name" : "NODEMANAGER"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "SUPERVISOR"
+        },
+        {
+          "name" : "HAWQSEGMENT"
+        },
+        {
+          "name" : "ACCUMULO_TSERVER"
+        },
+        {
+          "name" : "HST_AGENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "HBASE_REGIONSERVER"
+        },
+        {
+          "name" : "DATANODE"
+        },
+        {
+          "name" : "SPARK_THRIFTSERVER"
+        },
+        {
+          "name" : "FLUME_HANDLER"
+        },
+        {
+          "name" : "PHOENIX_QUERY_SERVER"
+        },
+        {
+          "name" : "PXF"
+        }
+      ],
+      "configurations" : [ ],
+      "name" : "worker_group",
+      "cardinality" : "3"
     },
     {
       "components" : [
@@ -2420,6 +2772,64 @@
       ],
       "configurations" : [ ],
       "name" : "master_group_3",
+      "cardinality" : "1"
+    },
+    {
+      "components" : [
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "STORM_UI_SERVER"
+        },
+        {
+          "name" : "HISTORYSERVER"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "NFS_GATEWAY"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "NIMBUS"
+        },
+        {
+          "name" : "SECONDARY_NAMENODE"
+        },
+        {
+          "name" : "HAWQMASTER"
+        },
+        {
+          "name" : "HST_AGENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "APP_TIMELINE_SERVER"
+        },
+        {
+          "name" : "DRPC_SERVER"
+        },
+        {
+          "name" : "METRICS_COLLECTOR"
+        },
+        {
+          "name" : "RESOURCEMANAGER"
+        }
+      ],
+      "configurations" : [ ],
+      "name" : "master_group_2",
       "cardinality" : "1"
     }
   ],
