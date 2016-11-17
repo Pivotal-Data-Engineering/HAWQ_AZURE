@@ -1,53 +1,75 @@
 #!/bin/sh
 
 cluster_size=$1
+resourceMgrTemplate=$2
+resourceMgrTemplateParams=$3
+resourceGroupName=$4
+region=$5
 
-cluster_size="${cluster_size:-small}"
+if [ $# -eq 0 ] ; then
+	echo "\nusage: \n\tprovision.sh <cluster_size> <resourceManagerTemplate> <resourceManagerTemplateParameters> <resourceGroupName> <region>"
+	exit 1
+fi
 
-echo "cluster_size - >$cluster_size"
+if [ -z "$1" ]; then
+    echo "\nplease secify cluster size {small|medium|large}"
+	exit 1
+fi
+if [ -z "$2" ]; then
+    echo "\nplease secify azure resource manager JSON template."
+	exit 1
+fi
+if [ -z "$3" ]; then
+    echo "\nplease secify azure resource manager JSON template parameters."
+	exit 1
+fi
+if [ -z "$4" ]; then
+    echo "\nplease secify azure resource group name."
+	exit 1
+fi
+if [ -z "$5" ]; then
+    echo "\nplease secify azure region. Default is eastus"
+	exit 1
+fi
 
 if [ "$cluster_size" == "small" ]; then
-	MASTERNODES=3
 	DATANODES=3
-	BLUEPRINT_FILENAME=hawqdatalake-blueprint-v1.json
-	BLUEPRINT_TEMPLATE=hawqdl_template_small.json
-	BLUEPRINT_NAME=hawqdatalake_blueprint
+	MASTERNODES=3
+	BLUEPRINT_FILENAME=datalake-ambari-blueprint-small.json
+	BLUEPRINT_TEMPLATE=datalake-ambari-template-small.json
+	BLUEPRINT_NAME=datalake_blueprint
 elif [ "$cluster_size" == "medium" ]; then
 	MASTERNODES=4
 	DATANODES=6
-	BLUEPRINT_FILENAME=mediumcluster_blueprint.json
-	BLUEPRINT_TEMPLATE=mediumcluster_template.json
-	BLUEPRINT_NAME=mediumcluster_blueprint
+	BLUEPRINT_FILENAME=datalake-ambari-blueprint-medium.json
+	BLUEPRINT_TEMPLATE=datalake-ambari-template-medium.json
+	BLUEPRINT_NAME=hawqdatalake_blueprint
 elif [ "$cluster_size" == "large" ]; then
 	MASTERNODES=5
 	DATANODES=12
-	BLUEPRINT_FILENAME=largecluster_blueprint.json
-	BLUEPRINT_TEMPLATE=largecluster_template.json
-	BLUEPRINT_NAME=largecluster_blueprint
+	BLUEPRINT_FILENAME=datalake-ambari-blueprint-large.json
+	BLUEPRINT_TEMPLATE=datalake-ambari-template-large.json
+	BLUEPRINT_NAME=hawqdatalake_blueprint
 fi
-
-echo "MASTERNODES=$MASTERNODES,		DATANODES=$DATANODES"
-
-
+echo "\n"
 figlet -f digital Pivotal Software
+echo "\n"
+echo "************************************************************************************************"
+echo "\n"
+echo "Provision a Hortonworks hadoop cluster with Pivotal Hawq with below specification."
+echo "cluster_size -> $cluster_size [ $MASTERNODES master nodes, and $DATANODES data nodes. ]"
+echo "Resource Manager Template -> $resourceMgrTemplate"
+echo "Resource Mangaer Parameters -> $resourceMgrTemplateParams"
+echo "Resource Group name -> $resourceGroupName"
+echo "\n"
+echo "************************************************************************************************"
 
-rgName=hawqdatalakeRG
-
-deployTemplateFile=hdp-hawq-datalake-azure.json
-
-#hdp-hawq-datalake-azure.json
-
-parameterFile=hdp-hawq-datalake-azure_parameters.json
-
-#echo "Creating Azure resource group $rgName in region eastus...."
-
-#azure group create -n $rgName -l eastus
-
-echo "Running deployment in group $rgName using $deployTemplateFile and $parameterFile ......"
-
-azure group deployment create -d All -g $rgName -f $deployTemplateFile -e $parameterFile
-
+echo "\nCreating Azure resource group $resourceGroupName in region eastus...."
+azure group create -n $resourceGroupName -l $region
+echo "\nRunning deployment in group $resourceGroupName using $resourceMgrTemplate and $resourceMgrTemplateParams ......"
+azure group deployment create -d All -g $resourceGroupName -f $resourceMgrTemplate -e $resourceMgrTemplateParams
+echo "\ninvoking postprovision script......"
 ./post-provision.sh $MASTERNODES $DATANODES $BLUEPRINT_FILENAME $BLUEPRINT_TEMPLATE $BLUEPRINT_NAME
-
+echo "\n Finished provisioning the cluster."
 
 
