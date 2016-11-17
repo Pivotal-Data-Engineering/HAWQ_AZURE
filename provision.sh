@@ -35,20 +35,20 @@ fi
 if [ "$cluster_size" == "small" ]; then
 	DATANODES=3
 	MASTERNODES=3
-	BLUEPRINT_FILENAME=datalake-ambari-blueprint-small.json
-	BLUEPRINT_TEMPLATE=datalake-ambari-template-small.json
+	BLUEPRINT_FILENAME=hdp-small-cluster.json
+	BLUEPRINT_TEMPLATE=hdp-small-cluster-template.json
 	BLUEPRINT_NAME=datalake_blueprint
 elif [ "$cluster_size" == "medium" ]; then
 	MASTERNODES=4
 	DATANODES=6
-	BLUEPRINT_FILENAME=datalake-ambari-blueprint-medium.json
-	BLUEPRINT_TEMPLATE=datalake-ambari-template-medium.json
+	BLUEPRINT_FILENAME=hdp-medium-cluster.json
+	BLUEPRINT_TEMPLATE=hdp-medium-cluster-template.json
 	BLUEPRINT_NAME=hawqdatalake_blueprint
 elif [ "$cluster_size" == "large" ]; then
 	MASTERNODES=5
 	DATANODES=12
-	BLUEPRINT_FILENAME=datalake-ambari-blueprint-large.json
-	BLUEPRINT_TEMPLATE=datalake-ambari-template-large.json
+	BLUEPRINT_FILENAME=hdp-large-cluster.json
+	BLUEPRINT_TEMPLATE=hdp-large-cluster-template.json
 	BLUEPRINT_NAME=hawqdatalake_blueprint
 fi
 echo "\n"
