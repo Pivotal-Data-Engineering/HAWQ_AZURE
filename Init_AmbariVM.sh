@@ -12,9 +12,6 @@ service iptables stop
 chkconfig iptables off
 chkconfig ip6tables off
 
-hostname edgenode.hawqdatalake.com
-echo '`hostname -I`	edgenode.hawqdatalake.com	edgenode'  >> /etc/hosts
-service network restart
 
 #sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
 

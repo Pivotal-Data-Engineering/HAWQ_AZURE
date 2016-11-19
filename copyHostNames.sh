@@ -5,19 +5,21 @@ DATANODES=$2
 
 rm -f /home/pivotpde/hdphosts.txt
 
-
+#sed -i "s/.*edgenode.*/edgenode.hawqdatalake.com/g" /etc/sysconfig/network
+sed -i "s/.*`hostname`*/`hostname`.hawqdatalake.com/g" /etc/sysconfig/network
+hostname edgenode.hawqdatalake.com
+echo '`hostname -I`	edgenode.hawqdatalake.com	edgenode'  >> /etc/hosts
+service network restart
 
 echo "getting hostnames and ip for masternodes ....."
 startIp=5
 
 for (( c=1; c<=$MASTERNODES; c++ ))
 do
+	sed -i "s/.*`hostname`*/`hostname`.hawqdatalake.com/g" /etc/sysconfig/network
     ssh 10.0.0.$startIp "sudo su -c hostname `hostname`.hawqdatalake.com"
     ssh 10.0.0.$startIp "sudo su -c sudo su -c service network restart"   
-    echo "" >> /home/pivotpde/hdphosts.txt
-    ssh 10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
-	
-	
+    echo "" >> /home/pivotpde/hdphosts.txt	
 	echo "10.0.0.$startIp	masternode$d.hawqdatalake.com	masternode$d">> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
@@ -27,6 +29,7 @@ echo "getting hostnames and ip for datanodes ...."
 startIp=11
 for (( d=1; d<=$DATANODES; d++ ))
 do
+	sed -i "s/.*`hostname`*/`hostname`.hawqdatalake.com/g" /etc/sysconfig/network
     ssh 10.0.0.$startIp "sudo su -c hostname `hostname`.hawqdatalake.com"
     ssh 10.0.0.$startIp "sudo su -c sudo su -c service network restart"   
    echo "" >> /home/pivotpde/hdphosts.txt
