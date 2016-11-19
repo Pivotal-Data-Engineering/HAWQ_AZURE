@@ -49,7 +49,7 @@ wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/amb
 echo "install ambari agent....."
 yum install -y ambari-agent
 echo "setup the ambari server name in /etc/ambari-agent/conf/ambari-agent.ini"
-sed -i 's/hostname=localhost/hostname=datalake-client/g' /etc/ambari-agent/conf/ambari-agent.ini
+sed -i 's/hostname=localhost/hostname=edgenode.hawqdatalake.com/g' /etc/ambari-agent/conf/ambari-agent.ini
 
 echo "installing epel repo...."
 yum install -y epel-release

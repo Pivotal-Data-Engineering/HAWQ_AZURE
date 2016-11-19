@@ -33,8 +33,8 @@ if [ -z "$5" ]; then
 fi
 
 if [ "$cluster_size" == "small" ]; then
-	DATANODES=3
-	MASTERNODES=3
+	DATANODES=1
+	MASTERNODES=1
 	BLUEPRINT_FILENAME=hdp-small-cluster.json
 	BLUEPRINT_TEMPLATE=hdp-small-cluster-template.json
 	BLUEPRINT_NAME=datalake_blueprint

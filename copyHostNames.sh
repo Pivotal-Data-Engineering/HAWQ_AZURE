@@ -5,23 +5,32 @@ DATANODES=$2
 
 rm -f /home/pivotpde/hdphosts.txt
 
+
+
 echo "getting hostnames and ip for masternodes ....."
 startIp=5
+
 for (( c=1; c<=$MASTERNODES; c++ ))
 do
-   echo "" >> /home/pivotpde/hdphosts.txt	
-   ssh 10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
+    ssh 10.0.0.$startIp "sudo su -c hostname `hostname`.hawqdatalake.com"
+    ssh 10.0.0.$startIp "sudo su -c sudo su -c service network restart"   
+    echo "" >> /home/pivotpde/hdphosts.txt
+    ssh 10.0.0.$startIp 'hostname -I;hostname -f;hostname '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
+	
+	
+	echo "10.0.0.$startIp	masternode$d.hawqdatalake.com	masternode$d">> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
-
 
 echo "getting hostnames and ip for datanodes ...."
 
 startIp=11
 for (( d=1; d<=$DATANODES; d++ ))
 do
-   echo "" >> /home/pivotpde/hdphosts.txt	
-   ssh 10.0.0.$startIp 'hostname -I;datanode$d.datalake.com;datanode$ '| tr '\n' "      ">> /home/pivotpde/hdphosts.txt
+    ssh 10.0.0.$startIp "sudo su -c hostname `hostname`.hawqdatalake.com"
+    ssh 10.0.0.$startIp "sudo su -c sudo su -c service network restart"   
+   echo "" >> /home/pivotpde/hdphosts.txt
+   echo "10.0.0.$startIp	datanode$d.hawqdatalake.com	datanode$d">> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
 
