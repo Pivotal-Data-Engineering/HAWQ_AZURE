@@ -16,7 +16,7 @@ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod 640 /ho
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com   chmod 600 /home/pivotpde/.ssh/id_rsa
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod 640 /home/pivotpde/.ssh/id_rsa.pub
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod 700 /home/pivotpde/.ssh
-
+##
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com 'sudo su -c "mkdir -p /root/.ssh"'
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com 'sudo su -c "cp /home/pivotpde/.ssh/* /root/.ssh"'
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com 'sudo su -c "cp /home/pivotpde/.ssh/authorized_keys /root/.ssh" '
@@ -25,13 +25,11 @@ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com 'sudo su -c "
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com 'sudo su -c "chmod 640 /root/.ssh/authorized_keys"'
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com 'sudo su -c "chmod 700 /root/.ssh"'
 echo "Finished setting up ssh configurations."
-##
-##
 echo "copying the file copyHostNames.sh to ambari node...."
 scp $sshOptions copyHostNames.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
 echo "making file /home/pivotpde/copyHostNames.sh executable on ambari host...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/copyHostNames.sh
-##
+####
 echo "running /home/pivotpde/copyHostNames.sh $MASTERNODES $DATANODES ...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh copyHostNames.sh $MASTERNODES $DATANODES
 echo "Finished setting up host configurations."

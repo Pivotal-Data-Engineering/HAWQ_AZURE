@@ -11,7 +11,7 @@ sed -i -e 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 service iptables stop
 chkconfig iptables off
 chkconfig ip6tables off
-sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
+#sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
 
 yum install -y ntp
 chkconfig ntpd on
