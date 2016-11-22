@@ -2,41 +2,39 @@
 
 MASTERNODES=$1
 DATANODES=$2
+datalake-ambari-template-small.json
 
-rm -f /home/pivotpde/hdphosts.txt
-
-#sed -i "s/.*edgenode.*/edgenode.hawqdatalake.com/g" /etc/sysconfig/network
-sed -i "s/.*`hostname`*/`hostname`.hawqdatalake.com/g" /etc/sysconfig/network
-hostname edgenode.hawqdatalake.com
-echo '`hostname -I`	edgenode.hawqdatalake.com	edgenode'  >> /etc/hosts
+echo "setting hostname for ambari node ..."
+host=`hostname`
+hostfqdn=$host.hawqdatalake.com
+hostname $hostfqdn
+ipaddr=`hostname -I`
+echo "$ipaddr       $hostfqdn       $host" >> /etc/hosts
 service network restart
 
-echo "getting hostnames and ip for masternodes ....."
+echo "setting hostnames and ip for masternodes ....."
 startIp=5
-
 for (( c=1; c<=$MASTERNODES; c++ ))
 do
-	sed -i "s/.*`hostname`*/`hostname`.hawqdatalake.com/g" /etc/sysconfig/network
-    ssh 10.0.0.$startIp "sudo su -c hostname `hostname`.hawqdatalake.com"
-    ssh 10.0.0.$startIp "sudo su -c sudo su -c service network restart"   
-    echo "" >> /home/pivotpde/hdphosts.txt	
-	echo "10.0.0.$startIp	masternode$d.hawqdatalake.com	masternode$d">> /home/pivotpde/hdphosts.txt
+    mhost=$(ssh 10.0.0.$startIp sudo su -c hostname)
+    mhostfqdn=$mhost.hawqdatalake.com
+    ssh 10.0.0.$startIp "hostname $mhostfqdn"
+    echo "10.0.0.$startIp       $mhostfqdn      $mhost" >> /home/pivotpde/hdphosts.txt
+    ssh 10.0.0.$startIp "service network restart"
    ((startIp = startIp + 1))
 done
 
-echo "getting hostnames and ip for datanodes ...."
-
+echo "setting hostnames and ip for datanodes ...."
 startIp=11
 for (( d=1; d<=$DATANODES; d++ ))
 do
-	sed -i "s/.*`hostname`*/`hostname`.hawqdatalake.com/g" /etc/sysconfig/network
-    ssh 10.0.0.$startIp "sudo su -c hostname `hostname`.hawqdatalake.com"
-    ssh 10.0.0.$startIp "sudo su -c sudo su -c service network restart"   
-   echo "" >> /home/pivotpde/hdphosts.txt
-   echo "10.0.0.$startIp	datanode$d.hawqdatalake.com	datanode$d">> /home/pivotpde/hdphosts.txt
+    dhost=$(ssh 10.0.0.$startIp sudo su -c hostname)
+    dhostfqdn=$dhost.hawqdatalake.com
+    ssh 10.0.0.$startIp "hostname $dhostfqdn"
+    echo "10.0.0.$startIp       $dhostfqdn       $dhost"  >> /home/pivotpde/hdphosts.txt
+    ssh 10.0.0.$startIp "service network restart"
    ((startIp = startIp + 1))
 done
-
 sudo su -c "cat hdphosts.txt >> /etc/hosts"
 
 echo "copying hosts info to masternodes ....... "

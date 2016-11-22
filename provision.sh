@@ -33,8 +33,8 @@ if [ -z "$5" ]; then
 fi
 
 if [ "$cluster_size" == "small" ]; then
-	DATANODES=1
-	MASTERNODES=1
+	DATANODES=3
+	MASTERNODES=3
 	BLUEPRINT_FILENAME=hdp-small-cluster.json
 	BLUEPRINT_TEMPLATE=hdp-small-cluster-template.json
 	BLUEPRINT_NAME=datalake_blueprint
@@ -70,6 +70,6 @@ echo "\nRunning deployment in group $resourceGroupName using $resourceMgrTemplat
 azure group deployment create -d All -g $resourceGroupName -f $resourceMgrTemplate -e $resourceMgrTemplateParams
 echo "\ninvoking postprovision script......"
 ./post-provision.sh $MASTERNODES $DATANODES $BLUEPRINT_FILENAME $BLUEPRINT_TEMPLATE $BLUEPRINT_NAME
-echo "\n Finished provisioning the cluster."
+#echo "\n Finished provisioning the cluster."
 
 

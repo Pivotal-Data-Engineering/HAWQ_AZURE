@@ -16,7 +16,11 @@ setenforce 0
 
 #disable iptables
 service iptables stop
+service ip6tables stop
 chkconfig iptables off
+chkconfig ip6tables off
+chkconfig iptables --del
+chkconfig ip6tables --del
 
 #Disable  Transparent Huge Pages 
 echo "if test -f /sys/kernel/mm/transparent_hugepage/enabled; then echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled fi if test -f /sys/kernel/mm/transparent_hugepage/defrag; then echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag fi" >> /etc/rc.local

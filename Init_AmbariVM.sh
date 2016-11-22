@@ -11,7 +11,8 @@ sed -i -e 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 service iptables stop
 chkconfig iptables off
 chkconfig ip6tables off
-
+chkconfig iptables --del
+chkconfig ip6tables --del
 
 #sudo su -c "{ echo -n '`hostname -I`     '; echo -n '`hostname -f`     '; echo `hostname`; } >> /etc/hosts"
 
