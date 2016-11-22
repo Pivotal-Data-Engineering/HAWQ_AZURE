@@ -1,0 +1,66 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+  	"resourceAPIVersion": {
+         "value": "2015-06-15"
+  	 } , 
+      "location": {
+        "value": "eastus"
+      },
+      "adminUserName": {
+        "value": "pivotpde"
+      },
+      "adminPublicKey": {
+ 		"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAR2jJKidyJxQsKXy3f4d6LO74BcKg6fzUUM05PnxCCe2/dnNNkHNgzugMcb4m7uYPSJVJZnbmVFORWAqt5p1ecdmYJhoqKdwIikXJBPQg+oAvs6anK96pWuvOT115nvjX4+o6FSTRuBD7h6zTcHwx4moTB13kDt2oDF0RtAZquYqrPlQq32jTbM+rNxTG0ZuMbuSbSF2R4j+ty3tCLfj09Yy+/nFvpciB7bs7jZ1dCCUMLJujjkzBBpzqkTM4onK1mbHUeWwYjuFM+gwHg5QaOnya5bFF7eNkY1jfPezAUC6nIyG2Q3wyZAzxDMWq1E50LRqYWdLrPyp7C2/vmzmR pivotpde@pivotal.io"
+     },
+     "adminPassword": {
+       "value": "Hawq@123"
+     },
+    "clientVmSize": {
+      "value": "Standard_DS14"
+  	},
+    "resourceGroupName": {
+	    "value": "datalakeRG"
+    },
+    "storageAccountPrefix": {     
+      "value": "datalakestrgacct"
+    },
+    "storageAccountType": {     
+      "value": "Premium_LRS"
+    },
+    "genericNamePrefix": {     
+      "value": "datalake"
+    },
+    "dnsNamePrefix": {
+      "value": "datalake"
+    },
+    "virtualNetworkNamePrefix": {
+      "value": "datalakeVnet"
+    },
+    "subnetNamePrefix": {     
+      "value": "datalakeSubnet"
+    },
+    "NetworkInterfaceNamePrefix": {
+      "value": "datalakeNic"
+    },
+	"clusterFootprint": {
+		"value": "small"
+	},
+    "hdpVmSize": {
+      "value": "Standard_DS14"
+  	},
+	"prepareDiskScript": {
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/vm-disk-utils-centos.sh?token=AH2u3a9-VVqGm4lrc5Z7uD6nXxAE1Ap9ks5YNbZewA%3D%3D"		          
+	},
+	"initHdpVMScript" : {
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3YegbdeeJjdJKDuC3SvPrC8SZOOxks5YOThCwA%3D%3D"
+		      
+	},
+	"initAmbariVMScript": {
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3Y_Dr9s8ZjMj-LyJuZvb1WYEFP31ks5YOTgrwA%3D%3D"
+		
+		          
+	}
+  }
+}

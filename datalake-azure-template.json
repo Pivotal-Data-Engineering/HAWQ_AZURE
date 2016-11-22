@@ -1,0 +1,300 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+	"resourceAPIVersion": {
+        "type": "string",
+		"metadata": {
+          "description": "version for resource"
+        }
+	} , 
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Deployment region location"
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin user name for the VMs"
+      }
+    },	
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin password for the VMs"
+      }
+    },
+    "adminPublicKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin publickey for the VMs"
+      }
+    },
+    "hdpVmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop VM type"
+      }
+    },
+    "clientVmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Client VM type"
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique namespace for resource group to datalake provisioning"
+      }
+    },
+    "storageAccountPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique namespace for the Storage Account where the VM disks will be placed "
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "metadata": {
+        "description": "The type of the Storage Account"
+      }
+    },
+    "genericNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "DNS Label for the Public IP. Must be lowercase"
+      }
+    },
+    "dnsNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "DNS Label for the Public IP. Must be lowercase."
+      }
+    },
+    "virtualNetworkNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop VNet name "
+      }
+    },
+    "subnetNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop Subnet Name "
+      }
+    },
+    "NetworkInterfaceNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Hadoop NIC name (default is datalake-NIC)"
+      }
+    },
+	"clusterFootprint": {
+	      "type": "string",
+	      "metadata": {
+	        "description": "Specify either small or medium or large"
+	      }
+	    }
+  },
+  "variables": {
+ 	"clusterSizes" : {
+		"small": {
+		    "masterNodesCount": 3,
+			"dataNodesCount": 3
+		},
+		"medium": {
+		    "masterNodesCount": 4,
+			"dataNodesCount": 6
+		},
+		"large": {
+		    "masterNodesCount": 5,
+			"dataNodesCount": 10
+		}
+		
+    },  
+   "currentClusterSize": "[variables('clusterSizes')[parameters('clusterFootprint')]]",
+   "masterNodeCount": "[variables('currentClusterSize').masterNodesCount]",
+   "dataNodeCount": "[variables('currentClusterSize').dataNodesCount]",
+   "TotalHDPclusterNodes": "[add(variables('masterNodeCount'), variables('dataNodeCount'))]",
+   
+    "clientStorageAccountName": "[concat('cli', parameters('storageAccountPrefix'))]",
+    "vNetName": "[ concat(parameters('virtualNetworkNamePrefix'), '-1') ]",
+    "subnetName": "[ concat(parameters('subnetNamePrefix'), '-1') ]",
+    "pubIPName": "[ concat(parameters('genericNamePrefix'), '-publicIP') ]",
+    "nicName": "[ concat(parameters('NetworkInterfaceNamePrefix'), '-1') ]",
+    "vnetRef": "[resourceId('Microsoft.Network/virtualNetworks', variables('vNetName') ) ]",
+    "subnetRef": "[concat(variables('vnetRef'),'/subnets/', variables('subnetName') ) ]",
+    "clientVMName": "[ concat(parameters('genericNamePrefix'), '-clientvm') ]",
+	"clientVMOSDiskName": "osDiskforDataLakeClient",
+	"clientVMDataDiskName": "dataDiskforDataLakeClient",
+	"segmentDataDiskSize": 1023,
+	"clientVMInstallScriptUri": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_Ambari_Node.sh?token=AH2u3X6D62kMnIVr9RuV_nk0D6WyImLBks5YEsUrwA%3D%3D"
+  
+  
+  
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[ variables('clientStorageAccountName') ]",
+      "apiVersion": "[parameters('resourceAPIVersion')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "[parameters('storageAccountType')]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[ variables('pubIPName') ]",
+      "apiVersion": "[ parameters('resourceAPIVersion') ]",
+      "location": "[ resourceGroup().location ]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[ parameters('dnsNamePrefix') ]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[ variables('vNetName') ]",
+      "apiVersion": "[parameters('resourceAPIVersion')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[ variables('subnetName') ]",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[ variables('nicName') ]",
+      "apiVersion": "[parameters('resourceAPIVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('pubIPName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('clientStorageAccountName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pubIPName')) ]"
+              },
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[ variables('clientVMName') ]",
+      "apiVersion": "[parameters('resourceAPIVersion')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[ concat( 'Microsoft.Network/networkInterfaces/', variables('nicName') ) ]",
+        "[ concat( 'Microsoft.Storage/storageAccounts/', variables('clientStorageAccountName') ) ]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[ parameters('clientVmSize') ]"
+        },
+        "osProfile": {
+          "computerName": "[variables('clientVMName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+		  "adminPassword": "[parameters('adminPassword')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "false",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                  "keyData": "[parameters('adminPublicKey')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "OpenLogic",
+            "offer": "CentOS",
+            "sku": "6.7",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[concat(variables('clientVMName'), 'osdisk')]",
+            "vhd": {
+			  "uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMOSDiskName'),'.vhd')]"
+			  
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk0",
+              "diskSizeGB": "[variables('segmentDataDiskSize')]",
+              "lun": 0,
+              "vhd": {
+				"uri": "[concat('http://',variables('clientStorageAccountName'), '.blob.core.windows.net/',variables('clientVMName'),'/',variables('clientVMDataDiskName'),'.vhd')]"
+              },
+              "caching": "None",
+              "createOption": "Empty"
+            }           
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName') ) ]"
+            }
+          ]
+        }
+      }
+    },
+	{
+		"type": "Microsoft.Compute/virtualMachines/extensions",
+		"name": "[concat(variables('clientVMName'),'/installambari')]",
+		"apiVersion": "[parameters('resourceAPIVersion')]",
+		"location": "[resourceGroup().location]",
+		"dependsOn": [
+			 "[concat('Microsoft.Compute/virtualMachines/', variables('clientVMName'))]"
+		],
+		 "properties": {
+		        "publisher": "Microsoft.OSTCExtensions",
+		         "type": "CustomScriptForLinux",
+		         "typeHandlerVersion": "1.2",
+		         "settings": {
+		            "fileUris": [
+		                "[variables('clientVMInstallScriptUri')]"
+		            ],
+					"commandToExecute": "[concat('sh Init_Ambari_Node.sh ', parameters('adminUserName') , ' >> /home/$ADMINUSER/initialize-datanode.log 2>&1')]"
+		         }
+		 }
+	}	 
+  ],
+  "outputs": {
+    
+  }
+}
