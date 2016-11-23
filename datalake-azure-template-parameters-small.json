@@ -54,7 +54,7 @@
 		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/vm-disk-utils-centos.sh?token=AH2u3a9-VVqGm4lrc5Z7uD6nXxAE1Ap9ks5YNbZewA%3D%3D"		          
 	},
 	"initHdpVMScript" : {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3YegbdeeJjdJKDuC3SvPrC8SZOOxks5YOThCwA%3D%3D"
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3XWHIy96o0F6Fq2azuDVSp27QQ5gks5YPvfjwA%3D%3D"
 		      
 	},
 	"initAmbariVMScript": {
