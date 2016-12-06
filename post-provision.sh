@@ -40,12 +40,12 @@ echo "Finished setting up host configurations."
 #echo "replace DOMAIN_NAME with $dldsndomainname in $BLUEPRINT_TEMPLATE ...."
 #sed -i -e "s/.DOMAIN_NAME/.${dldsndomainname}/g" $BLUEPRINT_TEMPLATE
 
-echo "registering the ambari blueprint......"
-curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
+#echo "registering the ambari blueprint......"
+#curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
 
-echo "submitting the HDP cluster install ..."
-curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
-echo "cluster install request submitted. check status on the ambari console."
+#echo "submitting the HDP cluster install ..."
+#curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
+#echo "cluster install request submitted. check status on the ambari console."
 
 #echo "replace $dldsndomainname with DOMAIN_NAME in $BLUEPRINT_TEMPLATE ...."
 #sed -i -e "s/.${dldsndomainname}/.DOMAIN_NAME/g" $BLUEPRINT_TEMPLATE
