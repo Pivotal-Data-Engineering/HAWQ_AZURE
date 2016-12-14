@@ -239,7 +239,7 @@ scan_partition_format()
             echo "${DISK} is not partitioned, partitioning"
             do_partition ${DISK}
         fi
-		sleep 30
+		#sleep 30
         PARTITION=$(fdisk -l ${DISK}|grep -A 1 Device|tail -n 1|awk '{print $1}')
 		echo "PARTITION -> $PARTITION"
         has_filesystem ${PARTITION}
@@ -247,13 +247,13 @@ scan_partition_format()
         then
             echo "Creating filesystem on ${PARTITION}."
     #        echo "Press Ctrl-C if you don't want to destroy all data on ${PARTITION}"
-        	sleep 10
+        	#sleep 10
             mkfs -t ext4 ${PARTITION}
         fi
         MOUNTPOINT=$(get_next_mountpoint)
         echo "Next mount point appears to be ${MOUNTPOINT}"
         [ -d "${MOUNTPOINT}" ] || mkdir -p "${MOUNTPOINT}"
-		sleep 10
+		#sleep 10
 		echo "reading the UUID ....."
 		#read UUID FS_TYPE << ( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3" "$5}'|tr -d "\"" )
 	    UUID=$( blkid -u filesystem ${PARTITION}|awk -F "[= ]" '{print $3}' | sed 's/"//g' )
