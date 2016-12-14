@@ -51,14 +51,14 @@
       "value": "Standard_DS14"
   	},
 	"prepareDiskScript": {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/vm-disk-utils-centos.sh?token=AH2u3R-Yh2WfRKVLAZeyAfg-yBD-3Cmxks5YTynGwA%3D%3D"		          
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/vm-disk-utils-centos.sh?token=AH2u3Qh6cxO5WbkRcNkkmr-HUlmu-7Qyks5YUBetwA%3D%3D"		          
 	},
 	"initHdpVMScript" : {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3eP0gd1wIpXBWBDvu6RT84a9vUweks5YTymrwA%3D%3D"
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3aXTM-f2ss3dIbZ8BzvPOXlHeCFIks5YUBd7wA%3D%3D"
 		      
 	},
 	"initAmbariVMScript": {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3fFatX-nN9rUwJpNznlkwh8L57feks5YTymLwA%3D%3D"
+		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3VFQREzWp-JRJ5X7M9xpi6nBQyz0ks5YUBdgwA%3D%3D"
 		
 		          
 	}

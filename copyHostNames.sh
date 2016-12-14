@@ -16,7 +16,7 @@ for (( c=0; c<$MASTERNODES; c++ ))
 do
     mhost=masternode$c
     mhostfqdn=$mhost.hawqdatalake.com
-    ssh 10.0.0.$startIp "sudo su -c hostname $mhostfqdn"
+    ssh 10.0.0.$startIp 'sudo su -c "hostname $mhostfqdn"'
     echo "10.0.0.$startIp       $mhostfqdn      $mhost" >> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
@@ -27,7 +27,7 @@ for (( d=0; d<$DATANODES; d++ ))
 do
     dhost=datanode$d
     dhostfqdn=$dhost.hawqdatalake.com
-    ssh 10.0.0.$startIp "sudo su -c hostname $dhostfqdn"
+    ssh 10.0.0.$startIp 'sudo su -c "hostname $dhostfqdn"'
     echo "10.0.0.$startIp       $dhostfqdn       $dhost"  >> /home/pivotpde/hdphosts.txt
    ((startIp = startIp + 1))
 done
@@ -44,8 +44,8 @@ startIp=5
 for (( e=0; e<$MASTERNODES; e++ ))
 do
    sudo su -c "scp /etc/hosts root@10.0.0.$startIp:/etc/hosts "
-   ssh 10.0.0.$startIp "sudo su -c service network restart"
-   ssh 10.0.0.$startIp "sudo su -c setenforce 0"
+   ssh 10.0.0.$startIp 'sudo su -c "service network restart"'
+   ssh 10.0.0.$startIp 'sudo su -c "setenforce 0"'
    ((startIp = startIp + 1))
 done
 
@@ -54,8 +54,8 @@ startIp=11
 for (( f=0; f<$DATANODES; f++ ))
 do
    sudo su -c "scp /etc/hosts root@10.0.0.$startIp:/etc/hosts "
-   ssh 10.0.0.$startIp "sudo su -c service network restart"
-   ssh 10.0.0.$startIp "sudo su -c setenforce 0"
+   ssh 10.0.0.$startIp 'sudo su -c "service network restart"'
+   ssh 10.0.0.$startIp 'sudo su -c "setenforce 0"'
    ((startIp = startIp + 1))
 done
 
@@ -78,4 +78,3 @@ do
     echo " finished executing script on host 10.0.0.$startIp."
 	((startIp = startIp + 1))
 done
-
