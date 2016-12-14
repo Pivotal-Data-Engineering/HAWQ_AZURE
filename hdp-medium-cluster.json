@@ -1261,7 +1261,8 @@
       "hawq-env" : {
         "properties_attributes" : { },
         "properties" : {
-          "hawq_ssh_exkeys" : "true"
+          "hawq_ssh_exkeys" : "true",
+		  "hawq_password" : "Gpadmin1"
         }
       }
     },
@@ -2036,7 +2037,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_7",
+      "name" : "master_host_group_4",
       "cardinality" : "1"
     },
     {
@@ -2112,7 +2113,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_2",
+      "name" : "worker_host_group",
       "cardinality" : "1"
     },
     {
@@ -2149,7 +2150,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_1",
+      "name" : "worker_host_group",
       "cardinality" : "5"
     },
     {
@@ -2201,7 +2202,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_4",
+      "name" : "master_host_group_1",
       "cardinality" : "1"
     },
     {
@@ -2259,7 +2260,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_3",
+      "name" : "client_host_group",
       "cardinality" : "1"
     },
     {
@@ -2311,7 +2312,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_6",
+      "name" : "master_host_group_3",
       "cardinality" : "1"
     },
     {
@@ -2345,7 +2346,7 @@
         }
       ],
       "configurations" : [ ],
-      "name" : "host_group_5",
+      "name" : "master_host_group_2",
       "cardinality" : "1"
     }
   ],

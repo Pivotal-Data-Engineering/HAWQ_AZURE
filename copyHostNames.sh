@@ -73,8 +73,8 @@ echo "start ambari agent on data nodes...."
 startIp=11
 for (( h=0; h<$DATANODES; h++ ))
 do
-    echo "start ambari agent on host 10.0.0.$startIp ......"
-    ssh root@10.0.0.$startIp ambari-agent restart
-    echo " finished executing script on host 10.0.0.$startIp."
+   echo "start ambari agent on host 10.0.0.$startIp ......"
+   ssh root@10.0.0.$startIp ambari-agent restart
+   echo " finished executing script on host 10.0.0.$startIp."
 	((startIp = startIp + 1))
 done
