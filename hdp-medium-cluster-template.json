@@ -35,11 +35,8 @@
   	        ]
   	    },
  	   {
- 	   		"name" : "worker_host_group",
+ 	   		"name" : "worker_host_group_1",
  	    	"hosts" : [
-				{
-				    "fqdn" : "datanode0.hawqdatalake.com"
-				},
 				{
 				    "fqdn" : "datanode1.hawqdatalake.com"
 				},
@@ -51,12 +48,20 @@
 				},
 				{
 				    "fqdn" : "datanode4.hawqdatalake.com"
-				},
-				{
-				    "fqdn" : "datanode5.hawqdatalake.com"
 				}
  	        ]
  	    },
+  	   {
+  	   		"name" : "worker_host_group_2",
+  	    	"hosts" : [
+ 				{
+ 				    "fqdn" : "datanode0.hawqdatalake.com"
+ 				},
+ 				{
+ 				    "fqdn" : "datanode5.hawqdatalake.com"
+ 				}
+  	        ]
+  	    },
   	   {
   	   		"name" : "client_host_group",
   	    	"hosts" : [
