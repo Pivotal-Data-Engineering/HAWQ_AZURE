@@ -32,7 +32,9 @@ echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
 echo never > /sys/kernel/mm/transparent_hugepage/defrag
 
 echo "Downloading Ambari repo....."
-wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
+#wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
+wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.4.1.0/ambari.repo -P /etc/yum.repos.d/
+
 echo "installing ambari server ...."
 yum install -y ambari-server
 echo "running ambari setup with defaults....."
@@ -58,8 +60,11 @@ mkdir /staging
 chmod a+rx /staging
 echo "downloading hawq software ...."
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token y7BWf35sarZ6g46GpeLM" -X GET https://network.pivotal.io/api/v2/authentication
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token y7BWf35sarZ6g46GpeLM" -X GET https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/2397/eula_acceptance
-wget -O "Pivotal_HDB.tar.gz" -P "/staging" --post-data="" --header="Authorization: Token y7BWf35sarZ6g46GpeLM" https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/2397/product_files/7634/download
+#curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token y7BWf35sarZ6g46GpeLM" -X GET https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/2397/eula_acceptance
+#wget -O "Pivotal_HDB.tar.gz" -P "/staging" --post-data="" --header="Authorization: Token y7BWf35sarZ6g46GpeLM" https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/2397/product_files/7634/download
+
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token y7BWf35sarZ6g46GpeLM" -X GET https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/3466/eula_acceptance
+wget -O "Pivotal_HDB.tar.gz" -P "/staging" --post-data="" --header="Authorization: Token y7BWf35sarZ6g46GpeLM" https://network.pivotal.io/api/v2/products/pivotal-hdb/releases/3466/product_files/10946/download
 echo "extracting hawq download ...."
 tar -zxvf Pivotal_HDB.tar.gz -C /staging
 echo "setting local hawq repo ...."
@@ -69,12 +74,12 @@ ambari-server restart
 
 echo "Installing hawq-ambari-plugin ...."
 yum install -y hawq-ambari-plugin
-/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.4
+/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.5
 ambari-server restart
 
 echo "install hawq plugin..."
 yum install -y hawq-ambari-plugin
-/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.4
+/var/lib/hawq/add-hawq.py --user admin --password admin --stack HDP-2.5
 ambari-server restart
 
 echo "Finished executing the initAmbariVM."

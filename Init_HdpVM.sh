@@ -48,7 +48,8 @@ echo "installing epel repo...."
 yum install -y epel-release
 
 echo "setting ambari repo on 10.0.0.$startIp......"
-ssh root@10.0.0.$startIp wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
+#ssh root@10.0.0.$startIp wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
+ssh root@10.0.0.$startIp wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.4.1.0/ambari.repo -P /etc/yum.repos.d/
 
 echo "install ambari agent on 10.0.0.$startIp....."
 ssh root@10.0.0.$startIp yum install -y ambari-agent
