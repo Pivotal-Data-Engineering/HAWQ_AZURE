@@ -31,7 +31,7 @@ echo never > /sys/kernel/mm/transparent_hugepage/enabled
 echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
 echo never > /sys/kernel/mm/transparent_hugepage/defrag
 
-#installl and enable ntp
+#install and enable ntp
 yum install -y ntp
 chkconfig ntpd on
 service ntpd start
@@ -47,17 +47,7 @@ chmod 700 /root/.ssh
 echo "installing epel repo...."
 yum install -y epel-release
 
-echo "setting ambari repo on 10.0.0.$startIp......"
-#ssh root@10.0.0.$startIp wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.2.0/ambari.repo -P /etc/yum.repos.d/
-ssh root@10.0.0.$startIp wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.4.1.0/ambari.repo -P /etc/yum.repos.d/
-
-echo "install ambari agent on 10.0.0.$startIp....."
-ssh root@10.0.0.$startIp yum install -y ambari-agent
-
-echo "setup the ambari server name in /etc/ambari-agent/conf/ambari-agent.ini"
-ssh root@10.0.0.$startIp sudo su -c "sed -i 's/hostname=localhost/hostname=edgenode.hawqdatalake.com/g' /etc/ambari-agent/conf/ambari-agent.ini"
-
 echo "Peparing Disks.... "
-chmod ugo+rx vm-disk-utils-centos.sh
-sh vm-disk-utils-centos.sh
+chmod ugo+rx prepare_data_disks.sh
+sh prepare_data_disks.sh
 echo "Finished executing the Init_HdpVM."

@@ -5,6 +5,10 @@ resourceMgrTemplate=$2
 resourceMgrTemplateParams=$3
 resourceGroupName=$4
 region=$5
+HDB_VERSION=$6
+HDP_VERSION=$7
+AMB_VERSION=$8   
+PIVOTAL_API_KEY=$9
 
 if [ $# -eq 0 ] ; then
 	echo "\nusage: \n\tprovision.sh <cluster_size> <resourceManagerTemplate> <resourceManagerTemplateParameters> <resourceGroupName> <region>"
@@ -28,27 +32,44 @@ if [ -z "$4" ]; then
 	exit 1
 fi
 if [ -z "$5" ]; then
-    echo "\nplease secify azure region. Default is eastus"
+    echo "\nplease secify azure region."
+	exit 1
+fi
+
+if [ -z "$6" ]; then
+    echo "\nplease secify Pivotal HDB version."
+	exit 1
+fi
+if [ -z "$7" ]; then
+    echo "\nplease secify Hortonworks Data platform version"
+	exit 1
+fi
+if [ -z "$8" ]; then
+    echo "\nplease secify Ambari Version."
+	exit 1
+fi
+if [ -z "$9" ]; then
+    echo "\nplease secify Token for Pivnet to download hawq"
 	exit 1
 fi
 
 if [ "$cluster_size" == "small" ]; then
 	DATANODES=3
 	MASTERNODES=3
-	BLUEPRINT_FILENAME=hdp-small-cluster.json
-	BLUEPRINT_TEMPLATE=hdp-small-cluster-template.json
+	BLUEPRINT_FILENAME=AMBARI_BLUEPRINT_HDP251Hawq21_SMALL.JSON
+	BLUEPRINT_TEMPLATE=AMBARI_BLUEPRINT_HDP251Hawq21_SMALL_TEMPLATE.JSON
 	BLUEPRINT_NAME=datalake_blueprint
 elif [ "$cluster_size" == "medium" ]; then
 	MASTERNODES=4
 	DATANODES=6
-	BLUEPRINT_FILENAME=hdp-medium-cluster.json
-	BLUEPRINT_TEMPLATE=hdp-medium-cluster-template.json
+	BLUEPRINT_FILENAME=AMBARI_BLUEPRINT_HDP251Hawq21_MEDIUM.JSON
+	BLUEPRINT_TEMPLATE=AMBARI_BLUEPRINT_HDP251Hawq21_MEDIUM_TEMPLATE.JSON
 	BLUEPRINT_NAME=hawqdatalake_blueprint
 elif [ "$cluster_size" == "large" ]; then
 	MASTERNODES=5
 	DATANODES=12
-	BLUEPRINT_FILENAME=hdp-large-cluster.json
-	BLUEPRINT_TEMPLATE=hdp-large-cluster-template.json
+	BLUEPRINT_FILENAME=AMBARI_BLUEPRINT_HDP251Hawq21_LARGE.JSON
+	BLUEPRINT_TEMPLATE=AMBARI_BLUEPRINT_HDP251Hawq21_LARGE_TEMPLATE.JSON
 	BLUEPRINT_NAME=hawqdatalake_blueprint
 fi
 echo "\n"
@@ -69,7 +90,7 @@ azure group create -n $resourceGroupName -l $region
 echo "\nRunning deployment in group $resourceGroupName using $resourceMgrTemplate and $resourceMgrTemplateParams ......"
 azure group deployment create -d All -g $resourceGroupName -f $resourceMgrTemplate -e $resourceMgrTemplateParams
 echo "\ninvoking postprovision script......"
-./post-provision.sh $MASTERNODES $DATANODES $BLUEPRINT_FILENAME $BLUEPRINT_TEMPLATE $BLUEPRINT_NAME
+./post-provision.sh $MASTERNODES $DATANODES $BLUEPRINT_FILENAME $BLUEPRINT_TEMPLATE $BLUEPRINT_NAME $HDB_VERSION $HDP_VERSION $AMB_VERSION $PIVOTAL_API_KEY
 #echo "\n Finished provisioning the cluster."
 
 

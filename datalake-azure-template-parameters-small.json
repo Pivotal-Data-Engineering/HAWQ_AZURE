@@ -48,19 +48,20 @@
 		"value": "small"
 	},
     "hdpVmSize": {
-      "value": "Standard_DS14"
+      "value": "Standard_DS12_v2"
   	},
 	"prepareDiskScript": {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/vm-disk-utils-centos.sh?token=AH2u3Qh6cxO5WbkRcNkkmr-HUlmu-7Qyks5YUBetwA%3D%3D"		          
+		"value": "https://pivotalhdb01.blob.core.windows.net/hawqfiles/prepare_data_disks.sh"		          
 	},
 	"initHdpVMScript" : {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_HdpVM.sh?token=AH2u3aXTM-f2ss3dIbZ8BzvPOXlHeCFIks5YUBd7wA%3D%3D"
-		      
+		"value": "https://pivotalhdb01.blob.core.windows.net/hawqfiles/Init_HdpVM.sh"		      
 	},
 	"initAmbariVMScript": {
-		"value": "https://raw.githubusercontent.com/Pivotal-Data-Engineering/HAWQ_AZURE/master/Init_AmbariVM.sh?token=AH2u3VFQREzWp-JRJ5X7M9xpi6nBQyz0ks5YUBdgwA%3D%3D"
-		
-		          
+		"value": "https://pivotalhdb01.blob.core.windows.net/hawqfiles/Init_AmbariVM.sh"
+				  
+		          	
+			
+		     
 	}
   }
 }
