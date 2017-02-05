@@ -5,7 +5,7 @@ resourceMgrParams=datalake-azure-template-parameters-small.json
 resourceGroupName=datalakeResourceGrp
 region=eastus
 HDB_VERSION=2.1.1.0
-HDP_VERSION=2.5.3.0
+HDP_VERSION=2.5.0.0
 AMB_VERSION=2.4.1.0
 PIVOTAL_API_KEY=y7BWf35sarZ6g46GpeLM
 

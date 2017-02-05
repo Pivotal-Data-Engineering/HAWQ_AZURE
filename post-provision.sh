@@ -66,18 +66,21 @@ echo "running /home/pivotpde/Install_Hawq_plugin $PIVOTAL_API_KEY ...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh Install_Hawq_plugin.sh $PIVOTAL_API_KEY
 echo "Finished Downloding hawq sw and installing  Hawq ambbari plug-in."
 
-##echo "getting the domain name. .."
-##dldsndomainname=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa pivotpde@datalakeclient.eastus.cloudapp.azure.com dnsdomainname)
-#
-##echo "replace DOMAIN_NAME with $dldsndomainname in $BLUEPRINT_TEMPLATE ...."
-##sed -i -e "s/.DOMAIN_NAME/.${dldsndomainname}/g" $BLUEPRINT_TEMPLATE
-
 echo "registering the ambari blueprint......"
 curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d @${BLUEPRINT_FILENAME} http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/blueprints/${BLUEPRINT_NAME}
+sleep 30
 
 echo "submitting the HDP cluster install ..."
 curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
 echo "cluster install request submitted. check status on the ambari console."
+sleep 60
 
-#echo "replace $dldsndomainname with DOMAIN_NAME in $BLUEPRINT_TEMPLATE ...."
-#sed -i -e "s/.${dldsndomainname}/.DOMAIN_NAME/g" $BLUEPRINT_TEMPLATE
+ProgressPercent=0
+while [[ `echo $ProgressPercent | grep -v 100` ]]; do
+  ProgressPercent=`curl -s --user admin:admin -H 'X-Requested-By:ambari' -X GET http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake/requests/1 | grep progress_percent | awk '{print $3}' | cut -d . -f 1`
+  tput cuu1
+  printf "\ncluster build Progress: $ProgressPercent % \ncluster"
+  sleep 2
+done
+
+echo "Cluster build is complete."

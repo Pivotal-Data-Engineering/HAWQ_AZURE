@@ -11,5 +11,3 @@ sudo su -c " ambari-server setup -s "
 
 echo "starting Ambari ...."
 sudo su -c " ambari-server start "
-
-

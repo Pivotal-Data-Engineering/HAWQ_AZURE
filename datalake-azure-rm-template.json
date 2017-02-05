@@ -120,16 +120,16 @@
   "variables": {
     "clusterSizes": {
       "small": {
-        "masterNodesCount": 1,
-        "dataNodesCount": 1
+        "masterNodesCount": 3,
+        "dataNodesCount": 3
       },
       "medium": {
-        "masterNodesCount": 4,
+        "masterNodesCount": 3,
         "dataNodesCount": 6
       },
       "large": {
-        "masterNodesCount": 4,
-        "dataNodesCount": 12
+        "masterNodesCount": 3,
+        "dataNodesCount": 9
       }
     },
     "currentClusterSize": "[variables('clusterSizes')[parameters('clusterFootprint')]]",
@@ -1392,7 +1392,45 @@
                 "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk1.vhd')]"
               },
               "createOption": "Empty"
+            },
+            {
+              "name": "datadisk2",
+              "diskSizeGB": "[variables('dataDiskSize')]",
+              "lun": 2,
+              "vhd": {
+                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk2.vhd')]"
+              },
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk3",
+              "diskSizeGB": "[variables('dataDiskSize')]",
+              "lun": 3,
+              "vhd": {
+                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk3.vhd')]"
+              },
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk4",
+              "diskSizeGB": "[variables('dataDiskSize')]",
+              "lun": 2,
+              "vhd": {
+                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk4.vhd')]"
+              },
+              "createOption": "Empty"
+            },
+            {
+              "name": "datadisk4",
+              "diskSizeGB": "[variables('dataDiskSize')]",
+              "lun": 3,
+              "vhd": {
+                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk5.vhd')]"
+              },
+              "createOption": "Empty"
             }
+						
+			
           ]
         },
         "networkProfile": {

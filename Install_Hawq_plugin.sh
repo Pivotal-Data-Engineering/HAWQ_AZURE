@@ -27,7 +27,7 @@ sudo su -c "chmod -R a+rwx /staging"
 
 wget -O "/staging/Pivotal_HDB.tar.gz" --post-data="" --header="Authorization: Token $PIVOTAL_API_KEY" $PIV_NET_HDB 
 wget -O "/staging/Pivotal_HDB-addons.tar.gz" --post-data="" --header="Authorization: Token $PIVOTAL_API_KEY" $PIV_NET_ADDON 
-wget -O "/staging/madlib/MadLib.tar.gz" --post-data="" --header="Authorization: Token $PIVOTAL_API_KEY" $PIV_NET_MADLIB 
+wget -O "/staging/MadLib.tar.gz" --post-data="" --header="Authorization: Token $PIVOTAL_API_KEY" $PIV_NET_MADLIB 
 
 echo "extracting hawq download ...."
 tar -xvzf /staging/Pivotal_HDB.tar.gz -C /staging 
@@ -50,7 +50,7 @@ sudo su -c " /var/lib/hawq/add-hawq.py -u admin -p admin --stack HDP-2.5"
 echo "Restarting Ambari..."
 sudo su -c "ambari-server restart"
 
-sleep 5
+sleep 10
 
 curl -u admin:admin -H  X-Requested-By:ambari http://localhost:8080/api/v1/hosts
 

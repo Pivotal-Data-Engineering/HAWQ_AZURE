@@ -18,7 +18,7 @@
        "value": "Hawq@123"
      },
     "clientVmSize": {
-      "value": "Standard_DS14"
+      "value": "Standard_DS12_v2"
   	},
     "resourceGroupName": {
 	    "value": "datalakeRG"
@@ -48,7 +48,7 @@
 		"value": "large"
 	},
     "hdpVmSize": {
-      "value": "Standard_D12_v2"
+      "value": "Standard_D14_v2"
   	},
 	"prepareDiskScript": {
 		"value": "https://pivotalhdb01.blob.core.windows.net/hawqfiles/prepare_data_disks.sh"		          

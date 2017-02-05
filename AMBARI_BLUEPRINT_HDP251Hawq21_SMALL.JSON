@@ -122,14 +122,6 @@
       }
     },
     {
-      "storm-worker-log4j" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "content" : "\n<!--\n Licensed to the Apache Software Foundation (ASF) under one or more\n contributor license agreements.  See the NOTICE file distributed with\n this work for additional information regarding copyright ownership.\n The ASF licenses this file to You under the Apache License, Version 2.0\n (the \"License\"); you may not use this file except in compliance with\n the License.  You may obtain a copy of the License at\n\n     http://www.apache.org/licenses/LICENSE-2.0\n\n Unless required by applicable law or agreed to in writing, software\n distributed under the License is distributed on an \"AS IS\" BASIS,\n WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n See the License for the specific language governing permissions and\n limitations under the License.\n-->\n\n<configuration monitorInterval=\"60\">\n<properties>\n    <property name=\"pattern\">%d{yyyy-MM-dd HH:mm:ss.SSS} %c{1.} [%p] %msg%n</property>\n    <property name=\"patternNoTime\">%msg%n</property>\n    <property name=\"patternMetrics\">%d %-8r %m%n</property>\n</properties>\n<appenders>\n    <RollingFile name=\"A1\"\n\t\tfileName=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}\"\n\t\tfilePattern=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.%i.gz\">\n        <PatternLayout>\n            <pattern>${pattern}</pattern>\n        </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"100 MB\"/> <!-- Or every 100 MB -->\n        </Policies>\n        <DefaultRolloverStrategy max=\"9\"/>\n    </RollingFile>\n    <RollingFile name=\"STDOUT\"\n\t\tfileName=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.out\"\n\t\tfilePattern=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.out.%i.gz\">\n        <PatternLayout>\n            <pattern>${patternNoTime}</pattern>\n        </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"100 MB\"/> <!-- Or every 100 MB -->\n        </Policies>\n        <DefaultRolloverStrategy max=\"4\"/>\n    </RollingFile>\n    <RollingFile name=\"STDERR\"\n\t\tfileName=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.err\"\n\t\tfilePattern=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.err.%i.gz\">\n        <PatternLayout>\n            <pattern>${patternNoTime}</pattern>\n        </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"100 MB\"/> <!-- Or every 100 MB -->\n        </Policies>\n        <DefaultRolloverStrategy max=\"4\"/>\n    </RollingFile>\n    <RollingFile name=\"METRICS\"\n\t\tfileName=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.metrics\"\n\t\tfilePattern=\"${sys:workers.artifacts}/${sys:storm.id}/${sys:worker.port}/${sys:logfile.name}.metrics.%i.gz\">\n        <PatternLayout>\n            <pattern>${patternMetrics}</pattern>\n        </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"2 MB\"/>\n        </Policies>\n        <DefaultRolloverStrategy max=\"9\"/>\n    </RollingFile>\n    <Syslog name=\"syslog\" format=\"RFC5424\" charset=\"UTF-8\" host=\"localhost\" port=\"514\"\n        protocol=\"UDP\" appName=\"[${sys:storm.id}:${sys:worker.port}]\" mdcId=\"mdc\" includeMDC=\"true\"\n        facility=\"LOCAL5\" enterpriseNumber=\"18060\" newLine=\"true\" exceptionPattern=\"%rEx{full}\"\n        messageId=\"[${sys:user.name}:${sys:logging.sensitivity}]\" id=\"storm\" immediateFail=\"true\" immediateFlush=\"true\"/>\n</appenders>\n<loggers>\n    <root level=\"info\"> <!-- We log everything -->\n        <appender-ref ref=\"A1\"/>\n        <appender-ref ref=\"syslog\"/>\n    </root>\n    <Logger name=\"org.apache.storm.metric.LoggingMetricsConsumer\" level=\"info\" additivity=\"false\">\n        <appender-ref ref=\"METRICS\"/>\n    </Logger>\n    <Logger name=\"STDERR\" level=\"INFO\">\n        <appender-ref ref=\"STDERR\"/>\n        <appender-ref ref=\"syslog\"/>\n    </Logger>\n    <Logger name=\"STDOUT\" level=\"INFO\">\n        <appender-ref ref=\"STDOUT\"/>\n        <appender-ref ref=\"syslog\"/>\n    </Logger>\n</loggers>\n</configuration>"
-        }
-      }
-    },
-    {
       "hive-log4j2" : {
         "properties_attributes" : { },
         "properties" : {
@@ -287,7 +279,7 @@
           "offsets.commit.timeout.ms" : "5000",
           "log.segment.bytes" : "1073741824",
           "offset.metadata.max.bytes" : "4096",
-          "zookeeper.connect" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
+          "zookeeper.connect" : "%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_3%:2181",
           "port" : "6667",
           "zookeeper.sync.time.ms" : "2000",
           "num.replica.fetchers" : "1",
@@ -412,28 +404,6 @@
       }
     },
     {
-      "storm-env" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "storm_user_nofile_limit" : "128000",
-          "jmxremote_port" : "56431",
-          "storm_log_dir" : "/var/log/storm",
-          "storm_pid_dir" : "/var/run/storm",
-          "nimbus_seeds_supported" : "true",
-          "storm_logs_supported" : "true",
-          "storm_user" : "storm",
-          "storm_user_nproc_limit" : "65536",
-          "content" : "\n      #!/bin/bash\n\n      # Set Storm specific environment variables here.\n\n      # The java implementation to use.\n      export JAVA_HOME={{java64_home}}\n\n      export STORM_CONF_DIR={{conf_dir}}\n      export STORM_HOME={{storm_component_home_dir}}\n\n      export STORM_JAR_JVM_OPTS={{jar_jvm_opts}}"
-        }
-      }
-    },
-    {
-      "ranger-storm-plugin-properties" : {
-        "properties_attributes" : { },
-        "properties" : { }
-      }
-    },
-    {
       "oozie-site" : {
         "properties_attributes" : { },
         "properties" : {
@@ -492,12 +462,6 @@
       }
     },
     {
-      "ranger-storm-policymgr-ssl" : {
-        "properties_attributes" : { },
-        "properties" : { }
-      }
-    },
-    {
       "falcon-runtime.properties" : {
         "properties_attributes" : { },
         "properties" : {
@@ -511,12 +475,6 @@
     },
     {
       "ranger-knox-audit" : {
-        "properties_attributes" : { },
-        "properties" : { }
-      }
-    },
-    {
-      "ranger-storm-security" : {
         "properties_attributes" : { },
         "properties" : { }
       }
@@ -609,18 +567,6 @@
       }
     },
     {
-      "flume-env" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "flume_conf_dir" : "/etc/flume/conf",
-          "flume_log_dir" : "/var/log/flume",
-          "flume_run_dir" : "/var/run/flume",
-          "content" : "\n# Licensed to the Apache Software Foundation (ASF) under one or more\n# contributor license agreements.  See the NOTICE file distributed with\n# this work for additional information regarding copyright ownership.\n# The ASF licenses this file to You under the Apache License, Version 2.0\n# (the \"License\"); you may not use this file except in compliance with\n# the License.  You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n# If this file is placed at FLUME_CONF_DIR/flume-env.sh, it will be sourced\n# during Flume startup.\n\n# Enviroment variables can be set here.\n\nexport JAVA_HOME={{java_home}}\n\n# Give Flume more memory and pre-allocate, enable remote monitoring via JMX\n# export JAVA_OPTS=\"-Xms100m -Xmx2000m -Dcom.sun.management.jmxremote\"\n\n# Note that the Flume conf directory is always included in the classpath.\n# Add flume sink to classpath\nif [ -e \"/usr/lib/flume/lib/ambari-metrics-flume-sink.jar\" ]; then\n  export FLUME_CLASSPATH=$FLUME_CLASSPATH:/usr/lib/flume/lib/ambari-metrics-flume-sink.jar\nfi\n\nexport HIVE_HOME={{flume_hive_home}}\nexport HCAT_HOME={{flume_hcat_home}}",
-          "flume_user" : "flume"
-        }
-      }
-    },
-    {
       "hbase-env" : {
         "properties_attributes" : { },
         "properties" : {
@@ -678,7 +624,7 @@
       "application-properties" : {
         "properties_attributes" : { },
         "properties" : {
-          "atlas.audit.hbase.zookeeper.quorum" : "masternode2.hawqdatalake.com,%HOSTGROUP::host_group_4%,masternode0.hawqdatalake.com",
+          "atlas.audit.hbase.zookeeper.quorum" : "%HOSTGROUP::host_group_4%,masternode2.hawqdatalake.com,masternode0.hawqdatalake.com",
           "atlas.notification.create.topics" : "true",
           "atlas.graph.storage.hbase.table" : "atlas_titan",
           "atlas.solr.kerberos.enable" : "false",
@@ -718,9 +664,9 @@
           "atlas.graph.index.search.solr.zookeeper-url" : "masternode0.hawqdatalake.com:2181/infra-solr,%HOSTGROUP::host_group_4%:2181/infra-solr,masternode2.hawqdatalake.com:2181/infra-solr",
           "atlas.kafka.zookeeper.session.timeout.ms" : "400",
           "atlas.graph.index.search.solr.mode" : "cloud",
-          "atlas.kafka.zookeeper.connect" : "masternode2.hawqdatalake.com:2181,%HOSTGROUP::host_group_4%:2181,masternode0.hawqdatalake.com:2181",
+          "atlas.kafka.zookeeper.connect" : "%HOSTGROUP::host_group_4%:2181,masternode2.hawqdatalake.com:2181,masternode0.hawqdatalake.com:2181",
           "atlas.authentication.method.kerberos" : "false",
-          "atlas.graph.storage.hostname" : "masternode2.hawqdatalake.com,%HOSTGROUP::host_group_4%,masternode0.hawqdatalake.com",
+          "atlas.graph.storage.hostname" : "%HOSTGROUP::host_group_4%,masternode2.hawqdatalake.com,masternode0.hawqdatalake.com",
           "atlas.authentication.method.ldap.groupSearchBase" : "",
           "atlas.notification.embedded" : "false",
           "atlas.graph.index.search.backend" : "solr5",
@@ -751,12 +697,6 @@
     },
     {
       "ranger-kafka-policymgr-ssl" : {
-        "properties_attributes" : { },
-        "properties" : { }
-      }
-    },
-    {
-      "ranger-storm-audit" : {
         "properties_attributes" : { },
         "properties" : { }
       }
@@ -799,25 +739,6 @@
           "soft_nofile" : "2900000",
           "soft_nproc" : "131072",
           "hard_nofile" : "2900000"
-        }
-      }
-    },
-    {
-      "accumulo-env" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "accumulo_instance_name" : "hdp-accumulo-instance",
-          "accumulo_monitor_bind_all" : "false",
-          "accumulo_pid_dir" : "/var/run/accumulo",
-          "accumulo_monitor_heapsize" : "1024",
-          "accumulo_gc_heapsize" : "256",
-          "accumulo_user" : "accumulo",
-          "content" : "\n#! /usr/bin/env bash\nexport HADOOP_PREFIX={{hadoop_prefix}}\nexport HADOOP_CONF_DIR={{hadoop_conf_dir}}\nexport JAVA_HOME={{java64_home}}\nexport ZOOKEEPER_HOME={{zookeeper_home}}\nexport ACCUMULO_LOG_DIR={{log_dir}}\nexport ACCUMULO_CONF_DIR={{conf_dir}}\nexport ACCUMULO_TSERVER_OPTS=\"-Xmx{{accumulo_tserver_heapsize}}m -Xms{{accumulo_tserver_heapsize}}m\"\nexport ACCUMULO_MASTER_OPTS=\"-Xmx{{accumulo_master_heapsize}}m -Xms{{accumulo_master_heapsize}}m\"\nexport ACCUMULO_MONITOR_OPTS=\"-Xmx{{accumulo_monitor_heapsize}}m -Xms{{accumulo_monitor_heapsize}}m\"\nexport ACCUMULO_GC_OPTS=\"-Xmx{{accumulo_gc_heapsize}}m -Xms{{accumulo_gc_heapsize}}m\"\nexport ACCUMULO_GENERAL_OPTS=\"-XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=75 -Djava.net.preferIPv4Stack=true ${ACCUMULO_GENERAL_OPTS}\"\nexport ACCUMULO_OTHER_OPTS=\"-Xmx{{accumulo_other_heapsize}}m -Xms{{accumulo_other_heapsize}}m ${ACCUMULO_OTHER_OPTS}\"\n# what do when the JVM runs out of heap memory\nexport ACCUMULO_KILL_CMD='kill -9 %p'",
-          "server_content" : "\n#! /usr/bin/env bash\nexport HADOOP_PREFIX={{hadoop_prefix}}\nexport HADOOP_CONF_DIR={{hadoop_conf_dir}}\nexport JAVA_HOME={{java64_home}}\nexport ZOOKEEPER_HOME={{zookeeper_home}}\nexport ACCUMULO_PID_DIR={{pid_dir}}\nexport ACCUMULO_LOG_DIR={{log_dir}}\nexport ACCUMULO_CONF_DIR={{server_conf_dir}}\nexport ACCUMULO_TSERVER_OPTS=\"-Xmx{{accumulo_tserver_heapsize}}m -Xms{{accumulo_tserver_heapsize}}m\"\nexport ACCUMULO_MASTER_OPTS=\"-Xmx{{accumulo_master_heapsize}}m -Xms{{accumulo_master_heapsize}}m\"\nexport ACCUMULO_MONITOR_OPTS=\"-Xmx{{accumulo_monitor_heapsize}}m -Xms{{accumulo_monitor_heapsize}}m\"\nexport ACCUMULO_GC_OPTS=\"-Xmx{{accumulo_gc_heapsize}}m -Xms{{accumulo_gc_heapsize}}m\"\nexport ACCUMULO_GENERAL_OPTS=\"-XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=75 -Djava.net.preferIPv4Stack=true ${ACCUMULO_GENERAL_OPTS}\"\nexport ACCUMULO_OTHER_OPTS=\"-Xmx{{accumulo_other_heapsize}}m -Xms{{accumulo_other_heapsize}}m ${ACCUMULO_OTHER_OPTS}\"\nexport ACCUMULO_MONITOR_BIND_ALL={{monitor_bind_str}}\n# what do when the JVM runs out of heap memory\nexport ACCUMULO_KILL_CMD='kill -9 %p'",
-          "accumulo_master_heapsize" : "1024",
-          "accumulo_tserver_heapsize" : "1536",
-          "accumulo_other_heapsize" : "1024",
-          "accumulo_log_dir" : "/var/log/accumulo"
         }
       }
     },
@@ -956,126 +877,6 @@
           "hdfs_user_nproc_limit" : "65536",
           "namenode_opt_maxnewsize" : "128m",
           "namenode_opt_permsize" : "128m"
-        }
-      }
-    },
-    {
-      "storm-site" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "storm.messaging.netty.min_wait_ms" : "100",
-          "topology.enable.message.timeouts" : "true",
-          "storm.messaging.netty.buffer_size" : "5242880",
-          "client.jartransformer.class" : "org.apache.storm.hack.StormShadeTransformer",
-          "storm.topology.submission.notifier.plugin.class" : "org.apache.atlas.storm.hook.StormAtlasHook",
-          "ui.filter" : "null",
-          "storm.messaging.netty.client_worker_threads" : "1",
-          "transactional.zookeeper.root" : "/transactional",
-          "topology.metrics.aggregate.metric.evict.secs" : "5",
-          "topology.tuple.serializer" : "org.apache.storm.serialization.types.ListDelegateSerializer",
-          "topology.spout.wait.strategy" : "org.apache.storm.spout.SleepSpoutWaitStrategy",
-          "drpc.port" : "3772",
-          "topology.max.spout.pending" : "1000",
-          "topology.transfer.buffer.size" : "1024",
-          "supervisor.worker.timeout.secs" : "30",
-          "logviewer.port" : "8000",
-          "metrics.reporter.register" : "org.apache.hadoop.metrics2.sink.storm.StormTimelineMetricsReporter",
-          "nimbus.file.copy.expiration.secs" : "600",
-          "drpc.childopts" : "-Xmx768m _JAAS_PLACEHOLDER",
-          "logviewer.childopts" : "-Xmx128m _JAAS_PLACEHOLDER",
-          "nimbus.task.launch.secs" : "120",
-          "storm.zookeeper.servers" : "['%HOSTGROUP::host_group_3%','%HOSTGROUP::host_group_4%','%HOSTGROUP::host_group_5%']",
-          "storm.messaging.transport" : "org.apache.storm.messaging.netty.Context",
-          "topology.workers" : "1",
-          "drpc.invocations.port" : "3773",
-          "topology.kryo.factory" : "org.apache.storm.serialization.DefaultKryoFactory",
-          "nimbus.cleanup.inbox.freq.secs" : "600",
-          "_storm.thrift.secure.transport" : "org.apache.storm.security.auth.kerberos.KerberosSaslTransportPlugin",
-          "topology.fall.back.on.java.serialization" : "true",
-          "logviewer.appender.name" : "A1",
-          "storm.messaging.netty.server_worker_threads" : "1",
-          "supervisor.slots.ports" : "[6700, 6701]",
-          "storm.zookeeper.connection.timeout" : "15000",
-          "topology.tick.tuple.freq.secs" : "null",
-          "storm.cluster.metrics.consumer.register" : "[{\"class\": \"org.apache.hadoop.metrics2.sink.storm.StormTimelineMetricsReporter\"}]",
-          "topology.stats.sample.rate" : "0.05",
-          "storm.local.dir" : "/datadisks/disk1/hadoop/storm",
-          "nimbus.inbox.jar.expiration.secs" : "3600",
-          "topology.max.replication.wait.time.sec.default" : "60",
-          "storm.messaging.netty.max_retries" : "30",
-          "topology.debug" : "false",
-          "storm.zookeeper.retry.interval" : "1000",
-          "topology.receiver.buffer.size" : "8",
-          "storm.zookeeper.retry.times" : "5",
-          "java.library.path" : "/usr/local/lib:/opt/local/lib:/usr/lib:/usr/hdp/current/storm-client/lib",
-          "zmq.linger.millis" : "5000",
-          "drpc.request.timeout.secs" : "600",
-          "zmq.threads" : "1",
-          "topology.state.synchronization.timeout.secs" : "60",
-          "topology.worker.shared.thread.pool.size" : "4",
-          "topology.executor.receive.buffer.size" : "1024",
-          "supervisor.monitor.frequency.secs" : "3",
-          "topology.optimize" : "true",
-          "transactional.zookeeper.port" : "null",
-          "storm.zookeeper.port" : "2181",
-          "storm.zookeeper.retry.intervalceiling.millis" : "30000",
-          "nimbus.thrift.port" : "6627",
-          "nimbus.thrift.threads" : "196",
-          "_storm.thrift.nonsecure.transport" : "org.apache.storm.security.auth.SimpleTransportPlugin",
-          "nimbus.seeds" : "['%HOSTGROUP::host_group_3%']",
-          "topology.min.replication.count" : "{{actual_topology_min_replication_count}}",
-          "topology.worker.childopts" : "null",
-          "topology.max.replication.wait.time.sec" : "{{actual_topology_max_replication_wait_time_sec}}",
-          "topology.min.replication.count.default" : "1",
-          "topology.max.task.parallelism" : "null",
-          "topology.acker.executors" : "null",
-          "supervisor.worker.start.timeout.secs" : "120",
-          "_storm.min.ruid" : "null",
-          "nimbus.reassign" : "true",
-          "supervisor.heartbeat.frequency.secs" : "5",
-          "topology.metrics.aggregate.per.worker" : "true",
-          "topology.trident.batch.emit.interval.millis" : "500",
-          "task.heartbeat.frequency.secs" : "3",
-          "storm.thrift.transport" : "{{storm_thrift_transport}}",
-          "drpc.worker.threads" : "64",
-          "ui.port" : "8744",
-          "drpc.queue.size" : "128",
-          "topology.message.timeout.secs" : "30",
-          "topology.error.throttle.interval.secs" : "10",
-          "storm.log.dir" : "{{log_dir}}",
-          "topology.builtin.metrics.bucket.size.secs" : "60",
-          "nimbus.monitor.freq.secs" : "10",
-          "topology.executor.send.buffer.size" : "1024",
-          "storm.local.mode.zmq" : "false",
-          "transactional.zookeeper.servers" : "null",
-          "nimbus.task.timeout.secs" : "30",
-          "topology.metrics.consumer.register" : "[{\"class\": \"org.apache.hadoop.metrics2.sink.storm.StormTimelineMetricsSink\", \"parallelism.hint\": 1, \"whitelist\": [\"kafkaOffset\\\\..+/\", \"__complete-latency\", \"__process-latency\", \"__receive\\\\.population$\", \"__sendqueue\\\\.population$\", \"__execute-count\", \"__emit-count\", \"__ack-count\", \"__fail-count\", \"memory/heap\\\\.usedBytes$\", \"memory/nonHeap\\\\.usedBytes$\", \"GC/.+\\\\.count$\", \"GC/.+\\\\.timeMs$\"]}]",
-          "dev.zookeeper.path" : "/tmp/dev-storm-zookeeper",
-          "topology.metrics.expand.map.type" : "true",
-          "nimbus.supervisor.timeout.secs" : "60",
-          "topology.skip.missing.kryo.registrations" : "false",
-          "storm.zookeeper.root" : "/storm",
-          "storm.zookeeper.session.timeout" : "30000",
-          "topology.disruptor.wait.strategy" : "com.lmax.disruptor.BlockingWaitStrategy",
-          "zmq.hwm" : "0",
-          "topology.sleep.spout.wait.strategy.time.ms" : "1",
-          "nimbus.topology.validator" : "org.apache.storm.nimbus.DefaultTopologyValidator",
-          "storm.cluster.mode" : "distributed",
-          "task.refresh.poll.secs" : "10",
-          "ui.childopts" : "-Xmx768m _JAAS_PLACEHOLDER",
-          "storm.messaging.netty.max_wait_ms" : "1000",
-          "worker.heartbeat.frequency.secs" : "1",
-          "topology.max.error.report.per.interval" : "5",
-          "nimbus.thrift.max_buffer_size" : "1048576",
-          "topology.metrics.metric.name.separator" : "."
-        }
-      }
-    },
-    {
-      "storm-atlas-application.properties" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "atlas.hook.storm.numRetries" : "3"
         }
       }
     },
@@ -1341,6 +1142,7 @@
           "hbase.client.scanner.caching" : "10000",
           "hbase.replication" : "false",
           "hbase.rpc.timeout" : "300000",
+          "hbase.superuser" : "activity_explorer,activity_analyzer",
           "hbase.zookeeper.peerport" : "61288",
           "hbase.regionserver.port" : "61320",
           "hbase.zookeeper.property.clientPort" : "{{zookeeper_clientPort}}",
@@ -1416,7 +1218,7 @@
           "zookeeper.recovery.retry" : "6",
           "hbase.hstore.compaction.max" : "10",
           "hbase.regionserver.global.memstore.size" : "0.4",
-          "hbase.zookeeper.quorum" : "%HOSTGROUP::host_group_5%,%HOSTGROUP::host_group_4%,%HOSTGROUP::host_group_3%",
+          "hbase.zookeeper.quorum" : "%HOSTGROUP::host_group_4%,%HOSTGROUP::host_group_5%,%HOSTGROUP::host_group_3%",
           "hbase.regionserver.info.port" : "16030",
           "hbase.client.keyvalue.maxsize" : "1048576",
           "hbase.tmp.dir" : "/tmp/hbase-${user.name}",
@@ -1503,14 +1305,6 @@
       }
     },
     {
-      "storm-cluster-log4j" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "content" : "\n<!--\n Licensed to the Apache Software Foundation (ASF) under one or more\n contributor license agreements.  See the NOTICE file distributed with\n this work for additional information regarding copyright ownership.\n The ASF licenses this file to You under the Apache License, Version 2.0\n (the \"License\"); you may not use this file except in compliance with\n the License.  You may obtain a copy of the License at\n\n     http://www.apache.org/licenses/LICENSE-2.0\n\n Unless required by applicable law or agreed to in writing, software\n distributed under the License is distributed on an \"AS IS\" BASIS,\n WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n See the License for the specific language governing permissions and\n limitations under the License.\n-->\n<configuration monitorInterval=\"60\">\n<properties>\n    <property name=\"pattern\">%d{yyyy-MM-dd HH:mm:ss.SSS} %c{1.} [%p] %msg%n</property>\n</properties>\n<appenders>\n    <RollingFile name=\"A1\" immediateFlush=\"false\"\n                 fileName=\"${sys:storm.log.dir}/${sys:logfile.name}\"\n                 filePattern=\"${sys:storm.log.dir}/${sys:logfile.name}.%i.gz\">\n        <PatternLayout>\n            <pattern>${pattern}</pattern>\n        </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"100 MB\"/> <!-- Or every 100 MB -->\n        </Policies>\n        <DefaultRolloverStrategy max=\"9\"/>\n    </RollingFile>\n    <RollingFile name=\"WEB-ACCESS\" immediateFlush=\"false\"\n                 fileName=\"${sys:storm.log.dir}/access-web-${sys:daemon.name}.log\"\n                 filePattern=\"${sys:storm.log.dir}/access-web-${sys:daemon.name}.log.%i.gz\">\n        <PatternLayout>\n            <pattern>${pattern}</pattern>\n        </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"100 MB\"/> <!-- Or every 100 MB -->\n        </Policies>\n        <DefaultRolloverStrategy max=\"9\"/>\n    </RollingFile>\n    <RollingFile name=\"THRIFT-ACCESS\" immediateFlush=\"false\"\n                 fileName=\"${sys:storm.log.dir}/access-${sys:logfile.name}\"\n                 filePattern=\"${sys:storm.log.dir}/access-${sys:logfile.name}.%i.gz\">\n    <PatternLayout>\n        <pattern>${pattern}</pattern>\n    </PatternLayout>\n        <Policies>\n            <SizeBasedTriggeringPolicy size=\"100 MB\"/> <!-- Or every 100 MB -->\n        </Policies>\n        <DefaultRolloverStrategy max=\"9\"/>\n    </RollingFile>\n    <Syslog name=\"syslog\" format=\"RFC5424\" charset=\"UTF-8\" host=\"localhost\" port=\"514\"\n            protocol=\"UDP\" appName=\"[${sys:daemon.name}]\" mdcId=\"mdc\" includeMDC=\"true\"\n            facility=\"LOCAL5\" enterpriseNumber=\"18060\" newLine=\"true\" exceptionPattern=\"%rEx{full}\"\n            messageId=\"[${sys:user.name}:S0]\" id=\"storm\" immediateFlush=\"true\" immediateFail=\"true\"/>\n</appenders>\n<loggers>\n\n    <Logger name=\"org.apache.storm.logging.filters.AccessLoggingFilter\" level=\"info\" additivity=\"false\">\n        <AppenderRef ref=\"WEB-ACCESS\"/>\n        <AppenderRef ref=\"syslog\"/>\n    </Logger>\n    <Logger name=\"org.apache.storm.logging.ThriftAccessLogger\" level=\"info\" additivity=\"false\">\n        <AppenderRef ref=\"THRIFT-ACCESS\"/>\n        <AppenderRef ref=\"syslog\"/>\n    </Logger>\n    <root level=\"info\"> <!-- We log everything -->\n        <appender-ref ref=\"A1\"/>\n        <appender-ref ref=\"syslog\"/>\n    </root>\n</loggers>\n</configuration>"
-        }
-      }
-    },
-    {
       "tez-interactive-site" : {
         "properties_attributes" : { },
         "properties" : {
@@ -1589,6 +1383,7 @@
           "dfs.namenode.rpc-address" : "%HOSTGROUP::host_group_3%:8020",
           "dfs.namenode.https-address" : "%HOSTGROUP::host_group_3%:50470",
           "dfs.allow.truncate" : "true",
+          "dfs.client.socket-timeout" : "300000000",
           "dfs.encrypt.data.transfer.cipher.suites" : "AES/CTR/NoPadding",
           "dfs.client.read.shortcircuit.streams.cache.size" : "4096",
           "dfs.hosts.exclude" : "/etc/hadoop/conf/dfs.exclude",
@@ -1606,7 +1401,7 @@
           "dfs.datanode.ipc.address" : "0.0.0.0:8010",
           "dfs.cluster.administrators" : " hdfs",
           "dfs.datanode.max.transfer.threads" : "40960",
-          "dfs.namenode.handler.count" : "600",
+          "dfs.namenode.handler.count" : "400",
           "dfs.https.port" : "50470",
           "dfs.replication.max" : "50",
           "dfs.client.read.shortcircuit" : "true",
@@ -1674,12 +1469,12 @@
       "yarn-site" : {
         "properties_attributes" : { },
         "properties" : {
-          "yarn.resourcemanager.zk-address" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
+          "yarn.resourcemanager.zk-address" : "%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_3%:2181",
           "yarn.nodemanager.container-monitor.interval-ms" : "3000",
           "yarn.timeline-service.entity-group-fs-store.active-dir" : "/ats/active/",
           "yarn.nodemanager.linux-container-executor.group" : "hadoop",
           "yarn.application.classpath" : "$HADOOP_CONF_DIR,/usr/hdp/current/hadoop-client/*,/usr/hdp/current/hadoop-client/lib/*,/usr/hdp/current/hadoop-hdfs-client/*,/usr/hdp/current/hadoop-hdfs-client/lib/*,/usr/hdp/current/hadoop-yarn-client/*,/usr/hdp/current/hadoop-yarn-client/lib/*",
-          "yarn.admin.acl" : "yarn",
+          "yarn.admin.acl" : "activity_analyzer,yarn",
           "yarn.timeline-service.entity-group-fs-store.cleaner-interval-seconds" : "3600",
           "yarn.nodemanager.remote-app-log-dir-suffix" : "logs",
           "yarn.nodemanager.address" : "0.0.0.0:45454",
@@ -1769,7 +1564,7 @@
           "yarn.timeline-service.leveldb-state-store.path" : "/datadisks/disk1/hadoop/yarn/timeline",
           "yarn.timeline-service.entity-group-fs-store.done-dir" : "/ats/done/",
           "yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage" : "90",
-          "hadoop.registry.zk.quorum" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
+          "hadoop.registry.zk.quorum" : "%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_3%:2181",
           "yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds" : "3600",
           "yarn.nodemanager.container-executor.class" : "org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor",
           "yarn.resourcemanager.nodes.exclude-path" : "/etc/hadoop/conf/yarn.exclude",
@@ -1910,30 +1705,6 @@
           "min_user_id" : "500",
           "yarn_heapsize" : "1024",
           "nodemanager_heapsize" : "1024"
-        }
-      }
-    },
-    {
-      "accumulo-site" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "trace.user" : "trace",
-          "tserver.sort.buffer.size" : "200M",
-          "trace.port.client" : "12234",
-          "tserver.memory.maps.native.enabled" : "true",
-          "tserver.memory.maps.max" : "1G",
-          "master.port.client" : "9999",
-          "tserver.walog.max.size" : "1G",
-          "gc.port.client" : "50092",
-          "instance.zookeeper.timeout" : "30s",
-          "instance.zookeeper.host" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
-          "monitor.port.client" : "50095",
-          "tserver.cache.data.size" : "128M",
-          "tserver.port.client" : "9997",
-          "tserver.cache.index.size" : "256M",
-          "general.classpaths" : "\n$ACCUMULO_HOME/lib/accumulo-server.jar,\n$ACCUMULO_HOME/lib/accumulo-core.jar,\n$ACCUMULO_HOME/lib/accumulo-start.jar,\n$ACCUMULO_HOME/lib/accumulo-fate.jar,\n$ACCUMULO_HOME/lib/accumulo-proxy.jar,\n$ACCUMULO_HOME/lib/[^.].*.jar,\n$ZOOKEEPER_HOME/zookeeper[^.].*.jar,\n$HADOOP_CONF_DIR,\n/usr/hdp/current/hadoop-client/[^.].*.jar,\n/usr/hdp/current/hadoop-client/lib/(?!slf4j)[^.].*.jar,\n/usr/hdp/current/hadoop-hdfs-client/[^.].*.jar,\n/usr/hdp/current/hadoop-mapreduce-client/[^.].*.jar,\n/usr/hdp/current/hadoop-yarn-client/[^.].*.jar,\n/usr/hdp/current/hadoop-yarn-client/lib/jersey.*.jar,\n/usr/hdp/current/hive-client/lib/hive-accumulo-handler.jar",
-          "instance.volumes" : "hdfs://%HOSTGROUP::host_group_3%:8020/apps/accumulo/data",
-          "monitor.port.log4j" : "4560"
         }
       }
     },
@@ -2135,7 +1906,7 @@
           "timeline.metrics.cluster.aggregator.hourly.ttl" : "31536000",
           "timeline.metrics.host.aggregator.ttl" : "86400",
           "phoenix.spool.directory" : "/tmp",
-          "timeline.metrics.host.aggregate.splitpoints" : "kafka.server.BrokerTopicMetrics.FailedFetchRequestsPerSec.meanRate",
+          "timeline.metrics.host.aggregate.splitpoints" : "master.Balancer.BalancerCluster_95th_percentile",
           "timeline.metrics.service.handler.thread.count" : "20",
           "timeline.metrics.cache.size" : "150",
           "timeline.metrics.cluster.aggregator.minute.interval" : "300",
@@ -2145,7 +1916,7 @@
           "timeline.metrics.cache.commit.interval" : "3",
           "timeline.metrics.host.aggregator.minute.disabled" : "false",
           "timeline.metrics.cache.enabled" : "true",
-          "timeline.metrics.cluster.aggregate.splitpoints" : "kafka.server.BrokerTopicMetrics.FailedFetchRequestsPerSec.meanRate",
+          "timeline.metrics.cluster.aggregate.splitpoints" : "master.Balancer.BalancerCluster_95th_percentile",
           "timeline.metrics.cluster.aggregator.minute.disabled" : "false",
           "timeline.metrics.service.use.groupBy.aggregators" : "true",
           "phoenix.query.maxGlobalMemoryPercentage" : "25",
@@ -2235,20 +2006,6 @@
       }
     },
     {
-      "accumulo-log4j" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "monitor_forwarding_log_level" : "WARN",
-          "debug_num_logs" : "10",
-          "info_log_size" : "512M",
-          "audit_log_level" : "OFF",
-          "debug_log_size" : "512M",
-          "content" : "\n# Licensed to the Apache Software Foundation (ASF) under one or more\n# contributor license agreements.  See the NOTICE file distributed with\n# this work for additional information regarding copyright ownership.\n# The ASF licenses this file to You under the Apache License, Version 2.0\n# (the \"License\"); you may not use this file except in compliance with\n# the License.  You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n# default logging properties:\n#  by default, log everything at INFO or higher to the console\nlog4j.rootLogger=INFO,A1\n\n# hide Jetty junk\nlog4j.logger.org.mortbay.log=WARN,A1\n\n# hide \"Got brand-new compressor\" messages\nlog4j.logger.org.apache.hadoop.io.compress=WARN,A1\nlog4j.logger.org.apache.accumulo.core.file.rfile.bcfile.Compression=WARN,A1\n\n# hide junk from TestRandomDeletes\nlog4j.logger.org.apache.accumulo.test.TestRandomDeletes=WARN,A1\n\n# hide junk from VFS\nlog4j.logger.org.apache.commons.vfs2.impl.DefaultFileSystemManager=WARN,A1\n\n# hide almost everything from zookeeper\nlog4j.logger.org.apache.zookeeper=ERROR,A1\n\n# hide AUDIT messages in the shell, alternatively you could send them to a different logger\nlog4j.logger.org.apache.accumulo.shell.Shell.audit=WARN,A1\n\n# Send most things to the console\nlog4j.appender.A1=org.apache.log4j.ConsoleAppender\nlog4j.appender.A1.layout.ConversionPattern=%d{ISO8601} [%-8c{2}] %-5p: %m%n\nlog4j.appender.A1.layout=org.apache.log4j.PatternLayout",
-          "info_num_logs" : "10"
-        }
-      }
-    },
-    {
       "hive-site" : {
         "properties_attributes" : {
           "hidden" : {
@@ -2293,7 +2050,7 @@
           "hive.metastore.execute.setugi" : "true",
           "hive.tez.smb.number.waves" : "0.5",
           "hive.server2.authentication.spnego.keytab" : "HTTP/_HOST@EXAMPLE.COM",
-          "hive.zookeeper.quorum" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
+          "hive.zookeeper.quorum" : "%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_3%:2181",
           "hive.mapjoin.bucket.cache.size" : "10000",
           "hive.metastore.kerberos.principal" : "hive/_HOST@EXAMPLE.COM",
           "hive.tez.auto.reducer.parallelism" : "true",
@@ -2360,7 +2117,7 @@
           "hive.metastore.connect.retries" : "24",
           "hive.optimize.reducededuplication.min.reducer" : "4",
           "hive.tez.input.format" : "org.apache.hadoop.hive.ql.io.HiveInputFormat",
-          "hive.cluster.delegation.token.store.zookeeper.connectString" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
+          "hive.cluster.delegation.token.store.zookeeper.connectString" : "%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_3%:2181",
           "hive.metastore.uris" : "thrift://%HOSTGROUP::host_group_5%:9083",
           "hive.server2.max.start.attempts" : "5",
           "hive.exec.dynamic.partition.mode" : "strict",
@@ -2478,16 +2235,10 @@
       }
     },
     {
-      "client" : {
-        "properties_attributes" : { },
-        "properties" : { }
-      }
-    },
-    {
       "webhcat-site" : {
         "properties_attributes" : { },
         "properties" : {
-          "templeton.zookeeper.hosts" : "%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_3%:2181",
+          "templeton.zookeeper.hosts" : "%HOSTGROUP::host_group_4%:2181,%HOSTGROUP::host_group_5%:2181,%HOSTGROUP::host_group_3%:2181",
           "webhcat.proxyuser.root.groups" : "*",
           "webhcat.proxyuser.root.hosts" : "edgenode.hawqdatalake.com",
           "templeton.hadoop.queue.name" : "default",
@@ -2531,7 +2282,7 @@
           "hbase_master_maxperm_size" : "128",
           "max_open_files_limit" : "32768",
           "regionserver_xmn_size" : "128",
-          "hbase_master_heapsize" : "896",
+          "hbase_master_heapsize" : "768",
           "hbase_regionserver_xmn_ratio" : "0.2",
           "hbase_master_xmn_size" : "256",
           "content" : "\n# Set environment variables here.\n\n# The java implementation to use. Java 1.6+ required.\nexport JAVA_HOME={{java64_home}}\n\n# HBase Configuration directory\nexport HBASE_CONF_DIR=${HBASE_CONF_DIR:-{{hbase_conf_dir}}}\n\n# Extra Java CLASSPATH elements. Optional.\nadditional_cp={{hbase_classpath_additional}}\nif [  -n \"$additional_cp\" ];\nthen\n  export HBASE_CLASSPATH=${HBASE_CLASSPATH}:$additional_cp\nelse\n  export HBASE_CLASSPATH=${HBASE_CLASSPATH}\nfi\n\n# The maximum amount of heap to use for hbase shell.\nexport HBASE_SHELL_OPTS=\"-Xmx256m\"\n\n# Extra Java runtime options.\n# Below are what we set by default. May only work with SUN JVM.\n# For more on why as well as other possible settings,\n# see http://wiki.apache.org/hadoop/PerformanceTuning\nexport HBASE_OPTS=\"-XX:+UseConcMarkSweepGC -XX:ErrorFile={{hbase_log_dir}}/hs_err_pid%p.log -Djava.io.tmpdir={{hbase_tmp_dir}}\"\nexport SERVER_GC_OPTS=\"-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:{{hbase_log_dir}}/gc.log-`date +'%Y%m%d%H%M'`\"\n# Uncomment below to enable java garbage collection logging.\n# export HBASE_OPTS=\"$HBASE_OPTS -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:$HBASE_HOME/logs/gc-hbase.log\"\n\n# Uncomment and adjust to enable JMX exporting\n# See jmxremote.password and jmxremote.access in $JRE_HOME/lib/management to configure remote password access.\n# More details at: http://java.sun.com/javase/6/docs/technotes/guides/management/agent.html\n#\n# export HBASE_JMX_BASE=\"-Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false\"\n\n{% if java_version < 8 %}\nexport HBASE_MASTER_OPTS=\" -XX:PermSize=64m -XX:MaxPermSize={{hbase_master_maxperm_size}} -Xms{{hbase_heapsize}} -Xmx{{hbase_heapsize}} -Xmn{{hbase_master_xmn_size}} -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSInitiatingOccupancyOnly\"\nexport HBASE_REGIONSERVER_OPTS=\"-XX:MaxPermSize=128m -Xmn{{regionserver_xmn_size}} -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSInitiatingOccupancyOnly -Xms{{regionserver_heapsize}} -Xmx{{regionserver_heapsize}}\"\n{% else %}\nexport HBASE_MASTER_OPTS=\" -Xms{{hbase_heapsize}} -Xmx{{hbase_heapsize}} -Xmn{{hbase_master_xmn_size}} -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSInitiatingOccupancyOnly\"\nexport HBASE_REGIONSERVER_OPTS=\" -Xmn{{regionserver_xmn_size}} -XX:CMSInitiatingOccupancyFraction=70 -XX:+UseCMSInitiatingOccupancyOnly -Xms{{regionserver_heapsize}} -Xmx{{regionserver_heapsize}}\"\n{% endif %}\n\n\n# export HBASE_THRIFT_OPTS=\"$HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10103\"\n# export HBASE_ZOOKEEPER_OPTS=\"$HBASE_JMX_BASE -Dcom.sun.management.jmxremote.port=10104\"\n\n# File naming hosts on which HRegionServers will run. $HBASE_HOME/conf/regionservers by default.\nexport HBASE_REGIONSERVERS=${HBASE_CONF_DIR}/regionservers\n\n# Extra ssh options. Empty by default.\n# export HBASE_SSH_OPTS=\"-o ConnectTimeout=1 -o SendEnv=HBASE_CONF_DIR\"\n\n# Where log files are stored. $HBASE_HOME/logs by default.\nexport HBASE_LOG_DIR={{hbase_log_dir}}\n\n# A string representing this instance of hbase. $USER by default.\n# export HBASE_IDENT_STRING=$USER\n\n# The scheduling priority for daemon processes. See 'man nice'.\n# export HBASE_NICENESS=10\n\n# The directory where pid files are stored. /tmp by default.\nexport HBASE_PID_DIR={{hbase_pid_dir}}\n\n# Seconds to sleep between slave commands. Unset by default. This\n# can be useful in large clusters, where, e.g., slave rsyncs can\n# otherwise arrive faster than the master can service them.\n# export HBASE_SLAVE_SLEEP=0.1\n\n# Tell HBase whether it should manage it's own instance of Zookeeper or not.\nexport HBASE_MANAGES_ZK=false\n\n{% if security_enabled %}\nexport HBASE_OPTS=\"$HBASE_OPTS -Djava.security.auth.login.config={{client_jaas_config_file}}\"\nexport HBASE_MASTER_OPTS=\"$HBASE_MASTER_OPTS -Djava.security.auth.login.config={{master_jaas_config_file}}\"\nexport HBASE_REGIONSERVER_OPTS=\"$HBASE_REGIONSERVER_OPTS -Djava.security.auth.login.config={{regionserver_jaas_config_file}}\"\nexport HBASE_ZOOKEEPER_OPTS=\"$HBASE_ZOOKEEPER_OPTS -Djava.security.auth.login.config={{ams_zookeeper_jaas_config_file}}\"\n{% endif %}\n\n# use embedded native libs\n_HADOOP_NATIVE_LIB=\"/usr/lib/ams-hbase/lib/hadoop-native/\"\nexport HBASE_OPTS=\"$HBASE_OPTS -Djava.library.path=${_HADOOP_NATIVE_LIB}\"\n\n# Unset HADOOP_HOME to avoid importing HADOOP installed cluster related configs like: /usr/hdp/2.2.0.0-2041/hadoop/conf/\nexport HADOOP_HOME={{ams_hbase_home_dir}}\n\n# Explicitly Setting HBASE_HOME for AMS HBase so that there is no conflict\nexport HBASE_HOME={{ams_hbase_home_dir}}",
@@ -2755,14 +2506,6 @@
       }
     },
     {
-      "flume-conf" : {
-        "properties_attributes" : { },
-        "properties" : {
-          "content" : "\n# Flume agent config"
-        }
-      }
-    },
-    {
       "ranger-hive-security" : {
         "properties_attributes" : { },
         "properties" : { }
@@ -2815,9 +2558,6 @@
           "name" : "SLIDER"
         },
         {
-          "name" : "ACCUMULO_CLIENT"
-        },
-        {
           "name" : "ATLAS_CLIENT"
         },
         {
@@ -2867,9 +2607,6 @@
           "name" : "SLIDER"
         },
         {
-          "name" : "ACCUMULO_CLIENT"
-        },
-        {
           "name" : "OOZIE_CLIENT"
         },
         {
@@ -2900,12 +2637,6 @@
           "name" : "SQOOP"
         },
         {
-          "name" : "SUPERVISOR"
-        },
-        {
-          "name" : "ACCUMULO_TSERVER"
-        },
-        {
           "name" : "PIG"
         },
         {
@@ -2919,9 +2650,6 @@
         },
         {
           "name" : "HBASE_CLIENT"
-        },
-        {
-          "name" : "FLUME_HANDLER"
         },
         {
           "name" : "HIVE_CLIENT"
@@ -2980,25 +2708,31 @@
           "name" : "INFRA_SOLR_CLIENT"
         },
         {
-          "name" : "ACCUMULO_GC"
-        },
-        {
           "name" : "TEZ_CLIENT"
         },
         {
           "name" : "ATLAS_SERVER"
         },
         {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
           "name" : "KNOX_GATEWAY"
+        },
+        {
+          "name" : "HCAT"
         },
         {
           "name" : "KAFKA_BROKER"
         },
         {
+          "name" : "SLIDER"
+        },
+        {
           "name" : "ZOOKEEPER_SERVER"
         },
         {
-          "name" : "DRPC_SERVER"
+          "name" : "OOZIE_CLIENT"
         },
         {
           "name" : "METRICS_COLLECTOR"
@@ -3007,7 +2741,7 @@
           "name" : "METRICS_GRAFANA"
         },
         {
-          "name" : "ACCUMULO_MONITOR"
+          "name" : "MAHOUT"
         },
         {
           "name" : "SPARK_CLIENT"
@@ -3019,10 +2753,10 @@
           "name" : "HDFS_CLIENT"
         },
         {
-          "name" : "ACCUMULO_TRACER"
+          "name" : "FALCON_CLIENT"
         },
         {
-          "name" : "STORM_UI_SERVER"
+          "name" : "SQOOP"
         },
         {
           "name" : "NAMENODE"
@@ -3031,13 +2765,13 @@
           "name" : "ZEPPELIN_MASTER"
         },
         {
-          "name" : "NIMBUS"
-        },
-        {
-          "name" : "ACCUMULO_MASTER"
+          "name" : "PIG"
         },
         {
           "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "ATLAS_CLIENT"
         },
         {
           "name" : "HBASE_CLIENT"
@@ -3047,6 +2781,9 @@
         },
         {
           "name" : "SPARK_JOBHISTORYSERVER"
+        },
+        {
+          "name" : "HIVE_CLIENT"
         },
         {
           "name" : "PXF"
