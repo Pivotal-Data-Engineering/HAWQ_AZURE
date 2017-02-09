@@ -47,7 +47,7 @@ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx
 echo "running /home/pivotpde/Install_Ambari_Server.sh ...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh Install_Ambari_Server.sh $AMB_VERSION
 echo "Finished Installing up Ambari Server."
-
+sleep 30
 echo "***************************** SECTION 3 BEGIN *****************************"
 echo "copying the file Install_Ambari_Agent.sh to ambari node...."
 scp $sshOptions Install_Ambari_Agent.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
@@ -56,7 +56,7 @@ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx
 echo "running /home/pivotpde/Install_Ambari_Agent.sh $MASTERNODES $DATANODES ...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh Install_Ambari_Agent.sh $MASTERNODES $DATANODES $AMB_VERSION
 echo "Finished installing  Ambari Agents."
-
+sleep 30
 echo "***************************** SECTION 4 BEGIN *****************************"
 echo "copying the file Install_Hawq_plugin.sh to ambari node...."
 scp $sshOptions Install_Hawq_plugin.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
@@ -73,13 +73,13 @@ sleep 30
 echo "submitting the HDP cluster install ..."
 curl -u admin:admin -X POST -H 'X-Requested-By: ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake -d @$BLUEPRINT_TEMPLATE
 echo "cluster install request submitted. check status on the ambari console."
-sleep 60
+sleep 30
 
 ProgressPercent=0
 while [[ `echo $ProgressPercent | grep -v 100` ]]; do
   ProgressPercent=`curl -s --user admin:admin -H 'X-Requested-By:ambari' -X GET http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake/requests/1 | grep progress_percent | awk '{print $3}' | cut -d . -f 1`
   tput cuu1
-  printf "\ncluster build Progress: $ProgressPercent % \ncluster"
+  printf "cluster build Progress: $ProgressPercent % cluster"
   sleep 2
 done
 
