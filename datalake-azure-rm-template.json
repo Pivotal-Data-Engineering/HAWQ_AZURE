@@ -1392,43 +1392,7 @@
                 "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk1.vhd')]"
               },
               "createOption": "Empty"
-            },
-            {
-              "name": "datadisk2",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 2,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk2.vhd')]"
-              },
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk3",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 3,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk3.vhd')]"
-              },
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk4",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 4,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk4.vhd')]"
-              },
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk5",
-              "diskSizeGB": "[variables('dataDiskSize')]",
-              "lun": 5,
-              "vhd": {
-                "Uri": "[concat('http://', variables('hdpStorageAccountName'), copyIndex(), '.blob.core.windows.net/vhds0/', variables('hdpDatanodeVMName'), '-datadisk5.vhd')]"
-              },
-              "createOption": "Empty"
-            }						
+            }					
           ]
         },
         "networkProfile": {
@@ -1456,7 +1420,7 @@
           "fileUris": [
             "[variables('clientVMInstallScriptUri')]"
           ],
-          "commandToExecute": "[concat('sh Init_AmbariVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-datanode.log 2>&1')]"
+          "commandToExecute": "[concat('sh Init_AmbariVM.sh ', parameters('adminUserName') , ' >> /home/', parameters('adminUserName'),'/initialize-ambarinode.log 2>&1')]"
         }
       }
     },

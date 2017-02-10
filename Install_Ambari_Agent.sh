@@ -14,7 +14,7 @@ do
 	ssh $mhost "sudo su -c 'yum install -y ambari-agent'"
 	echo "setup the ambari server name in /etc/ambari-agent/conf/ambari-agent.ini"
 	ssh $mhost sudo 'su -c " sed -i 's/hostname=localhost/hostname=edgenode.hawqdatalake.com/g' /etc/ambari-agent/conf/ambari-agent.ini " '
-	echo "mhost : install ambari agent ....."
+	echo "mhost : start ambari agent ....."
 	ssh $mhost  " sudo su -c 'ambari-agent start' "
 	((startIp = startIp + 1))
 done;	
@@ -29,7 +29,7 @@ do
 	ssh $dhost "sudo su -c 'yum install -y ambari-agent'"
 	echo "setup the ambari server name in /etc/ambari-agent/conf/ambari-agent.ini"
 	ssh $dhost sudo 'su -c " sed -i 's/hostname=localhost/hostname=edgenode.hawqdatalake.com/g' /etc/ambari-agent/conf/ambari-agent.ini " '
-	echo "dhost : install ambari agent ....."
+	echo "dhost : start ambari agent ....."
 	ssh $dhost  " sudo su -c 'ambari-agent start' "
 	((startIp = startIp + 1))
 done;	
