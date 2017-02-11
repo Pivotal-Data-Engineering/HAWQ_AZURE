@@ -46,7 +46,8 @@ staic IP addresses are assigned to each ip in the following order
 10.0.0.6 Masternode1    10.0.0.12 Datanode1
 10.0.0.7 Masternode2    10.0.0.13 Datanode2 .....10.0.0.n DatanodeN
 
-Also dynamic publi IP address is allowede for simiplified access to nodes. 
+Also dynamic public IP address is allowed for simiplified access to nodes. 
+
 ```
 ## Provisioning
 ```
