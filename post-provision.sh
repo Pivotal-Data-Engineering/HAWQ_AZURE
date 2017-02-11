@@ -12,7 +12,7 @@ PIVOTAL_API_KEY=$9
 
 sshOptions="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa"
 
-echo "setting up ssh configurations $sshOptions ..................."
+#echo "setting up ssh configurations $sshOptions ..................."
 scp $sshOptions  ./ssh_keys/id_rsa pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/.ssh/id_rsa
 scp $sshOptions  ./ssh_keys/id_rsa.pub pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/.ssh/id_rsa.pub
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod 640 /home/pivotpde/.ssh/authorized_keys
@@ -57,8 +57,9 @@ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx
 echo "running /home/pivotpde/Install_Ambari_Agent.sh $MASTERNODES $DATANODES ...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh Install_Ambari_Agent.sh $MASTERNODES $DATANODES $AMB_VERSION
 echo "Finished installing  Ambari Agents."
-#
+
 sleep 30
+
 echo "***************************** SECTION 4 BEGIN *****************************"
 echo "copying the file Install_Hawq_plugin.sh to ambari node...."
 scp $sshOptions Install_Hawq_plugin.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
@@ -67,7 +68,6 @@ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx
 echo "running /home/pivotpde/Install_Hawq_plugin $PIVOTAL_API_KEY ...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh Install_Hawq_plugin.sh $PIVOTAL_API_KEY
 echo "Finished Downloding hawq sw and installing  Hawq ambbari plug-in."
-
 sleep 30
 
 echo "***************************** SECTION 5 BEGIN *****************************"
@@ -80,6 +80,7 @@ echo "cluster install request submitted. check status on the ambari console."
 sleep 30
 
 ProgressPercent=0
+
 while [[ `echo $ProgressPercent | grep -v 100` ]]; do
   ProgressPercent=`curl -s --user admin:admin -H 'X-Requested-By:ambari' -X GET http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake/requests/1 | grep progress_percent | awk '{print $3}' | cut -d . -f 1`
   tput cuu1
@@ -107,6 +108,7 @@ fi
 
 echo "cleaning the install scripts...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com "rm -f /home/pivotpde/Install_*.sh"
+ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com "rm -f /home/pivotpde/copyHostNames.sh"
 
 echo "Process finished!"
 	

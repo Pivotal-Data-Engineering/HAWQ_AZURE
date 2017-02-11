@@ -9,5 +9,7 @@ HDP_VERSION=2.5.3.0
 AMB_VERSION=2.4.2.0
 PIVOTAL_API_KEY=y7BWf35sarZ6g46GpeLM
 
+mkdir -p ./logs
+
 ./provision.sh $cluster_size $resourceMgrTemplate $resourceMgrParams $resourceGroupName $region $HDB_VERSION $HDP_VERSION $AMB_VERSION $PIVOTAL_API_KEY > ./logs/provision-$(date +"%Y_%m_%d_%I_%M_%p").log 
 
