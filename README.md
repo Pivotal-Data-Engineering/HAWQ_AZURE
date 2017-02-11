@@ -82,7 +82,7 @@ TODO:
 ```
   1. Implement the network topologies
   2. Implment Kerberos authentication
-  3. Implment Rack awareness.
+  3. Implement Rack awareness.
   4. Add sample data to hawq and run smoke tests
   5. Add HAWQ ambari view (Beta)
   
