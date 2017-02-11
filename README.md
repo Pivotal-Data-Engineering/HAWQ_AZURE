@@ -1,7 +1,7 @@
-![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/HDB-icon.png "Logo")
-# Pivotal HDB 2.1 with Hortonworks HDB 2.5 on Azure [BETA]
-
-### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1.
+![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/HDB-icon.png "Logo") 
+##Pivotal HDB (Powered by Apache HAWQ) 
+#### **BETA**
+##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud.
 
 There are three foot prints available to deploy, small, medium, and large. 
 
@@ -72,17 +72,45 @@ The script does below;
 6. Uploads Ambari blueprint for cluster provision. (based on footprint the appropriate BP is selected in provision.sh)
 7. Kick off provision and status is printed in the log.
 Once the step 7 finished we can monitor the process by logging on to ambari console at 
-http://datalakeclient.eastus.cloudapp.azure.com:8080/
+http://datalakeclient.eastus.cloudapp.azure.com:8080/  using user as 'admin' password as 'admin'
 and monitor the install process.
 8. Once the provision is finished the script check for hawq install status and if status is good then 
    installs MadLib. If not we need manual investigation*.
 ```
 
-TODO:
+Login credentials:
+```
+HAWQ: gpadmin/Gpadmin1
+all hive/knox/oozie : Password
+```
+##### Loginng into edgenode :
+```
+$ sshOptions="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $HAWQ_AZURE_HOME/ssh_keys/id_rsa"
+$ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
+  This will log you into edgenode with user pivotpde (password Hawq123)
+```  
+#### Logging into hawq maser and changing password for gpadmin user
+```
+    $ sudo su -
+    $ ssh masternode1
+    $ su gpadmin
+    $ source /usr/local/hawq/greenplumpath.sh
+    $psql -p 10432
+    #alter role gpadmin with password 'Gpadmin1'
+    #\q
+```    
+##### Logging into hawq from edgenode
+```
+ $ psql -h mansternode1 -p 10432 -U gpadmin  
+```
+
+#### TODO:
 ```
   1. Implement the network topologies
   2. Implment Kerberos authentication
-  3. Implment Rack awareness.
+  3. Implement Rack awareness.
   4. Add sample data to hawq and run smoke tests
   5. Add HAWQ ambari view (Beta)
+  6. Customize ambari setup
+  7. Any suggestions from team.
   
