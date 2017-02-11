@@ -17,7 +17,8 @@ There are three foot prints available to deploy, small, medium, and large.
    - HDP 2.5.3
    - HDB 2.1.1
    - MadLib 1.9.1
-   
+```
+
 ## VM configuration
 ```
         Type: DS14 v2
