@@ -10,6 +10,14 @@ There are three foot prints available to deploy, small, medium, and large.
   - medium cluster has 3 master nodes, 6 data nodes and one administration node.
   - large cluster has 3 master nodes, 9 data nodes and one adminstration node.
 ```
+## Software versions:
+```
+   - Centos 6.8
+   - Ambari 2.4.2
+   - HDP 2.5.3
+   - HDB 2.1.1
+   - MadLib 1.9.1
+   
 ## VM configuration
 ```
         Type: DS14 v2
