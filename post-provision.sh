@@ -12,7 +12,7 @@ PIVOTAL_API_KEY=$9
 
 sshOptions="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./ssh_keys/id_rsa"
 
-#echo "setting up ssh configurations $sshOptions ..................."
+echo "setting up ssh configurations $sshOptions ..................."
 scp $sshOptions  ./ssh_keys/id_rsa pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/.ssh/id_rsa
 scp $sshOptions  ./ssh_keys/id_rsa.pub pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/.ssh/id_rsa.pub
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod 640 /home/pivotpde/.ssh/authorized_keys
@@ -93,8 +93,8 @@ echo "Cluster build is complete."
 echo "***************************** SECTION 6 BEGIN *****************************"
 echo "Checking Hawq Status ....."
 
-i#(curl -u admin:admin -X GET -H 'X-Requested-By:ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake/services/HAWQ | grep -q state | grep -q STARTED) && echo "STARTED" || export started=yes
-if [ 'yes' -eq $started ]; then
+(curl -u ambaridmin:admin -X GET -H 'X-Requested-By:ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake/services/HAWQ | grep -q state | grep -q STARTED) && echo "STARTED" || export started=yes
+if [ "$started" == "yes" ]; then
 	echo "copying the file Install_MadLib.sh to ambari node...."
   	scp $sshOptions Install_MadLib.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/ 
 	echo "making file /home/pivotpde/Install_MadLib.sh executable on ambari host...."
@@ -104,7 +104,10 @@ if [ 'yes' -eq $started ]; then
 else
 	echo "HAWQ seems to not up. Please visit http://datalakeclient.eastus.cloudapp.azure.com:8080 for troubleshoot."
 fi
-	
+
+echo "cleaning the install scripts...."
+ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com "rm -f /home/pivotpde/Install_*.sh"
+
 echo "Process finished!"
 	
 	

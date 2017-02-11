@@ -4,7 +4,7 @@ echo "Installing madlib to hawq....."
 
 ssh masternode1 "sudo su -c 'mkdir /staging' "
 
-echo "copying files hawq master node ...""
+echo "copying files hawq master node ..."
 
 sudo su -c "scp -r /staging/madlib masternode1:/staging/madlib"
 
@@ -27,4 +27,4 @@ echo "open access to HAWQ with password for anywhere ......"
 ssh masternode1 "sudo -u gpadmin echo 'host all gpadmin 0.0.0.0/0 password" >> /data/hawq/master/pg_hba.conf
 
 echo "reloading hawq config ......"
-ssh masternode1 "sudo -u gpadmin bash -c 'source /usr/local/hawq/greenplum_path.sh; hawq stop master -u'";
+sh masternode1 " sudo -u gpadmin bash -c 'source /usr/local/hawq/greenplum_path.sh; hawq stop cluster -a -u -M fast' ";
