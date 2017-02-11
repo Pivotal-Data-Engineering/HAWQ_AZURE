@@ -1,11 +1,11 @@
 # Pivotal HDB 2.1 with Hortonworks HDB 2.5 on Azure [BETA]
 
-![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/product-pivotal-hdb.svg)] (https://pivotal.io/pivotal-hdb)
+![alt text]
+(https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/product-pivotal-hdb.svg "Logo")
 
+### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1.
 
-The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1.
 There are three foot prints available to deploy, small, medium, and large. 
-
 
 ```
   - Small cluster has 3 master nodes, 3 data nodes and a administration client node.
