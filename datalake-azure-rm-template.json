@@ -1076,6 +1076,19 @@
               "priority": 159,
               "direction": "Inbound"
             }
+          },
+		  {
+           	"name": "HawqSQL",
+            "properties": {
+            	"protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "10432",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 169,
+                "direction": "Inbound"
+            }
           }
         ]
       }
