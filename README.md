@@ -112,5 +112,6 @@ $ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
   4. Add sample data to hawq and run smoke tests
   5. Add HAWQ ambari view (Beta)
   6. Customize ambari setup
-  7. Any suggestions from team.
+  7. All views and hadoop parts should work with noetwork mappings properly.
+  8. Implement any suggestions that team provides.
   
