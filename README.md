@@ -1,5 +1,6 @@
 ![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/HDB-icon.png "Logo") 
 ##Pivotal HDB (Powered by Apache HAWQ) 
+#### **BETA**
 ##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud.
 
 There are three foot prints available to deploy, small, medium, and large. 
