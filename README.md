@@ -1,7 +1,7 @@
 # Pivotal HDB 2.1 with Hortonworks HDB 2.5 on Azure [BETA]
 
 ![alt text]
-(https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/product-pivotal-hdb.svg "Logo")
+(https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/hdp-img.png "Logo")
 
 ### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1.
 
