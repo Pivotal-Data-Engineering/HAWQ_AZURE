@@ -1,7 +1,12 @@
 ![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/images/HDB-icon.png "Logo") 
 
-##Pivotal HDB (Powered by Apache HAWQ) 
-#### **BETA**
+##Pivotal HDB(Powered by Apache HAWQ) On Microsoft Azure. #### [Beta]
+
+### *** This is for non-commercial use only ***
+    Pivotal HDB 2.1 is a licenced Trademark © 2017 Pivotal Software, Inc. All Rights Reserved.
+    Hortonworks Data platform(HDP) 2.5 is a licenced Trademark of © 2011-2017 Hortonworks Inc. All Rights Reserved.
+    Microsoft Azure is a licenced trademark of © 2017 Microsoft corporation. All Rights Reserved.
+    
 ##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud. 
 ## What to expect:
 When cluster provision operation finishes we will have a 7 or 10 or 13 node cluster (based on foot print selected) with hawq installed. A demo schema is installed with lending club data. 
