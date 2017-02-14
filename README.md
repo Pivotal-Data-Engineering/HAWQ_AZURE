@@ -2,8 +2,25 @@
 
 ##Pivotal HDB (Powered by Apache HAWQ) 
 #### **BETA**
-##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud.
+##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud. 
+## What to expect:
+When cluster provision operation finishes we will have a 7 or 10 or 13 node cluster (based on foot print selected) with hawq installed. A demo schema is installed with lending club data. 
 
+The data is loaded from azure blob [ https://pivotalhdb01.blob.core.windows.net/lendingclub-demo-data ]
+
+##### Login to Hawq using psql:
+```
+user: demouser
+password: hawqdemo
+database : analyticsdb
+host: datalakemn1.eastus.cloudapp.azure.com
+port: 10432
+
+Example:
+
+  $psql -p 10432 -U demouser -d analyticsdb -h datalakemn1.eastus.cloudapp.azure.com
+
+```
 There are three foot prints available to deploy, small, medium, and large. 
 
 ```
