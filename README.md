@@ -1,4 +1,5 @@
-![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/HDB-icon.png "Logo") 
+![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/images/HDB-icon.png "Logo") 
+
 ##Pivotal HDB (Powered by Apache HAWQ) 
 #### **BETA**
 ##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud.
@@ -116,12 +117,10 @@ $ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
 
 #### TODO:
 ```
-  1. Implement the network topologies
-  2. Implment Kerberos authentication
-  3. Implement Rack awareness.
-  4. Add sample data to hawq and run smoke tests
+  1. Improve network topologies ( at present all the ports that needed for hadoop components are in the open list, may be remove some uninstalled components ports ?)
+  2. Implement Rack awareness.
   5. Add HAWQ ambari view (Beta)
   6. Customize ambari setup
-  7. All views and hadoop parts should work with noetwork mappings properly.
+  7. All views and hadoop parts should work with network mappings properly.
   8. Implement any suggestions that team provides.
   
