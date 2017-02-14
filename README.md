@@ -1,6 +1,6 @@
 ![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/images/HDB-icon.png "Logo") 
 
-##Pivotal HDB(Powered by Apache HAWQ) On Microsoft Azure. #### [Beta]
+##Pivotal HDB(Powered by Apache HAWQ) On Microsoft Azure. [Beta]
 
 ### *** This is for non-commercial use only ***
     Pivotal HDB 2.1 is a licenced Trademark © 2017 Pivotal Software, Inc. All Rights Reserved.
