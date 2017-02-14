@@ -1,0 +1,61 @@
+{
+  "blueprint" : "datalake_blueprint",
+  "default_password" : "Passw0rd",
+  "host_groups" : [
+	   {
+	   		"name" : "host_group_1",
+ 	    	"hosts" : [
+				{
+				    "fqdn" : "datanode0.hawqdatalake.com"
+				},
+				{
+				    "fqdn" : "datanode1.hawqdatalake.com"
+				},
+				{
+				    "fqdn" : "datanode2.hawqdatalake.com"
+				},
+				{
+				    "fqdn" : "datanode3.hawqdatalake.com"
+				},
+				{
+				    "fqdn" : "datanode4.hawqdatalake.com"
+				},
+				{
+				    "fqdn" : "datanode5.hawqdatalake.com"
+				}
+ 	        ]
+	    },
+ 	   {
+ 	   		"name" : "host_group_2",
+ 	    	"hosts" : [
+ 	        {
+ 	            "fqdn" : "edgenode.hawqdatalake.com"
+ 	        }
+ 	        ]
+ 	    },
+ 	   {
+ 	   		"name" : "host_group_3",
+ 	    	"hosts" : [
+ 	        {
+ 	            "fqdn" : "masternode0.hawqdatalake.com"
+ 	        }
+ 	        ]
+ 	    },
+  	   {
+  	   		"name" : "host_group_4",
+ 	    	"hosts" : [
+				{
+				    "fqdn" : "masternode1.hawqdatalake.com"
+				}
+			]
+		},
+		{
+  	   		"name" : "host_group_5",
+ 	    	"hosts" : [
+				{
+				    "fqdn" : "masternode2.hawqdatalake.com"
+				}
+			]
+		}
+	]
+}	
