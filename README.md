@@ -128,6 +128,8 @@ $ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
 ```  
 #### Logging into hawq maser and changing password for gpadmin user
 ```
+    Default password is Gpadmin1, but if you like to change please follow the below process.
+    
     $ sudo su -
     $ ssh masternode1
     $ su gpadmin
