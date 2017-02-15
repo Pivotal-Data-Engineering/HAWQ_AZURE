@@ -109,6 +109,10 @@ http://datalakeclient.eastus.cloudapp.azure.com:8080/  using user as 'admin' pas
 and monitor the install process.
 8. Once the provision is finished the script check for hawq install status and if status is good then 
    installs MadLib. If not we need manual investigation*.
+9. Finally a demouser/hawqdemo is setup with admin role, and create a new database analyticsdb owner.
+   Sample dataset is added from the azure blob and hawq internal structures are created. 
+   Also there are few external tables using azure blob as web external tables.
+
 ```
 
 Login credentials:
