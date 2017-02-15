@@ -145,4 +145,5 @@ $ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
   6. Customize ambari setup
   7. All views and hadoop parts should work with network mappings properly.
   8. Implement any suggestions that team provides.
+  9. Custom build.
   
