@@ -31,7 +31,7 @@ echo "Finished setting up ssh configurations."
 
 echo "***************************** SECTION 1 BEGIN *****************************"
 echo "copying the file copyHostNames.sh to ambari node...."
-scp $sshOptions copyHostNames.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+scp $sshOptions ./provision_hdp_scripts/copyHostNames.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
 echo "making file /home/pivotpde/copyHostNames.sh executable on ambari host...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/copyHostNames.sh
 echo "running /home/pivotpde/copyHostNames.sh $MASTERNODES $DATANODES ...."
@@ -41,7 +41,7 @@ echo "Finished setting up host configurations."
 
 echo "***************************** SECTION 2 BEGIN *****************************"
 echo "copying the file Install_Ambari_Server.sh to ambari node...."
-scp $sshOptions Install_Ambari_Server.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+scp $sshOptions ./provision_hdp_scripts/Install_Ambari_Server.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
 echo "making file /home/pivotpde/Install_Ambari_Server.sh executable on ambari host...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/Install_Ambari_Server.sh
 echo "running /home/pivotpde/Install_Ambari_Server.sh ...."
@@ -51,7 +51,7 @@ sleep 30
 
 echo "***************************** SECTION 3 BEGIN *****************************"
 echo "copying the file Install_Ambari_Agent.sh to ambari node...."
-scp $sshOptions Install_Ambari_Agent.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+scp $sshOptions ./provision_hdp_scripts/Install_Ambari_Agent.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
 echo "making file /home/pivotpde/Install_Ambari_Agent.sh executable on ambari host...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/Install_Ambari_Agent.sh
 echo "running /home/pivotpde/Install_Ambari_Agent.sh $MASTERNODES $DATANODES ...."
@@ -62,7 +62,7 @@ sleep 30
 
 echo "***************************** SECTION 4 BEGIN *****************************"
 echo "copying the file Install_Hawq_plugin.sh to ambari node...."
-scp $sshOptions Install_Hawq_plugin.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+scp $sshOptions ./provision_hdp_scripts/Install_Hawq_plugin.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
 echo "making file /home/pivotpde/Install_Hawq_plugin.sh executable on ambari host...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/Install_Hawq_plugin.sh
 echo "running /home/pivotpde/Install_Hawq_plugin $PIVOTAL_API_KEY ...."
@@ -97,11 +97,17 @@ echo "Checking Hawq Status ....."
 (curl -u ambaridmin:admin -X GET -H 'X-Requested-By:ambari' http://datalakeclient.eastus.cloudapp.azure.com:8080/api/v1/clusters/hawqdatalake/services/HAWQ | grep -q state | grep -q STARTED) && echo "STARTED" || export started=yes
 if [ "$started" == "yes" ]; then
 	echo "copying the file Install_MadLib.sh to ambari node...."
-  	scp $sshOptions Install_MadLib.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/ 
+  	scp $sshOptions ./provision_hdp_scripts/Install_MadLib.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/ 
 	echo "making file /home/pivotpde/Install_MadLib.sh executable on ambari host...."
 	ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/Install_MadLib.sh
-	echo "running /home/pivotpde/Install_MadLib ...."
+	echo "running /home/pivotpde/Install_MadLib.sh ...."
 	ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh Install_MadLib.sh
+	
+	echo "Installing demo schema to hawq...."
+	scp $sshOptions ./provision_hdp_scripts/create_demo_schema.sh pivotpde@datalakeclient.eastus.cloudapp.azure.com:/home/pivotpde/
+	ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com chmod ugo+rwx /home/pivotpde/create_demo_schema.sh
+	echo "running /home/pivotpde/create_demo_schema.sh ...."
+	ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com sh create_demo_schema.sh
 else
 	echo "HAWQ seems to not up. Please visit http://datalakeclient.eastus.cloudapp.azure.com:8080 for troubleshoot."
 fi
@@ -109,6 +115,8 @@ fi
 echo "cleaning the install scripts...."
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com "rm -f /home/pivotpde/Install_*.sh"
 ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com "rm -f /home/pivotpde/copyHostNames.sh"
+
+
 
 echo "Process finished!"
 	
