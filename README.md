@@ -1,8 +1,30 @@
-![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/HDB-icon.png "Logo") 
-##Pivotal HDB (Powered by Apache HAWQ) 
-#### **BETA**
-##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud.
+![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/images/HDB-icon.png "Logo") 
 
+##Pivotal HDB(Powered by Apache HAWQ) On Microsoft Azure.
+
+    Pivotal HDB 2.1 is a licenced Trademark © 2017 Pivotal Software, Inc. All Rights Reserved.
+    Hortonworks Data platform(HDP) 2.5 is a licenced Trademark of © 2011-2017 Hortonworks Inc. All Rights Reserved.
+    Microsoft Azure is a licenced trademark of © 2017 Microsoft corporation. All Rights Reserved.
+    
+##### The repo provide base automation for installing Hortonworks Data platform 2.5 with Pivotal HAWQ 2.1.1 including Madlib 1.9.1 on Microsoft Azure cloud. 
+## What to expect:
+When cluster provision operation finishes we will have a 7 or 10 or 13 node cluster (based on foot print selected) with hawq installed. A demo schema is installed with lending club data. 
+
+The data is loaded from azure blob [ https://pivotalhdb01.blob.core.windows.net/lendingclub-demo-data ]
+
+##### Login to Hawq using psql:
+```
+user: demouser
+password: hawqdemo
+database : analyticsdb
+host: datalakemn1.eastus.cloudapp.azure.com
+port: 10432
+
+Example:
+
+  $psql -p 10432 -U demouser -d analyticsdb -h datalakemn1.eastus.cloudapp.azure.com
+
+```
 There are three foot prints available to deploy, small, medium, and large. 
 
 ```
@@ -86,6 +108,10 @@ http://datalakeclient.eastus.cloudapp.azure.com:8080/  using user as 'admin' pas
 and monitor the install process.
 8. Once the provision is finished the script check for hawq install status and if status is good then 
    installs MadLib. If not we need manual investigation*.
+9. Finally a demouser/hawqdemo is setup with admin role, and create a new database analyticsdb owner.
+   Sample dataset is added from the azure blob and hawq internal structures are created. 
+   Also there are few external tables using azure blob as web external tables.
+
 ```
 
 Login credentials:
@@ -101,6 +127,8 @@ $ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
 ```  
 #### Logging into hawq maser and changing password for gpadmin user
 ```
+    Default password is Gpadmin1, but if you like to change please follow the below process.
+    
     $ sudo su -
     $ ssh masternode1
     $ su gpadmin
@@ -116,12 +144,11 @@ $ ssh $sshOptions  pivotpde@datalakeclient.eastus.cloudapp.azure.com
 
 #### TODO:
 ```
-  1. Implement the network topologies
-  2. Implment Kerberos authentication
-  3. Implement Rack awareness.
-  4. Add sample data to hawq and run smoke tests
+  1. Improve network topologies ( at present all the ports that needed for hadoop components are in the open list, may be remove some uninstalled components ports ?)
+  2. Implement Rack awareness.
   5. Add HAWQ ambari view (Beta)
   6. Customize ambari setup
-  7. All views and hadoop parts should work with noetwork mappings properly.
+  7. All views and hadoop parts should work with network mappings properly.
   8. Implement any suggestions that team provides.
+  9. Custom build.
   
