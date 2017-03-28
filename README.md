@@ -75,18 +75,31 @@ Also dynamic public IP address is allowed for simiplified access to nodes.
 ```
 Step 1: mkdir ~/DEV; cd DEV
 
-Step2:  git clone https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE.git
-        cd HAWQ_AZURE
-Step3: Edit provision-small-cluster.sh and provide your pivnet download key for software from network.pivotal.io.
+Step 2:  git clone https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE.git
+        
+Step 3:  generate ssh-key for VMS. 
+         cd HAWQ_AZURE/ssh_keys
+         ssh-keygen -t rsa -b 4096 -C "pivotpde@pivotal.io" -N "id_rsa" -f id_rsa
+         cd ..
+         
+         Edit the appropriate datalake-azure-template-parameters-*.json file and replace the ssh key
+         from the public ssh-keygen/key id_rsa.pub file.
+         
+         "adminPublicKey": {
+ 		    "value": "ssh-rsa REPLACE_PUBLIC_KEY"
+          },
+     
+         
+Step 4: Edit provision-small-cluster.sh and provide your pivnet download key for software from network.pivotal.io.
         PIVOTAL_API_KEY=<download_key_for_pivnet> 
         save and exit.
-Step 4: 
+Step 5: 
         $ chmod ug+rx *.sh
         $ azure login (please refer to Azure cli documentation for this).
           Once logged in to azure cli succcessfully, please run ;
         $ ./provision-small-cluster.sh
         
-Step 5. This shold kick off the provision and logs the output on ./logs/ folder.
+Step 6. This shold kick off the provision and logs the output on ./logs/ folder.
         you can monitor the progress tailing a most recent log file in logs folder.
         
 ```        
