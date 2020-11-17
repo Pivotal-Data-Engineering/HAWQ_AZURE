@@ -1,4 +1,4 @@
-![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/images/HDB-icon.png "Logo") 
+<h1> VMware has ended active development of this project, this repository will no longer be updated.</h1><br>![alt text](https://github.com/Pivotal-Data-Engineering/HAWQ_AZURE/blob/master/images/HDB-icon.png "Logo") 
 
 ##Pivotal HDB(Powered by Apache HAWQ) On Microsoft Azure.
 
